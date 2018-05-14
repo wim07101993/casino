@@ -4,6 +4,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
+using SlotMachine.Models;
 using SlotMachine.ViewModelInerfaces;
 
 namespace SlotMachine.ViewModels
@@ -15,7 +16,7 @@ namespace SlotMachine.ViewModels
         private static readonly Random Random = new Random();
 
         private bool _youWon;
-        private ObservableCollection<int> _numbers;
+        private ObservableCollection<Number> _numbers;
 
         #endregion FIELDS
 
@@ -24,7 +25,14 @@ namespace SlotMachine.ViewModels
 
         public MainWindowViewModel()
         {
-            _numbers = new ObservableCollection<int>{0,1,2,3};
+            _numbers = new ObservableCollection<Number>
+            {
+                new Number(),
+                new Number(),
+                new Number(),
+                new Number()
+            };
+
             RollCommand = new DelegateCommand(RandomizeNumbers);
         }
 
@@ -33,12 +41,12 @@ namespace SlotMachine.ViewModels
 
         #region PROPERTIES
 
-        public ObservableCollection<int> Numbers
+        public ObservableCollection<Number> Numbers
         {
             get => _numbers;
-            private set => SetProperty(ref _numbers , value);
+            private set => SetProperty(ref _numbers, value);
         }
-        
+
         public ICommand RollCommand { get; }
 
         public bool YouWon
@@ -54,8 +62,8 @@ namespace SlotMachine.ViewModels
 
         public void RandomizeNumbers()
         {
-            for (var i = 0; i < Numbers.Count; i++)
-                Numbers[i] = Random.Next(7);
+            foreach (var number in Numbers)
+                number.Randomize();
 
             var allAreEqual = true;
             for (var i = 1; i < Numbers.Count; i++)
