@@ -8,6 +8,11 @@
     Title="MainWindow"
     d:DataContext="{d:DesignInstance viewModelInerfaces:IMainWindowViewModel}"
     mc:Ignorable="d">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -36,7 +41,7 @@
                 VerticalAlignment="Center"
                 FontSize="100"
                 Text="YOU WON"
-                Visibility="{Binding YouWon}" />
+                Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}" />
         </Grid>
 
         <Button

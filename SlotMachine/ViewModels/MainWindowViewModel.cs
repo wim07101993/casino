@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -12,10 +10,10 @@ namespace SlotMachine.ViewModels
     {
         #region FIELDS
 
-        private int _thirdNumber = 0;
-        private int _firstNumber = 0;
-        private int _secondNumber = 0;
-        private Visibility _youWon = Visibility.Collapsed;
+        private int _thirdNumber;
+        private int _firstNumber;
+        private int _secondNumber;
+        private bool _youWon;
 
         private static readonly Random Random = new Random();
 
@@ -54,7 +52,7 @@ namespace SlotMachine.ViewModels
 
         public ICommand RollCommand { get; }
 
-        public Visibility YouWon
+        public bool YouWon
         {
             get => _youWon;
             private set => SetProperty(ref _youWon, value);
@@ -72,9 +70,9 @@ namespace SlotMachine.ViewModels
             ThirdNumber = Random.Next(4);
 
             if (FirstNumber == SecondNumber && SecondNumber == ThirdNumber)
-                YouWon = Visibility.Visible;
+                YouWon = true;
             else
-                YouWon = Visibility.Collapsed;
+                YouWon = false;
         }
 
         #endregion METHODS

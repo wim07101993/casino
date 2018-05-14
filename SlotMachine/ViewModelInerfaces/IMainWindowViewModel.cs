@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace SlotMachine.ViewModelInerfaces
 {
@@ -10,6 +9,6 @@ namespace SlotMachine.ViewModelInerfaces
         int ThirdNumber { get; }
 
         ICommand RollCommand { get; }
-        Visibility YouWon { get; }
+        bool YouWon { get; }
     }
 }
