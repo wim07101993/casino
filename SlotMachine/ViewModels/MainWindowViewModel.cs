@@ -1,4 +1,8 @@
-﻿using Prism.Mvvm;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Prism.Commands;
+using Prism.Mvvm;
 using SlotMachine.ViewModelInerfaces;
 
 namespace SlotMachine.ViewModels
@@ -11,6 +15,8 @@ namespace SlotMachine.ViewModels
         private int _firstNumber = 1;
         private int _secondNumber = 2;
 
+        private static readonly Random Random = new Random();
+
         #endregion FIELDS
 
 
@@ -18,7 +24,7 @@ namespace SlotMachine.ViewModels
 
         public MainWindowViewModel()
         {
-            
+            RollCommand = new DelegateCommand(RandomizeNumbers);
         }
 
         #endregion CONSTRUCTOR
@@ -44,6 +50,20 @@ namespace SlotMachine.ViewModels
             set => SetProperty(ref _thirdNumber, value);
         }
 
+        public ICommand RollCommand { get; }
+
         #endregion PROPERTIES
+
+
+        #region METHODS
+
+        public void RandomizeNumbers()
+        {
+            FirstNumber = Random.Next(4);
+            SecondNumber = Random.Next(4);
+            ThirdNumber = Random.Next(4);
+        }
+
+        #endregion METHODS
     }
 }

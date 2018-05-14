@@ -8,11 +8,25 @@
     Title="MainWindow"
     d:DataContext="{d:DesignInstance viewModelInerfaces:IMainWindowViewModel}"
     mc:Ignorable="d">
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <StackPanel Orientation="Horizontal">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel
+            Grid.Column="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
             <TextBlock Text="{Binding FirstNumber}" />
             <TextBlock Text="{Binding SecondNumber}" />
             <TextBlock Text="{Binding ThirdNumber}" />
         </StackPanel>
+
+        <Button
+            Grid.Column="1"
+            Command="{Binding RollCommand}"
+            Content="Roll" />
     </Grid>
 </Window>
