@@ -13,7 +13,7 @@ namespace SlotMachine.Models
         public static int MinValue = 0;
         public static int MaxValue = 7;
 
-        public static int MinSpinTime = 4000;
+        public static int MinSpinTime = 3000;
         public static int MaxSpinTime = 6000;
 
         private int _value;

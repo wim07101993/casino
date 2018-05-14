@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Documents;
 using System.Windows.Input;
 using Prism.Commands;
@@ -65,15 +66,8 @@ namespace SlotMachine.ViewModels
             foreach (var number in Numbers)
                 number.Randomize();
 
-            var allAreEqual = true;
-            for (var i = 1; i < Numbers.Count; i++)
-                if (Numbers[i - 1] != Numbers[i])
-                {
-                    allAreEqual = false;
-                    break;
-                }
-
-            YouWon = allAreEqual;
+            var firstNumber = Numbers.First().Value;
+            YouWon = Numbers.All(x => x.Value == firstNumber);
         }
 
         #endregion METHODS
