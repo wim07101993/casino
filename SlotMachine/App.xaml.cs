@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using SlotMachine.ViewModelInerfaces;
+using SlotMachine.ViewModels;
 using SlotMachine.Views;
 using Unity;
 
@@ -13,6 +15,7 @@ namespace SlotMachine
             base.OnStartup(e);
 
             UnityContainer = new UnityContainer();
+            UnityContainer.RegisterType<IMainWindowViewModel, MainWindowViewModel>();
 
             MainWindow = UnityContainer.Resolve<MainWindow>();
             if (MainWindow != null)
