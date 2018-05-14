@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Windows.Documents;
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -10,12 +12,10 @@ namespace SlotMachine.ViewModels
     {
         #region FIELDS
 
-        private int _thirdNumber;
-        private int _firstNumber;
-        private int _secondNumber;
-        private bool _youWon;
-
         private static readonly Random Random = new Random();
+
+        private bool _youWon;
+        private ObservableCollection<int> _numbers;
 
         #endregion FIELDS
 
@@ -24,6 +24,7 @@ namespace SlotMachine.ViewModels
 
         public MainWindowViewModel()
         {
+            _numbers = new ObservableCollection<int>{0,1,2,3};
             RollCommand = new DelegateCommand(RandomizeNumbers);
         }
 
@@ -32,24 +33,12 @@ namespace SlotMachine.ViewModels
 
         #region PROPERTIES
 
-        public int FirstNumber
+        public ObservableCollection<int> Numbers
         {
-            get => _firstNumber;
-            private set => SetProperty(ref _firstNumber, value);
+            get => _numbers;
+            private set => SetProperty(ref _numbers , value);
         }
-
-        public int SecondNumber
-        {
-            get => _secondNumber;
-            private set => SetProperty(ref _secondNumber, value);
-        }
-
-        public int ThirdNumber
-        {
-            get => _thirdNumber;
-            private set => SetProperty(ref _thirdNumber, value);
-        }
-
+        
         public ICommand RollCommand { get; }
 
         public bool YouWon
@@ -65,14 +54,18 @@ namespace SlotMachine.ViewModels
 
         public void RandomizeNumbers()
         {
-            FirstNumber = Random.Next(4);
-            SecondNumber = Random.Next(4);
-            ThirdNumber = Random.Next(4);
+            for (var i = 0; i < Numbers.Count; i++)
+                Numbers[i] = Random.Next(7);
 
-            if (FirstNumber == SecondNumber && SecondNumber == ThirdNumber)
-                YouWon = true;
-            else
-                YouWon = false;
+            var allAreEqual = true;
+            for (var i = 1; i < Numbers.Count; i++)
+                if (Numbers[i - 1] != Numbers[i])
+                {
+                    allAreEqual = false;
+                    break;
+                }
+
+            YouWon = allAreEqual;
         }
 
         #endregion METHODS

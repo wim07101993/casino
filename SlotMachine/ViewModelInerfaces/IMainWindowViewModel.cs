@@ -1,12 +1,11 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace SlotMachine.ViewModelInerfaces
 {
     public interface IMainWindowViewModel
     {
-        int FirstNumber { get; }
-        int SecondNumber { get; }
-        int ThirdNumber { get; }
+        ObservableCollection<int> Numbers { get; }
 
         ICommand RollCommand { get; }
         bool YouWon { get; }
