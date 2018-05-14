@@ -14,15 +14,30 @@
             <ColumnDefinition Width="100" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel
-            Grid.Column="0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
-            <TextBlock Text="{Binding FirstNumber}" />
-            <TextBlock Text="{Binding SecondNumber}" />
-            <TextBlock Text="{Binding ThirdNumber}" />
-        </StackPanel>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+
+            <StackPanel
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock Text="{Binding FirstNumber}" />
+                <TextBlock Text="{Binding SecondNumber}" />
+                <TextBlock Text="{Binding ThirdNumber}" />
+            </StackPanel>
+
+            <TextBlock
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="100"
+                Text="YOU WON"
+                Visibility="{Binding YouWon}" />
+        </Grid>
 
         <Button
             Grid.Column="1"
