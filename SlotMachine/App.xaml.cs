@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using SlotMachine.Models;
 using SlotMachine.ViewModelInerfaces;
 using SlotMachine.ViewModels;
 using SlotMachine.Views;
@@ -12,6 +13,11 @@ namespace SlotMachine
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            Number.MaxValue = 3;
+
+            Number.MinSpinTime = 100;
+            Number.MaxSpinTime = 2000;
+
             base.OnStartup(e);
 
             UnityContainer = new UnityContainer();

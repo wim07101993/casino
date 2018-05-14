@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Prism.Commands;
@@ -21,13 +22,14 @@ namespace SlotMachine.ViewModels
 
         public MainWindowViewModel()
         {
-            Numbers = new ObservableCollection<Number>
+            Numbers = new ObservableCollection<Number>();
+
+            for (var i = 0; i < 2; i++)
             {
-                new Number(),
-                new Number(),
-                new Number(),
-                new Number()
-            };
+                var number = new Number();
+                number.PropertyChanged += OnNumberPropertyChanged;
+                Numbers.Add(number);
+            }
 
             RollCommand = new DelegateCommand(RandomizeNumbers);
         }
@@ -56,9 +58,20 @@ namespace SlotMachine.ViewModels
         {
             foreach (var number in Numbers)
                 number.Randomize();
+        }
 
-            var firstNumber = Numbers.First().Value;
-            YouWon = Numbers.All(x => x.Value == firstNumber);
+        private void OnNumberPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(Number.IsRandomizing):
+                    if (!Numbers.Any(x => x.IsRandomizing))
+                    {
+                        var firstNumber = Numbers.First().Value;
+                        YouWon = Numbers.All(x => x.Value == firstNumber);
+                    }
+                    break;
+            }
         }
 
         #endregion METHODS
