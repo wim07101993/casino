@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Documents;
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -14,10 +12,7 @@ namespace SlotMachine.ViewModels
     {
         #region FIELDS
 
-        private static readonly Random Random = new Random();
-
         private bool _youWon;
-        private ObservableCollection<Number> _numbers;
 
         #endregion FIELDS
 
@@ -26,7 +21,7 @@ namespace SlotMachine.ViewModels
 
         public MainWindowViewModel()
         {
-            _numbers = new ObservableCollection<Number>
+            Numbers = new ObservableCollection<Number>
             {
                 new Number(),
                 new Number(),
@@ -42,11 +37,7 @@ namespace SlotMachine.ViewModels
 
         #region PROPERTIES
 
-        public ObservableCollection<Number> Numbers
-        {
-            get => _numbers;
-            private set => SetProperty(ref _numbers, value);
-        }
+        public ObservableCollection<Number> Numbers { get; }
 
         public ICommand RollCommand { get; }
 
