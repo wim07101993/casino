@@ -37,10 +37,19 @@
                         <Grid
                             Width="100"
                             Height="100"
+                            Margin="15"
                             Background="Red">
                             <Grid.OpacityMask>
                                 <VisualBrush Visual="{Binding Value, Converter={StaticResource IntToVisualConverter}}" />
                             </Grid.OpacityMask>
+                            <Grid.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="14"
+                                    Direction="270"
+                                    Opacity="0.42"
+                                    ShadowDepth="4.5"
+                                    Color="Gray" />
+                            </Grid.Effect>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
