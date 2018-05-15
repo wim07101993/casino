@@ -24,7 +24,7 @@ namespace SlotMachine.ViewModels
         {
             Numbers = new ObservableCollection<Number>();
 
-            for (var i = 0; i < 2; i++)
+            for (var i = 0; i < 4; i++)
             {
                 var number = new Number();
                 number.PropertyChanged += OnNumberPropertyChanged;

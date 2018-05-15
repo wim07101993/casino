@@ -12,7 +12,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="75" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
@@ -79,6 +79,8 @@
 
         <Button
             Grid.Column="1"
+            Width="75"
+            Margin="0,50,50,50"
             Command="{Binding RollCommand}"
             Content="Roll"
             Style="{StaticResource SlideButtonStyle}" />
