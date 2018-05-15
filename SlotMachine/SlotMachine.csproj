@@ -80,6 +80,9 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Icons\Symbols\Classic.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -94,7 +97,7 @@
     <Compile Include="Models\Number.cs" />
     <Compile Include="ViewModelInerfaces\IMainWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="Views\Controls\SlideButton.cs" />
+    <Compile Include="Views\Converters\MultiplyConverter.cs" />
     <Compile Include="Views\Converters\IntToVisualConverter.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -131,6 +134,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Controls\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
