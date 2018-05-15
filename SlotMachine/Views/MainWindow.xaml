@@ -38,7 +38,7 @@
                             Width="100"
                             Height="100"
                             Margin="15"
-                            Background="Red">
+                            Background="{DynamicResource PrimaryAccentColorBrush}">
                             <Grid.OpacityMask>
                                 <VisualBrush Visual="{Binding Value, Converter={StaticResource IntToVisualConverter}}" />
                             </Grid.OpacityMask>
@@ -48,7 +48,7 @@
                                     Direction="270"
                                     Opacity="0.42"
                                     ShadowDepth="4.5"
-                                    Color="Gray" />
+                                    Color="{DynamicResource ShadowColor}" />
                             </Grid.Effect>
                         </Grid>
                     </DataTemplate>
@@ -61,9 +61,18 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 FontSize="100"
-                Foreground="Red"
+                FontWeight="Bold"
+                Foreground="{DynamicResource PrimaryAccentColorBrush}"
                 Text="YOU WON"
                 Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock.Effect>
+                    <DropShadowEffect
+                        BlurRadius="14"
+                        Direction="270"
+                        Opacity="0.42"
+                        ShadowDepth="4.5"
+                        Color="{DynamicResource ShadowColor}" />
+                </TextBlock.Effect>
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
                         <Style.Triggers>
@@ -90,6 +99,7 @@
             Grid.Column="1"
             Width="75"
             Margin="0,50,50,50"
+            Background="{DynamicResource PrimaryAccentColorBrush}"
             Command="{Binding RollCommand}"
             Content="Roll"
             Style="{StaticResource SlideButtonStyle}" />

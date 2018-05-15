@@ -1,0 +1,21 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:SlotMachine">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Views/Colors/DeepOrange.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush x:Key="PrimaryAccentColorBrush" Color="{DynamicResource Accent700}" />
+    <SolidColorBrush x:Key="PrimaryAccentColorBrush400" Color="{DynamicResource Accent400}" />
+    <SolidColorBrush x:Key="PrimaryAccentColorBrush200" Color="{DynamicResource Accent200}" />
+    <SolidColorBrush x:Key="PrimaryAccentColorBrush100" Color="{DynamicResource Accent100}" />
+
+    <SolidColorBrush x:Key="SecondaryAccentColorBrush" Color="{DynamicResource 700}" />
+    <SolidColorBrush x:Key="SecondaryAccentColorBrush400" Color="{DynamicResource 400}" />
+    <SolidColorBrush x:Key="SecondaryAccentColorBrush200" Color="{DynamicResource 200}" />
+    <SolidColorBrush x:Key="SecondaryAccentColorBrush100" Color="{DynamicResource 100}" />
+
+    <Color x:Key="ShadowColor">#123456</Color>
+    <SolidColorBrush x:Key="ShadowColorBrush" Color="{DynamicResource ShadowColor}" />
+</ResourceDictionary>
