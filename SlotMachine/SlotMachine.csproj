@@ -83,6 +83,9 @@
     <Page Include="Converters.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Icons\Symbols\Classic.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -103,6 +106,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Styles\FlashingTextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Styles\SlideButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

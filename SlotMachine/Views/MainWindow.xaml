@@ -47,39 +47,14 @@
             </ItemsControl>
 
             <TextBlock
+                x:Name="YouWonTextBlock"
                 Grid.Row="1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 FontSize="100"
                 Foreground="Red"
-                Text="YOU WON"
+                Text="YOU WON" Style="{StaticResource FlashingTextBlockStyle}"
                 Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <TextBlock.Style>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding YouWon}" Value="True">
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard Name="Flash">
-                                        <BeginStoryboard.Storyboard>
-                                            <Storyboard TargetProperty="Opacity">
-                                                <DoubleAnimation
-                                                    AutoReverse="True"
-                                                    RepeatBehavior="Forever"
-                                                    From="1"
-                                                    To="0"
-                                                    Duration="0:0:0.5" />
-                                            </Storyboard>
-                                        </BeginStoryboard.Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-
-                                <DataTrigger.ExitActions>
-                                    <StopStoryboard BeginStoryboardName="Flash" />
-                                </DataTrigger.ExitActions>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
             </TextBlock>
         </Grid>
 
