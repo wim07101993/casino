@@ -53,8 +53,27 @@
                 VerticalAlignment="Top"
                 FontSize="100"
                 Foreground="Red"
-                Text="YOU WON" Style="{StaticResource FlashingTextBlockStyle}"
+                Text="YOU WON"
                 Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=YouWonTextBlock, Path=Visibility}" Value="Visible">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Name="Flash">
+                                        <BeginStoryboard.Storyboard>
+                                            <StaticResource ResourceKey="FlashStoryBoard" />
+                                        </BeginStoryboard.Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+
+                                <DataTrigger.ExitActions>
+                                    <StopStoryboard BeginStoryboardName="Flash" />
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
             </TextBlock>
         </Grid>
 
