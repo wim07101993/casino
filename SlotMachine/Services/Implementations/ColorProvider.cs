@@ -44,39 +44,27 @@ namespace SlotMachine.Services.Implementations
             var dictionaryEntries = resourceSet.OfType<DictionaryEntry>().ToList();
 
             var regex = new Regex(@"^views\/colors\/(?<name>[a-z]+)\.(?<type>primary|accent)\.baml");
-            var colorThemes = new List<ColorTheme>();
-
-            foreach (var entry in dictionaryEntries)
-            {
-                var key = entry.Key.ToString();
-                var match = regex.Match(key);
-                if (!match.Success)
-                    continue;
-
-                ResourceDictionary primaryDictionary = null;
-                ResourceDictionary accentsDictionary = null;
-                switch (match.Groups["type"].Value)
+            
+            return dictionaryEntries.Select(x =>
                 {
-                    case "primary":
-                        primaryDictionary = Read(assemblyName, key);
-                        break;
-                    case "accent":
-                        accentsDictionary = Read(assemblyName, key);
-                        break;
-                }
-
-                var primaryColors = primaryDictionary?.ToDictionary<Color>();
-                var accentColors = accentsDictionary?.ToDictionary<Color>();
-
-                colorThemes.Add(new ColorTheme
+                    var key = x.Key.ToString();
+                    return new {Key = key, Match = regex.Match(key)};
+                })
+                .Where(x => x.Match.Success)
+                .GroupBy(x => x.Match.Groups["name"].Value)
+                .Select(x =>
                 {
-                    Name = match.Groups["name"].Value,
-                    AccentColors = accentColors,
-                    PrimaryColors = primaryColors,
-                });
-            }
+                    var primaryPath = x.SingleOrDefault(y => y.Match.Groups["type"].Value == "primary")?.Key;
+                    var accentPath = x.SingleOrDefault(y => y.Match.Groups["type"].Value == "accent")?.Key;
 
-            return colorThemes;
+                    return new ColorTheme
+                    {
+                        Name = x.Key,
+                        AccentColors = Read(assemblyName, accentPath)?.ToDictionary<Color>(),
+                        PrimaryColors = Read(assemblyName, primaryPath)?.ToDictionary<Color>()
+                    };
+                })
+                .ToList();
         }
     }
 }
