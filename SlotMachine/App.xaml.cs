@@ -34,8 +34,10 @@ namespace SlotMachine
         private void RegisterTypes()
         {
             UnityContainer = new UnityContainer()
-                .RegisterType<IMainWindowViewModel, MainWindowViewModel>()
-                .RegisterType<IColorProvider, ColorProvider>();
+                .RegisterType<IColorProvider, ColorProvider>()
+
+                .RegisterType<IColorSelectorViewModel, ColorSelectorViewModel>()
+                .RegisterType<IMainWindowViewModel, MainWindowViewModel>();
         }
     }
 }

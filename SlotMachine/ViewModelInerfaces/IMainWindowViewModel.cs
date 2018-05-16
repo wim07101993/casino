@@ -6,9 +6,12 @@ namespace SlotMachine.ViewModelInerfaces
 {
     public interface IMainWindowViewModel
     {
+        IColorSelectorViewModel ColorSelectorViewModel { get; }
+
         ObservableCollection<Number> Numbers { get; }
 
         ICommand RollCommand { get; }
         bool YouWon { get; }
+        
     }
 }

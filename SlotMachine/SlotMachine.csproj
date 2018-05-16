@@ -89,6 +89,9 @@
     <Page Include="Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ColorSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Colors\Amber.Primary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -219,8 +222,14 @@
     <Compile Include="Models\Number.cs" />
     <Compile Include="Services\IColorProvider.cs" />
     <Compile Include="Services\Implementations\ColorProvider.cs" />
+    <Compile Include="ViewModelInerfaces\IColorSelectorViewModel.cs" />
     <Compile Include="ViewModelInerfaces\IMainWindowViewModel.cs" />
+    <Compile Include="ViewModels\ColorSelectorViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\ColorSelector.xaml.cs">
+      <DependentUpon>ColorSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Converters\ColorToSolidColorBrushConverter.cs" />
     <Compile Include="Views\Converters\MultiplyConverter.cs" />
     <Compile Include="Views\Converters\IntToVisualConverter.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">

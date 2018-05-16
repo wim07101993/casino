@@ -5,4 +5,5 @@
     <converters:IntToVisualConverter x:Key="IntToVisualConverter" />
     <converters:MultiplyConverter x:Key="MultiplyConverter" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <converters:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter" />
 </ResourceDictionary>

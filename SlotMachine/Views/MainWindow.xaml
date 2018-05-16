@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModelInerfaces="clr-namespace:SlotMachine.ViewModelInerfaces"
+    xmlns:views="clr-namespace:SlotMachine.Views"
     Title="MainWindow"
     d:DataContext="{d:DesignInstance viewModelInerfaces:IMainWindowViewModel}"
     mc:Ignorable="d">
@@ -103,5 +104,7 @@
             Command="{Binding RollCommand}"
             Content="Roll"
             Style="{StaticResource SlideButtonStyle}" />
+
+        <views:ColorSelector DataContext="{Binding ColorSelectorViewModel}" />
     </Grid>
 </Window>

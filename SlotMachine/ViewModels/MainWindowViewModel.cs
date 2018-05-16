@@ -20,8 +20,10 @@ namespace SlotMachine.ViewModels
 
         #region CONSTRUCTOR
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IColorSelectorViewModel colorSelectorViewModel)
         {
+            ColorSelectorViewModel = colorSelectorViewModel;
+
             Numbers = new ObservableCollection<Number>();
 
             for (var i = 0; i < 4; i++)
@@ -38,6 +40,8 @@ namespace SlotMachine.ViewModels
 
 
         #region PROPERTIES
+
+        public IColorSelectorViewModel ColorSelectorViewModel { get; }
 
         public ObservableCollection<Number> Numbers { get; }
 
