@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using SlotMachine.Models;
+using SlotMachine.Services;
+using SlotMachine.Services.Implementations;
 using SlotMachine.ViewModelInerfaces;
 using SlotMachine.ViewModels;
 using SlotMachine.Views;
@@ -20,14 +22,20 @@ namespace SlotMachine
 
             base.OnStartup(e);
 
-            UnityContainer = new UnityContainer();
-            UnityContainer.RegisterType<IMainWindowViewModel, MainWindowViewModel>();
+            RegisterTypes();
 
             MainWindow = UnityContainer.Resolve<MainWindow>();
             if (MainWindow != null)
                 MainWindow.Show();
             else
                 MessageBox.Show("No window to show.");
+        }
+
+        private void RegisterTypes()
+        {
+            UnityContainer = new UnityContainer();
+            UnityContainer.RegisterType<IMainWindowViewModel, MainWindowViewModel>();
+            UnityContainer.RegisterType<IColorProvider, ColorProvider>();
         }
     }
 }

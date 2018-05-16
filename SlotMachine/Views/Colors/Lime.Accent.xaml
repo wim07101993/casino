@@ -3,9 +3,4 @@
     <Color x:Key="Accent400">#c6ff00</Color>
     <Color x:Key="Accent200">#eeff41</Color>
     <Color x:Key="Accent100">#f4ff81</Color>
-
-    <Color x:Key="700">#afb42b</Color>
-    <Color x:Key="400">#d4e157</Color>
-    <Color x:Key="200">#e6ee9c</Color>
-    <Color x:Key="100">#f0f4c3</Color>
 </ResourceDictionary>
