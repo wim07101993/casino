@@ -2,6 +2,7 @@
     x:Class="SlotMachine.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:SlotMachine.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModelInerfaces="clr-namespace:SlotMachine.ViewModelInerfaces"
@@ -105,6 +106,14 @@
             Content="Roll"
             Style="{StaticResource SlideButtonStyle}" />
 
-        <views:ColorSelector DataContext="{Binding ColorSelectorViewModel}" />
+        <CheckBox x:Name="Opener">Open</CheckBox>
+        <controls:Drawer
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            DrawerDepth="150"
+            IsOpen="{Binding ElementName=Opener, Path=IsChecked, Mode=TwoWay}"
+            Style="{StaticResource LeftDrawerStyle}">
+            <views:ColorSelector DataContext="{Binding ColorSelectorViewModel}" />
+        </controls:Drawer>
     </Grid>
 </Window>

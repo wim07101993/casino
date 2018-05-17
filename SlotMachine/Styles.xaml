@@ -2,5 +2,6 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Views/Styles/SlideButton.xaml" />
         <ResourceDictionary Source="Views/Styles/FlashStoryBoard.xaml" />
+        <ResourceDictionary Source="Views/Styles/Drawer.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

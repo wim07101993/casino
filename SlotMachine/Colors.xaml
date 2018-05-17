@@ -20,6 +20,9 @@
     <SolidColorBrush x:Key="AccentMidForegroundBrush" Color="{DynamicResource Accent400Foreground}" />
     <SolidColorBrush x:Key="AccentLightForegroundBrush" Color="{DynamicResource Accent200Foreground}" />
 
-    <Color x:Key="ShadowColor">#123456</Color>
+    <Color x:Key="ShadowColor">#808080</Color>
     <SolidColorBrush x:Key="ShadowColorBrush" Color="{DynamicResource ShadowColor}" />
+
+    <Color x:Key="ForegroundColor">#707070</Color>
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{DynamicResource ForegroundColor}" />
 </ResourceDictionary>
