@@ -92,7 +92,13 @@
     <Page Include="Views\ColorSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Colors\Amber.Accent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Colors\Amber.Primary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Colors\Blue.Accent.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Colors\Blue.Primary.xaml">
@@ -104,16 +110,25 @@
     <Page Include="Views\Colors\Brown.Primary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Colors\Cyan.Accent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Colors\Cyan.Primary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Colors\DeepOrange.Accent.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Colors\DeepOrange.Primary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Colors\DeepPurple.Accent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Colors\DeepPurple.Primary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Colors\DeepPurple.Accent.xaml">
+    <Page Include="Views\Colors\Green.Accent.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Colors\Green.Primary.xaml">
@@ -122,88 +137,64 @@
     <Page Include="Views\Colors\Grey.Primary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Colors\Indigo.Primary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Colors\Indigo.Accent.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Colors\Blue.Accent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\LightBlue.Primary.xaml">
+    <Page Include="Views\Colors\Indigo.Primary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Colors\LightBlue.Accent.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Colors\Cyan.Accent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\Green.Accent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\LightGreen.Primary.xaml">
+    <Page Include="Views\Colors\LightBlue.Primary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Colors\LightGreen.Accent.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Colors\Amber.Accent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\Lime.Primary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\Orange.Primary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\Orange.Accent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\DeepOrange.Accent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\Brown.Accent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\Grey.Accent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\BlueGrey.Accent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\Pink.Primary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\Purple.Primary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\Red.Primary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\Teal.Primary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\Yellow.Primary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Colors\Yellow.Accent.xaml">
+    <Page Include="Views\Colors\LightGreen.Primary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Colors\Lime.Accent.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Colors\Teal.Accent.xaml">
+    <Page Include="Views\Colors\Lime.Primary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Colors\Purple.Accent.xaml">
+    <Page Include="Views\Colors\Orange.Accent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Colors\Orange.Primary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Colors\Pink.Accent.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Colors\Pink.Primary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Colors\Purple.Accent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Colors\Purple.Primary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Colors\Red.Accent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Colors\Red.Primary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Colors\Teal.Accent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Colors\Teal.Primary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Colors\Yellow.Accent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Colors\Yellow.Primary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Icons\Symbols\Classic.xaml">
