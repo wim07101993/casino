@@ -50,10 +50,10 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button
-                        Background="{Binding AccentColors[Accent700], Converter={StaticResource ColorToSolidColorBrushConverter}}"
+                        Background="{Binding Accent700, Converter={StaticResource ColorToSolidColorBrushConverter}}"
                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ChangeAccentColorCommand}"
                         CommandParameter="{Binding .}"
-                        Visibility="{Binding AccentColors[Accent700], Converter={StaticResource ObjectToVisibilityConverter}}" />
+                        Visibility="{Binding Accent700, Converter={StaticResource ObjectToVisibilityConverter}}" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -70,9 +70,10 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button
-                        Background="{Binding PrimaryColors[Primary700], Converter={StaticResource ColorToSolidColorBrushConverter}}"
+                        Background="{Binding Primary700, Converter={StaticResource ColorToSolidColorBrushConverter}}"
                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ChangePrimaryColorCommand}"
-                        CommandParameter="{Binding .}" />
+                        CommandParameter="{Binding .}"
+                        Visibility="{Binding Primary700, Converter={StaticResource ObjectToVisibilityConverter}}" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
