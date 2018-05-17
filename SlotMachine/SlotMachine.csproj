@@ -211,6 +211,7 @@
     <Compile Include="Helpers\Extensions\ResourceDictionaryExtensions.cs" />
     <Compile Include="Models\ColorTheme.cs" />
     <Compile Include="Models\Number.cs" />
+    <Compile Include="Services\AResourceService.cs" />
     <Compile Include="Services\IColorProvider.cs" />
     <Compile Include="Services\Implementations\ColorProvider.cs" />
     <Compile Include="Services\Implementations\ColorThemeService.cs" />

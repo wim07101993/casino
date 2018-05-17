@@ -30,14 +30,14 @@
                             Height="20"
                             Background="{Binding AccentColors[Accent700], Converter={StaticResource ColorToSolidColorBrushConverter}}"
                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ChangeAccentColorCommand}"
-                            CommandParameter="{Binding AccentColors}" />
+                            CommandParameter="{Binding .}" />
                         <Button
                             Grid.Row="2"
                             Width="20"
                             Height="20"
                             Background="{Binding PrimaryColors[Primary700], Converter={StaticResource ColorToSolidColorBrushConverter}}"
                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ChangePrimaryColorCommand}"
-                            CommandParameter="{Binding PrimaryColors}" />
+                            CommandParameter="{Binding .}" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using Prism.Commands;
 using SlotMachine.Models;
 using SlotMachine.Services;
@@ -11,10 +9,13 @@ namespace SlotMachine.ViewModels
 {
     public class ColorSelectorViewModel: IColorSelectorViewModel
     {
-        public ColorSelectorViewModel(IColorProvider colorProvider)
+        private readonly IColorThemeService _colorThemeService;
+
+        public ColorSelectorViewModel(IColorProvider colorProvider, IColorThemeService colorThemeService)
         {
-            ChangeAccentColorCommand = new DelegateCommand<IDictionary<string, Color>>(ChangeAccentColor);
-            ChangePrimaryColorCommand = new DelegateCommand<IDictionary<string, Color>>(ChangePrimaryColor);
+            _colorThemeService = colorThemeService;
+            ChangeAccentColorCommand = new DelegateCommand<ColorTheme>(ChangeAccentColor);
+            ChangePrimaryColorCommand = new DelegateCommand<ColorTheme>(ChangePrimaryColor);
 
             Colors = colorProvider.ColorThemes;
         }
@@ -25,14 +26,14 @@ namespace SlotMachine.ViewModels
         public ICommand ChangePrimaryColorCommand { get; }
 
 
-        public void ChangeAccentColor(IDictionary<string, Color> colors)
+        public void ChangeAccentColor(ColorTheme colorTheme)
         {
-            MessageBox.Show("Change accent color");
+            _colorThemeService.ReplaceAccentColor(colorTheme);
         }
 
-        public void ChangePrimaryColor(IDictionary<string, Color> colors)
+        public void ChangePrimaryColor(ColorTheme colorTheme)
         {
-            MessageBox.Show("Change primary color");
+            _colorThemeService.ReplacePrimaryColor(colorTheme);
         }
     }
 }

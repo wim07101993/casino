@@ -35,6 +35,7 @@ namespace SlotMachine
         {
             UnityContainer = new UnityContainer()
                 .RegisterType<IColorProvider, ColorProvider>()
+                .RegisterType<IColorThemeService, ColorThemeService>()
 
                 .RegisterType<IColorSelectorViewModel, ColorSelectorViewModel>()
                 .RegisterType<IMainWindowViewModel, MainWindowViewModel>();
