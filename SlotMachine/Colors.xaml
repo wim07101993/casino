@@ -4,15 +4,21 @@
         <ResourceDictionary Source="Views/Colors/DeepOrange.Accent.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <SolidColorBrush x:Key="PrimaryAccentColorBrush" Color="{DynamicResource Primary700}" />
-    <SolidColorBrush x:Key="PrimaryAccentColorBrush400" Color="{DynamicResource Primary400}" />
-    <SolidColorBrush x:Key="PrimaryAccentColorBrush200" Color="{DynamicResource Primary200}" />
-    <SolidColorBrush x:Key="PrimaryAccentColorBrush100" Color="{DynamicResource Primary100}" />
+    <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{DynamicResource Primary700}" />
+    <SolidColorBrush x:Key="PrimaryMidBrush" Color="{DynamicResource Primary400}" />
+    <SolidColorBrush x:Key="PrimaryLightBrush" Color="{DynamicResource Primary200}" />
 
-    <SolidColorBrush x:Key="SecondaryAccentColorBrush" Color="{DynamicResource Accent700}" />
-    <SolidColorBrush x:Key="SecondaryAccentColorBrush400" Color="{DynamicResource Accent400}" />
-    <SolidColorBrush x:Key="SecondaryAccentColorBrush200" Color="{DynamicResource Accent200}" />
-    <SolidColorBrush x:Key="SecondaryAccentColorBrush100" Color="{DynamicResource Accent100}" />
+    <SolidColorBrush x:Key="PrimaryDarkForegroundBrush" Color="{DynamicResource Primary700Foreground}" />
+    <SolidColorBrush x:Key="PrimaryMidForegroundBrush" Color="{DynamicResource Primary400Foreground}" />
+    <SolidColorBrush x:Key="PrimaryLightForegroundBrush" Color="{DynamicResource Primary200Foreground}" />
+
+    <SolidColorBrush x:Key="AccentDarkBrush" Color="{DynamicResource Accent700}" />
+    <SolidColorBrush x:Key="AccentMidBrush" Color="{DynamicResource Accent400}" />
+    <SolidColorBrush x:Key="AccentLightBrush" Color="{DynamicResource Accent200}" />
+
+    <SolidColorBrush x:Key="AccentDarkForegroundBrush" Color="{DynamicResource Accent700Foreground}" />
+    <SolidColorBrush x:Key="AccentMidForegroundBrush" Color="{DynamicResource Accent400Foreground}" />
+    <SolidColorBrush x:Key="AccentLightForegroundBrush" Color="{DynamicResource Accent200Foreground}" />
 
     <Color x:Key="ShadowColor">#123456</Color>
     <SolidColorBrush x:Key="ShadowColorBrush" Color="{DynamicResource ShadowColor}" />

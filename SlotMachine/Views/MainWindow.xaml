@@ -39,7 +39,7 @@
                             Width="100"
                             Height="100"
                             Margin="15"
-                            Background="{DynamicResource PrimaryAccentColorBrush}">
+                            Background="{DynamicResource PrimaryDarkBrush}">
                             <Grid.OpacityMask>
                                 <VisualBrush Visual="{Binding Value, Converter={StaticResource IntToVisualConverter}}" />
                             </Grid.OpacityMask>
@@ -63,7 +63,7 @@
                 VerticalAlignment="Top"
                 FontSize="100"
                 FontWeight="Bold"
-                Foreground="{DynamicResource PrimaryAccentColorBrush}"
+                Foreground="{DynamicResource PrimaryDarkBrush}"
                 Text="YOU WON"
                 Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <TextBlock.Effect>
@@ -100,7 +100,7 @@
             Grid.Column="1"
             Width="75"
             Margin="0,50,50,50"
-            Background="{DynamicResource PrimaryAccentColorBrush}"
+            Background="{DynamicResource PrimaryDarkBrush}"
             Command="{Binding RollCommand}"
             Content="Roll"
             Style="{StaticResource SlideButtonStyle}" />
