@@ -1,23 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Prism.Commands;
+using SlotMachine.Helpers.Extensions;
 using SlotMachine.Models;
 using SlotMachine.Services;
 using SlotMachine.ViewModelInerfaces;
 
 namespace SlotMachine.ViewModels
 {
-    public class ColorSelectorViewModel: IColorSelectorViewModel
+    public class ColorSelectorViewModel : IColorSelectorViewModel
     {
         private readonly IColorThemeService _colorThemeService;
 
         public ColorSelectorViewModel(IColorProvider colorProvider, IColorThemeService colorThemeService)
         {
             _colorThemeService = colorThemeService;
-            ChangeAccentColorCommand = new DelegateCommand<ColorTheme>(ChangeAccentColor);
-            ChangePrimaryColorCommand = new DelegateCommand<ColorTheme>(ChangePrimaryColor);
-
             Colors = colorProvider.ColorThemes;
         }
 
@@ -25,22 +24,37 @@ namespace SlotMachine.ViewModels
         public List<ColorTheme> Colors { get; }
 
         public IEnumerable<ColorTheme> PrimaryColorThemes
-            => Colors.Where(x => x.PrimaryColors != null && x.PrimaryColors.Any());
+            => Colors
+                .Where(x => x.AccentColors != null && x.AccentColors.Any())
+                .OrderBy(x => x.Accent700.GetHue());
 
         public IEnumerable<ColorTheme> AccentColorThemes
-            => Colors.Where(x => x.AccentColors != null && x.AccentColors.Any());
+            => Colors
+                .Where(x => x.AccentColors != null && x.AccentColors.Any())
+                .OrderBy(x => x.Accent700.GetHue());
 
-        public ICommand ChangeAccentColorCommand { get; }
-        public ICommand ChangePrimaryColorCommand { get; }
+        public ColorTheme SelectedAccent
+        {
+            set => ChangeAccentColor(value);
+        }
+
+        public ColorTheme SelectedPrimary
+        {
+            set => ChangePrimaryColor(value);
+        }
 
 
         public void ChangeAccentColor(ColorTheme colorTheme)
         {
+            if (colorTheme == null)
+                return;
             _colorThemeService.ReplaceAccentColor(colorTheme);
         }
 
         public void ChangePrimaryColor(ColorTheme colorTheme)
         {
+            if (colorTheme == null)
+                return;
             _colorThemeService.ReplacePrimaryColor(colorTheme);
         }
     }

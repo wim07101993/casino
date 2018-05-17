@@ -9,25 +9,103 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Width" Value="20" />
-            <Setter Property="Height" Value="20" />
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Ellipse
-                            Fill="{TemplateBinding Background}"
-                            Stroke="{TemplateBinding BorderBrush}"
-                            StrokeThickness="{TemplateBinding BorderThickness}" />
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <ItemsPanelTemplate x:Key="ItemsPanelTemplate">
             <WrapPanel Orientation="Horizontal" />
         </ItemsPanelTemplate>
+
+        <Style TargetType="ListBox">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="ItemsPanel" Value="{StaticResource ItemsPanelTemplate}" />
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                        <Setter Property="Padding" Value="2,0,0,0" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border
+                                        x:Name="Border"
+                                        Width="30"
+                                        Height="30"
+                                        Margin="5"
+                                        BorderBrush="{DynamicResource ShadowColorBrush}"
+                                        BorderThickness="0"
+                                        CornerRadius="15">
+                                        <Border.Effect>
+                                            <DropShadowEffect
+                                                BlurRadius="4"
+                                                Direction="270"
+                                                Opacity="0.42"
+                                                ShadowDepth="0.5"
+                                                Color="{DynamicResource ShadowColor}" />
+                                        </Border.Effect>
+
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <BeginStoryboard.Storyboard>
+                                                        <Storyboard TargetProperty="BorderThickness" TargetName="Border">
+                                                            <ThicknessAnimation
+                                                                From="0"
+                                                                To="1"
+                                                                Duration="0:0:0.3" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard.Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <BeginStoryboard.Storyboard>
+                                                        <Storyboard TargetProperty="BorderThickness" TargetName="Border">
+                                                            <ThicknessAnimation
+                                                                From="1"
+                                                                To="0"
+                                                                Duration="0:0:0.3" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard.Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+
+                                        <EventTrigger RoutedEvent="MouseEnter" SourceName="Border">
+                                            <BeginStoryboard>
+                                                <BeginStoryboard.Storyboard>
+                                                    <Storyboard TargetProperty="Effect.(DropShadowEffect.Opacity)" TargetName="Border">
+                                                        <DoubleAnimation
+                                                            From="0.42"
+                                                            To="0.84"
+                                                            Duration="0:0:0.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard.Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="MouseLeave" SourceName="Border">
+                                            <BeginStoryboard>
+                                                <BeginStoryboard.Storyboard>
+                                                    <Storyboard TargetProperty="Effect.(DropShadowEffect.Opacity)" TargetName="Border">
+                                                        <DoubleAnimation
+                                                            From="0.84"
+                                                            To="0.42"
+                                                            Duration="0:0:0.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard.Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid Margin="5">
@@ -43,39 +121,43 @@
             Margin="5"
             Text="Accent Color" />
 
-        <ItemsControl
+        <ListBox
             Grid.Row="1"
             ItemsPanel="{StaticResource ItemsPanelTemplate}"
-            ItemsSource="{Binding AccentColorThemes}">
-            <ItemsControl.ItemTemplate>
+            ItemsSource="{Binding AccentColorThemes}"
+            SelectedItem="{Binding SelectedAccent, Mode=OneWayToSource}">
+            <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Button
-                        Background="{Binding Accent700, Converter={StaticResource ColorToSolidColorBrushConverter}}"
-                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ChangeAccentColorCommand}"
-                        CommandParameter="{Binding .}"
+                    <Ellipse
+                        Width="28"
+                        Height="28"
+                        Fill="{Binding Accent700, Converter={StaticResource ColorToSolidColorBrushConverter}}"
                         Visibility="{Binding Accent700, Converter={StaticResource ObjectToVisibilityConverter}}" />
                 </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            </ListBox.ItemTemplate>
+
+
+        </ListBox>
 
         <TextBlock
             Grid.Row="2"
             Margin="5"
             Text="Primary Color" />
 
-        <ItemsControl
+        <ListBox
             Grid.Row="3"
             ItemsPanel="{StaticResource ItemsPanelTemplate}"
-            ItemsSource="{Binding PrimaryColorThemes}">
-            <ItemsControl.ItemTemplate>
+            ItemsSource="{Binding PrimaryColorThemes}"
+            SelectedItem="{Binding SelectedPrimary, Mode=OneWayToSource}">
+            <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Button
-                        Background="{Binding Primary700, Converter={StaticResource ColorToSolidColorBrushConverter}}"
-                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ChangePrimaryColorCommand}"
-                        CommandParameter="{Binding .}"
+                    <Ellipse
+                        Width="28"
+                        Height="28"
+                        Fill="{Binding Primary700, Converter={StaticResource ColorToSolidColorBrushConverter}}"
                         Visibility="{Binding Primary700, Converter={StaticResource ObjectToVisibilityConverter}}" />
                 </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>

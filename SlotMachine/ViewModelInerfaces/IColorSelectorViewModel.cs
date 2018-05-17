@@ -11,7 +11,7 @@ namespace SlotMachine.ViewModelInerfaces
         IEnumerable<ColorTheme> PrimaryColorThemes { get; }
         IEnumerable<ColorTheme> AccentColorThemes { get; }
 
-        ICommand ChangeAccentColorCommand { get; }
-        ICommand ChangePrimaryColorCommand { get; }
+        ColorTheme SelectedAccent { set; }
+        ColorTheme SelectedPrimary { set; }
     }
 }
