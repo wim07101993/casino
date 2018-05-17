@@ -41,18 +41,11 @@
                                 Width="100"
                                 Height="100"
                                 Margin="15"
-                                Background="{DynamicResource PrimaryDarkBrush}">
+                                Background="{DynamicResource PrimaryDarkBrush}"
+                                Effect="{StaticResource Shadow14}">
                                 <Grid.OpacityMask>
                                     <VisualBrush Visual="{Binding Value, Converter={StaticResource IntToVisualConverter}}" />
                                 </Grid.OpacityMask>
-                                <Grid.Effect>
-                                    <DropShadowEffect
-                                        BlurRadius="14"
-                                        Direction="270"
-                                        Opacity="0.42"
-                                        ShadowDepth="4.5"
-                                        Color="{DynamicResource ShadowColor}" />
-                                </Grid.Effect>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -63,19 +56,12 @@
                     Grid.Row="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
+                    Effect="{StaticResource Shadow14}"
                     FontSize="100"
                     FontWeight="Bold"
                     Foreground="{DynamicResource PrimaryDarkBrush}"
                     Text="YOU WON"
                     Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <TextBlock.Effect>
-                        <DropShadowEffect
-                            BlurRadius="14"
-                            Direction="270"
-                            Opacity="0.42"
-                            ShadowDepth="4.5"
-                            Color="{DynamicResource ShadowColor}" />
-                    </TextBlock.Effect>
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}">
                             <Style.Triggers>

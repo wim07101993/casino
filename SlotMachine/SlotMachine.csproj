@@ -244,6 +244,9 @@
     <Page Include="Views\Styles\IconCheckBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Styles\Shadows.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Styles\SlideButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
