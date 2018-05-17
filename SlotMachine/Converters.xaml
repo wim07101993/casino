@@ -4,6 +4,9 @@
     xmlns:converters="clr-namespace:SlotMachine.Views.Converters">
     <converters:IntToVisualConverter x:Key="IntToVisualConverter" />
     <converters:MultiplyConverter x:Key="MultiplyConverter" />
+
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+
     <converters:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter" />
 </ResourceDictionary>

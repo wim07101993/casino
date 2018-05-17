@@ -7,47 +7,74 @@
     xmlns:viewModelInerfaces="clr-namespace:SlotMachine.ViewModelInerfaces"
     d:DataContext="{d:DesignInstance viewModelInerfaces:IColorSelectorViewModel}"
     mc:Ignorable="d">
-    <Grid>
-        <ItemsControl ItemsSource="{Binding Colors}">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Ellipse
+                            Fill="{TemplateBinding Background}"
+                            Stroke="{TemplateBinding BorderBrush}"
+                            StrokeThickness="{TemplateBinding BorderThickness}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ItemsPanelTemplate x:Key="ItemsPanelTemplate">
+            <WrapPanel Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+    </UserControl.Resources>
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Margin="5"
+            Text="Accent Color" />
+
+        <ItemsControl
+            Grid.Row="1"
+            ItemsPanel="{StaticResource ItemsPanelTemplate}"
+            ItemsSource="{Binding AccentColorThemes}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid Margin="5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <TextBlock
-                            Grid.Row="0"
-                            Margin="2"
-                            HorizontalAlignment="Center"
-                            Text="{Binding Name}" />
-
-                        <Button
-                            Grid.Row="1"
-                            Width="20"
-                            Height="20"
-                            Background="{Binding AccentColors[Accent700], Converter={StaticResource ColorToSolidColorBrushConverter}}"
-                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ChangeAccentColorCommand}"
-                            CommandParameter="{Binding .}" />
-                        <Button
-                            Grid.Row="2"
-                            Width="20"
-                            Height="20"
-                            Background="{Binding PrimaryColors[Primary700], Converter={StaticResource ColorToSolidColorBrushConverter}}"
-                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ChangePrimaryColorCommand}"
-                            CommandParameter="{Binding .}" />
-                    </Grid>
+                    <Button
+                        Background="{Binding AccentColors[Accent700], Converter={StaticResource ColorToSolidColorBrushConverter}}"
+                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ChangeAccentColorCommand}"
+                        CommandParameter="{Binding .}"
+                        Visibility="{Binding AccentColors[Accent700], Converter={StaticResource ObjectToVisibilityConverter}}" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
         </ItemsControl>
 
+        <TextBlock
+            Grid.Row="2"
+            Margin="5"
+            Text="Primary Color" />
+
+        <ItemsControl
+            Grid.Row="3"
+            ItemsPanel="{StaticResource ItemsPanelTemplate}"
+            ItemsSource="{Binding PrimaryColorThemes}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button
+                        Background="{Binding PrimaryColors[Primary700], Converter={StaticResource ColorToSolidColorBrushConverter}}"
+                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ChangePrimaryColorCommand}"
+                        CommandParameter="{Binding .}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

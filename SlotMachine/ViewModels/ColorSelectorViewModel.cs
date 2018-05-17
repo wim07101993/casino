@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Prism.Commands;
 using SlotMachine.Models;
@@ -22,6 +23,13 @@ namespace SlotMachine.ViewModels
 
 
         public List<ColorTheme> Colors { get; }
+
+        public IEnumerable<ColorTheme> PrimaryColorThemes
+            => Colors.Where(x => x.PrimaryColors != null && x.PrimaryColors.Any());
+
+        public IEnumerable<ColorTheme> AccentColorThemes
+            => Colors.Where(x => x.AccentColors != null && x.AccentColors.Any());
+
         public ICommand ChangeAccentColorCommand { get; }
         public ICommand ChangePrimaryColorCommand { get; }
 
