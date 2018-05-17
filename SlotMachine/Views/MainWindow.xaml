@@ -114,7 +114,19 @@
             <StackPanel Margin="5">
                 <views:ColorSelector DataContext="{Binding ColorSelectorViewModel}" />
 
-                <Grid>
+                <Grid x:Name="SlotSelector" Margin="0,5">
+                    <Grid.Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                                    <DataTrigger.Setters>
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger.Setters>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
                     <ComboBox ItemsSource="{Binding SlotPossibilities}" SelectedItem="{Binding NumberOfSlots}" />
                 </Grid>
             </StackPanel>

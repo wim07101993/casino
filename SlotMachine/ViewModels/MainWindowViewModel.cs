@@ -17,6 +17,7 @@ namespace SlotMachine.ViewModels
         private bool _youWon;
         private int _numberOfSlots;
         private ObservableCollection<Number> _numbers;
+        private bool _isRunning;
 
         #endregion FIELDS
 
@@ -28,7 +29,7 @@ namespace SlotMachine.ViewModels
             ColorSelectorViewModel = colorSelectorViewModel;
 
             SlotPossibilities = Enumerable.Range(2, 4);
-            NumberOfSlots = 2;
+            NumberOfSlots = 4;
 
             RollCommand = new DelegateCommand(RandomizeNumbers);
         }
@@ -74,6 +75,12 @@ namespace SlotMachine.ViewModels
             private set => SetProperty(ref _youWon, value);
         }
 
+        public bool IsRunning
+        {
+            get => _isRunning;
+            private set => SetProperty(ref _isRunning, value);
+        }
+
         #endregion PROPERTIES
 
 
@@ -81,6 +88,7 @@ namespace SlotMachine.ViewModels
 
         public void RandomizeNumbers()
         {
+            IsRunning = true;
             foreach (var number in Numbers)
                 number.Randomize();
         }
@@ -92,6 +100,7 @@ namespace SlotMachine.ViewModels
                 case nameof(Number.IsRandomizing):
                     if (!Numbers.Any(x => x.IsRandomizing))
                     {
+                        IsRunning = false;
                         var firstNumber = Numbers.First().Value;
                         YouWon = Numbers.All(x => x.Value == firstNumber);
                     }

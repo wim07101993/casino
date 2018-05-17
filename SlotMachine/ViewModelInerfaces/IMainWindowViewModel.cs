@@ -16,5 +16,6 @@ namespace SlotMachine.ViewModelInerfaces
 
         ICommand RollCommand { get; }
         bool YouWon { get; }
+        bool IsRunning { get; }
     }
 }
