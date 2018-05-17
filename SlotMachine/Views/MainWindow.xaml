@@ -59,7 +59,7 @@
                     Effect="{StaticResource Shadow14}"
                     FontSize="100"
                     FontWeight="Bold"
-                    Foreground="{DynamicResource PrimaryDarkBrush}"
+                    Foreground="{DynamicResource AccentDarkBrush}"
                     Text="YOU WON"
                     Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <TextBlock.Style>
