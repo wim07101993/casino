@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
@@ -14,6 +15,8 @@ namespace SlotMachine.ViewModels
         #region FIELDS
 
         private bool _youWon;
+        private int _numberOfSlots;
+        private ObservableCollection<Number> _numbers;
 
         #endregion FIELDS
 
@@ -24,14 +27,8 @@ namespace SlotMachine.ViewModels
         {
             ColorSelectorViewModel = colorSelectorViewModel;
 
-            Numbers = new ObservableCollection<Number>();
-
-            for (var i = 0; i < 4; i++)
-            {
-                var number = new Number();
-                number.PropertyChanged += OnNumberPropertyChanged;
-                Numbers.Add(number);
-            }
+            SlotPossibilities = Enumerable.Range(2, 4);
+            NumberOfSlots = 2;
 
             RollCommand = new DelegateCommand(RandomizeNumbers);
         }
@@ -43,7 +40,31 @@ namespace SlotMachine.ViewModels
 
         public IColorSelectorViewModel ColorSelectorViewModel { get; }
 
-        public ObservableCollection<Number> Numbers { get; }
+        public IEnumerable<int> SlotPossibilities { get; }
+
+        public int NumberOfSlots
+        {
+            get => _numberOfSlots;
+            set
+            {
+                if (!SetProperty(ref _numberOfSlots, value))
+                    return;
+
+                Numbers = new ObservableCollection<Number>();
+                for (var i = 0; i < _numberOfSlots; i++)
+                {
+                    var number = new Number();
+                    number.PropertyChanged += OnNumberPropertyChanged;
+                    Numbers.Add(number);
+                }
+            }
+        }
+
+        public ObservableCollection<Number> Numbers
+        {
+            get => _numbers;
+            private set => SetProperty(ref _numbers, value);
+        }
 
         public ICommand RollCommand { get; }
 
@@ -74,6 +95,7 @@ namespace SlotMachine.ViewModels
                         var firstNumber = Numbers.First().Value;
                         YouWon = Numbers.All(x => x.Value == firstNumber);
                     }
+
                     break;
             }
         }

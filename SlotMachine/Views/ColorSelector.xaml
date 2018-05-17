@@ -108,7 +108,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Margin="5">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />

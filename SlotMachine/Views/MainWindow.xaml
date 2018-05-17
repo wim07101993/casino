@@ -111,7 +111,13 @@
             DrawerDepth="300"
             IsOpen="{Binding ElementName=Opener, Path=IsChecked, Mode=TwoWay}"
             Style="{StaticResource LeftDrawerStyle}">
-            <views:ColorSelector DataContext="{Binding ColorSelectorViewModel}" />
+            <StackPanel Margin="5">
+                <views:ColorSelector DataContext="{Binding ColorSelectorViewModel}" />
+
+                <Grid>
+                    <ComboBox ItemsSource="{Binding SlotPossibilities}" SelectedItem="{Binding NumberOfSlots}" />
+                </Grid>
+            </StackPanel>
         </controls:Drawer>
     </Grid>
 </Window>
