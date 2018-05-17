@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:SlotMachine.Views.Controls">
+    xmlns:controls="clr-namespace:SlotMachine.Views.Controls"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
     <Style x:Key="LeftDrawerStyle" TargetType="{x:Type controls:Drawer}">
         <Setter Property="Template">
             <Setter.Value>
@@ -9,25 +10,43 @@
                     <Grid>
                         <Grid
                             x:Name="BackgroundGrid"
-                            Background="{DynamicResource ShadowColorBrush}"
+                            Background="Black"
                             Opacity="0"
                             Visibility="{TemplateBinding IsOpen,
                                                          Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <Grid
                             x:Name="Drawer"
-                            Width="0"
                             HorizontalAlignment="Left"
                             Background="White">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="40" />
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
-                            <CheckBox
-                                Width="40"
-                                Height="40"
-                                Background="{DynamicResource ForegroundBrush}"
-                                IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsOpen, Mode=TwoWay}" />
+                            <Grid.Tag>
+                                <system:Double>0.0</system:Double>
+                            </Grid.Tag>
+
+                            <Grid.Width>
+                                <MultiBinding Converter="{StaticResource MultiplyConverter}">
+                                    <Binding Path="DrawerDepth" RelativeSource="{RelativeSource TemplatedParent}" />
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+                                </MultiBinding>
+                            </Grid.Width>
+
+                            <controls:IconCheckBox
+                                x:Name="Opener"
+                                Width="30"
+                                Height="30"
+                                Margin="10"
+                                HorizontalAlignment="Right"
+                                Foreground="{DynamicResource PrimaryDarkBrush}"
+                                IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsOpen, Mode=TwoWay}">
+                                <controls:IconCheckBox.Icon>
+                                    <VisualBrush Visual="{StaticResource ArrowLeftIcon}" />
+                                </controls:IconCheckBox.Icon>
+                            </controls:IconCheckBox>
+
                             <ContentPresenter
                                 Grid.Row="1"
                                 Width="{TemplateBinding DrawerDepth}"
@@ -50,10 +69,10 @@
                                 </BeginStoryboard>
                                 <BeginStoryboard>
                                     <BeginStoryboard.Storyboard>
-                                        <Storyboard TargetProperty="Width" TargetName="Drawer">
+                                        <Storyboard TargetProperty="Tag" TargetName="Drawer">
                                             <DoubleAnimation
                                                 From="0"
-                                                To="150"
+                                                To="1"
                                                 Duration="0:0:0.3" />
                                         </Storyboard>
                                     </BeginStoryboard.Storyboard>
@@ -73,9 +92,9 @@
                                 </BeginStoryboard>
                                 <BeginStoryboard>
                                     <BeginStoryboard.Storyboard>
-                                        <Storyboard TargetProperty="Width" TargetName="Drawer">
+                                        <Storyboard TargetProperty="Tag" TargetName="Drawer">
                                             <DoubleAnimation
-                                                From="150"
+                                                From="1"
                                                 To="0"
                                                 Duration="0:0:0.3" />
                                         </Storyboard>

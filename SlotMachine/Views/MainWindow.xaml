@@ -12,105 +12,117 @@
     mc:Ignorable="d">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="200" />
-            </Grid.RowDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="200" />
+                </Grid.RowDefinitions>
 
-            <ItemsControl
-                Grid.Row="0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                ItemsSource="{Binding Numbers}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+                <ItemsControl
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding Numbers}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid
-                            Width="100"
-                            Height="100"
-                            Margin="15"
-                            Background="{DynamicResource PrimaryDarkBrush}">
-                            <Grid.OpacityMask>
-                                <VisualBrush Visual="{Binding Value, Converter={StaticResource IntToVisualConverter}}" />
-                            </Grid.OpacityMask>
-                            <Grid.Effect>
-                                <DropShadowEffect
-                                    BlurRadius="14"
-                                    Direction="270"
-                                    Opacity="0.42"
-                                    ShadowDepth="4.5"
-                                    Color="{DynamicResource ShadowColor}" />
-                            </Grid.Effect>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid
+                                Width="100"
+                                Height="100"
+                                Margin="15"
+                                Background="{DynamicResource PrimaryDarkBrush}">
+                                <Grid.OpacityMask>
+                                    <VisualBrush Visual="{Binding Value, Converter={StaticResource IntToVisualConverter}}" />
+                                </Grid.OpacityMask>
+                                <Grid.Effect>
+                                    <DropShadowEffect
+                                        BlurRadius="14"
+                                        Direction="270"
+                                        Opacity="0.42"
+                                        ShadowDepth="4.5"
+                                        Color="{DynamicResource ShadowColor}" />
+                                </Grid.Effect>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
 
-            <TextBlock
-                x:Name="YouWonTextBlock"
-                Grid.Row="1"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                FontSize="100"
-                FontWeight="Bold"
-                Foreground="{DynamicResource PrimaryDarkBrush}"
-                Text="YOU WON"
-                Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <TextBlock.Effect>
-                    <DropShadowEffect
-                        BlurRadius="14"
-                        Direction="270"
-                        Opacity="0.42"
-                        ShadowDepth="4.5"
-                        Color="{DynamicResource ShadowColor}" />
-                </TextBlock.Effect>
-                <TextBlock.Style>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=YouWonTextBlock, Path=Visibility}" Value="Visible">
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard Name="Flash">
-                                        <BeginStoryboard.Storyboard>
-                                            <StaticResource ResourceKey="FlashStoryBoard" />
-                                        </BeginStoryboard.Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
+                <TextBlock
+                    x:Name="YouWonTextBlock"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontSize="100"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource PrimaryDarkBrush}"
+                    Text="YOU WON"
+                    Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect
+                            BlurRadius="14"
+                            Direction="270"
+                            Opacity="0.42"
+                            ShadowDepth="4.5"
+                            Color="{DynamicResource ShadowColor}" />
+                    </TextBlock.Effect>
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=YouWonTextBlock, Path=Visibility}" Value="Visible">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard Name="Flash">
+                                            <BeginStoryboard.Storyboard>
+                                                <StaticResource ResourceKey="FlashStoryBoard" />
+                                            </BeginStoryboard.Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
 
-                                <DataTrigger.ExitActions>
-                                    <StopStoryboard BeginStoryboardName="Flash" />
-                                </DataTrigger.ExitActions>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
+                                    <DataTrigger.ExitActions>
+                                        <StopStoryboard BeginStoryboardName="Flash" />
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+
+            <Button
+                Grid.Column="1"
+                Width="75"
+                Margin="0,50,50,50"
+                Background="{DynamicResource PrimaryDarkBrush}"
+                Command="{Binding RollCommand}"
+                Content="Roll"
+                Style="{StaticResource SlideButtonStyle}" />
         </Grid>
 
-        <Button
-            Grid.Column="1"
-            Width="75"
-            Margin="0,50,50,50"
-            Background="{DynamicResource PrimaryDarkBrush}"
-            Command="{Binding RollCommand}"
-            Content="Roll"
-            Style="{StaticResource SlideButtonStyle}" />
+        <controls:IconCheckBox
+            x:Name="Opener"
+            Width="30"
+            Height="30"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Foreground="{DynamicResource PrimaryDarkBrush}">
+            <controls:IconCheckBox.Icon>
+                <VisualBrush Visual="{StaticResource MenuIcon}" />
+            </controls:IconCheckBox.Icon>
+        </controls:IconCheckBox>
 
-        <CheckBox x:Name="Opener">Open</CheckBox>
         <controls:Drawer
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
-            DrawerDepth="150"
+            DrawerDepth="300"
             IsOpen="{Binding ElementName=Opener, Path=IsChecked, Mode=TwoWay}"
             Style="{StaticResource LeftDrawerStyle}">
             <views:ColorSelector DataContext="{Binding ColorSelectorViewModel}" />

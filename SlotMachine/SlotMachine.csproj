@@ -86,6 +86,9 @@
     <Page Include="Converters.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -224,6 +227,7 @@
       <DependentUpon>ColorSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\Drawer.cs" />
+    <Compile Include="Views\Controls\IconCheckBox.cs" />
     <Compile Include="Views\Converters\ColorToSolidColorBrushConverter.cs" />
     <Compile Include="Views\Converters\MultiplyConverter.cs" />
     <Compile Include="Views\Converters\IntToVisualConverter.cs" />
@@ -235,6 +239,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Styles\FlashStoryBoard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Styles\IconCheckBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Styles\SlideButton.xaml">
