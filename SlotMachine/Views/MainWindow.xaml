@@ -149,7 +149,6 @@
                     </Grid.Style>
 
                     <controls:NumericBox
-                        HasDecimals="False"
                         Maximum="6"
                         Minimum="2"
                         Value="{Binding NumberOfSlots}" />

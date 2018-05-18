@@ -40,12 +40,6 @@ namespace SlotMachine.Views.Controls
             typeof(NumericBox),
             new FrameworkPropertyMetadata(DefaultInterval, IntervalChanged));
 
-        public static readonly DependencyProperty HasDecimalsProperty = DependencyProperty.Register(
-            nameof(HasDecimals),
-            typeof(bool),
-            typeof(NumericBox),
-            new FrameworkPropertyMetadata(true, OnHasDecimalsChanged));
-
         #endregion DEPENDENCY PROPERTIES
 
         #region ROUTED EVENTS
@@ -135,12 +129,6 @@ namespace SlotMachine.Views.Controls
             set => SetValue(ValueProperty, value);
         }
 
-        public bool HasDecimals
-        {
-            get => (bool) GetValue(HasDecimalsProperty);
-            set => SetValue(HasDecimalsProperty, value);
-        }
-
         #endregion PROPERTIES
 
         public override void OnApplyTemplate()
@@ -154,7 +142,6 @@ namespace SlotMachine.Views.Controls
 
             _valueTextBox.LostFocus += OnTextBoxLostFocus;
             _valueTextBox.PreviewTextInput += OnPreviewTextInput;
-            _valueTextBox.PreviewKeyDown += OnTextBoxKeyDown;
             _valueTextBox.TextChanged += OnTextChanged;
 
             DataObject.AddPastingHandler(_valueTextBox, OnValueTextBoxPaste);
@@ -232,49 +219,42 @@ namespace SlotMachine.Views.Controls
                 var allTextSelected = textBox.SelectedText == textBox.Text;
 
                 if (numberFormatInfo.NumberDecimalSeparator == text)
-                {
-                    if (textBox.Text.All(i =>
-                            i.ToString(equivalentCulture) != numberFormatInfo.NumberDecimalSeparator) ||
-                        allTextSelected && HasDecimals)
-                        e.Handled = false;
-                }
-                else
-                {
-                    if (numberFormatInfo.NegativeSign == text ||
-                        text == numberFormatInfo.PositiveSign)
-                    {
-                        if (textBox.SelectionStart == 0)
-                        {
-                            if (textBox.Text.Length > 1)
-                            {
-                                if (allTextSelected ||
-                                    !textBox.Text.StartsWith(numberFormatInfo.NegativeSign,
-                                        StringComparison.CurrentCultureIgnoreCase) &&
-                                    !textBox.Text.StartsWith(numberFormatInfo.PositiveSign,
-                                        StringComparison.CurrentCultureIgnoreCase))
-                                    e.Handled = false;
-                            }
-                            else
-                                e.Handled = false;
-                        }
-                        else if (textBox.SelectionStart > 0)
-                        {
-                            var elementBeforeCaret = textBox.Text
-                                .ElementAt(textBox.SelectionStart - 1)
-                                .ToString(equivalentCulture);
+                    return;
 
-                            if (elementBeforeCaret.Equals(ScientificNotationChar,
-                                StringComparison.CurrentCultureIgnoreCase))
+                if (numberFormatInfo.NegativeSign == text ||
+                    text == numberFormatInfo.PositiveSign)
+                {
+                    if (textBox.SelectionStart == 0)
+                    {
+                        if (textBox.Text.Length > 1)
+                        {
+                            if (allTextSelected ||
+                                !textBox.Text.StartsWith(numberFormatInfo.NegativeSign,
+                                    StringComparison.CurrentCultureIgnoreCase) &&
+                                !textBox.Text.StartsWith(numberFormatInfo.PositiveSign,
+                                    StringComparison.CurrentCultureIgnoreCase))
                                 e.Handled = false;
                         }
+                        else
+                            e.Handled = false;
                     }
-                    else if (text.Equals(ScientificNotationChar, StringComparison.CurrentCultureIgnoreCase) &&
-                             textBox.SelectionStart > 0 &&
-                             !textBox.Text.Any(i =>
-                                 i.ToString(equivalentCulture).Equals(ScientificNotationChar,
-                                     StringComparison.CurrentCultureIgnoreCase)))
-                        e.Handled = false;
+                    else if (textBox.SelectionStart > 0)
+                    {
+                        var elementBeforeCaret = textBox.Text
+                            .ElementAt(textBox.SelectionStart - 1)
+                            .ToString(equivalentCulture);
+
+                        if (elementBeforeCaret.Equals(ScientificNotationChar,
+                            StringComparison.CurrentCultureIgnoreCase))
+                            e.Handled = false;
+                    }
                 }
+                else if (text.Equals(ScientificNotationChar, StringComparison.CurrentCultureIgnoreCase) &&
+                         textBox.SelectionStart > 0 &&
+                         !textBox.Text.Any(i =>
+                             i.ToString(equivalentCulture).Equals(ScientificNotationChar,
+                                 StringComparison.CurrentCultureIgnoreCase)))
+                    e.Handled = false;
             }
         }
 
@@ -395,28 +375,10 @@ namespace SlotMachine.Views.Controls
 
         #region TEXT BOX EVENT HANDLERS
 
-        private void OnTextBoxKeyDown(object sender, KeyEventArgs e)
-        {
-            if (!HasDecimals || e.Key != Key.Decimal && e.Key != Key.OemPeriod)
-                return;
-
-            var textBox = sender as TextBox;
-
-            if (textBox?.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator) == false)
-            {
-                var caret = textBox.CaretIndex;
-                textBox.Text = textBox.Text.Insert(caret,
-                    CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator);
-                textBox.CaretIndex = caret + 1;
-            }
-
-            e.Handled = true;
-        }
-
         private void OnTextBoxLostFocus(object sender, RoutedEventArgs e)
         {
             var tb = (TextBox) sender;
-          
+
             if (ValidateText(tb.Text, out var convertedValue))
             {
                 if (Equals(Value, convertedValue))
@@ -492,9 +454,7 @@ namespace SlotMachine.Views.Controls
 
             var numericBox = (NumericBox) d;
             var val = ((double?) value).Value;
-
-            if (numericBox.HasDecimals == false)
-                val = Math.Truncate(val);
+            val = Math.Truncate(val);
 
             if (val < numericBox.Minimum)
                 return numericBox.Minimum;
@@ -536,14 +496,6 @@ namespace SlotMachine.Views.Controls
             numericBox.OnValueChanged((double?) e.OldValue, (double?) e.NewValue);
         }
 
-        private static void OnHasDecimalsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var numericBox = (NumericBox) d;
-
-            if ((bool) e.NewValue == false && numericBox.Value != null)
-                numericBox.Value = Math.Truncate(numericBox.Value.GetValueOrDefault());
-        }
-
         #endregion DEPENDENCY PROPERTY CALLBACK
 
         #region EVENTS
@@ -564,12 +516,6 @@ namespace SlotMachine.Views.Controls
         {
             add => AddHandler(ValueDecrementedEvent, value);
             remove => RemoveHandler(ValueDecrementedEvent, value);
-        }
-
-        public event RoutedEventHandler DelayChanged
-        {
-            add => AddHandler(DelayChangedEvent, value);
-            remove => RemoveHandler(DelayChangedEvent, value);
         }
 
         #endregion EVENTS
