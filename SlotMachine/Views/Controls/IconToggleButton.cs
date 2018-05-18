@@ -1,21 +1,21 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace SlotMachine.Views.Controls
 {
-    public class IconCheckBox : CheckBox
+    public class IconToggleButton : ToggleButton
     {
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
             nameof(Icon),
             typeof(VisualBrush),
-            typeof(IconCheckBox),
+            typeof(IconToggleButton),
             new PropertyMetadata(default(VisualBrush)));
 
 
-        static IconCheckBox()
+        static IconToggleButton()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(IconCheckBox), new FrameworkPropertyMetadata(typeof(IconCheckBox)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(IconToggleButton), new FrameworkPropertyMetadata(typeof(IconToggleButton)));
         }
 
 

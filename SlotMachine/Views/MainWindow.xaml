@@ -115,7 +115,7 @@
                 Style="{StaticResource SlideButtonStyle}" />
         </Grid>
 
-        <controls:IconCheckBox
+        <controls:IconToggleButton
             x:Name="Opener"
             Width="35"
             Height="35"
@@ -123,10 +123,10 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Foreground="{DynamicResource PrimaryDarkBrush}">
-            <controls:IconCheckBox.Icon>
+            <controls:IconToggleButton.Icon>
                 <VisualBrush Visual="{StaticResource MenuIcon}" />
-            </controls:IconCheckBox.Icon>
-        </controls:IconCheckBox>
+            </controls:IconToggleButton.Icon>
+        </controls:IconToggleButton>
 
         <controls:Drawer
             DrawerDepth="300"

@@ -6,8 +6,21 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/SlotMachine;component/Converters.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/SlotMachine;component/Views/Styles/IconCheckBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/SlotMachine;component/Views/Styles/IconToggleButton.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="BackgoundAsAButton" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderThickness="0"
+                        Visibility="{TemplateBinding Visibility}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="LeftDrawerStyle" TargetType="{x:Type controls:Drawer}">
         <Setter Property="Template">
@@ -19,23 +32,9 @@
                             Background="Black"
                             IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsOpen, Mode=TwoWay}"
                             Opacity="0"
+                            Style="{StaticResource BackgoundAsAButton}"
                             Visibility="{TemplateBinding IsOpen,
-                                                         Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <ToggleButton.Style>
-                                <Style TargetType="{x:Type ToggleButton}">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                                <Border
-                                                    Background="{TemplateBinding Background}"
-                                                    BorderThickness="0"
-                                                    Visibility="{TemplateBinding Visibility}" />
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ToggleButton.Style>
-                        </ToggleButton>
+                                                         Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <Grid
                             x:Name="Drawer"
                             HorizontalAlignment="Left"
@@ -56,7 +55,7 @@
                                 </MultiBinding>
                             </Grid.Width>
 
-                            <controls:IconCheckBox
+                            <controls:IconToggleButton
                                 x:Name="Opener"
                                 Width="35"
                                 Height="35"
@@ -64,10 +63,10 @@
                                 HorizontalAlignment="Right"
                                 Foreground="{DynamicResource PrimaryDarkBrush}"
                                 IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsOpen, Mode=TwoWay}">
-                                <controls:IconCheckBox.Icon>
+                                <controls:IconToggleButton.Icon>
                                     <VisualBrush Visual="{StaticResource ArrowLeftIcon}" />
-                                </controls:IconCheckBox.Icon>
-                            </controls:IconCheckBox>
+                                </controls:IconToggleButton.Icon>
+                            </controls:IconToggleButton>
 
                             <ContentPresenter
                                 Grid.Row="1"

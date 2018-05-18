@@ -4,7 +4,7 @@
         <ResourceDictionary Source="Views/Styles/TextBox.xaml" />
         <ResourceDictionary Source="Views/Styles/NumericBox.xaml" />
         <ResourceDictionary Source="Views/Styles/SlideButton.xaml" />
-        <ResourceDictionary Source="Views/Styles/IconCheckBox.xaml" />
+        <ResourceDictionary Source="Views/Styles/IconToggleButton.xaml" />
         <ResourceDictionary Source="Views/Styles/Drawer.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
