@@ -238,9 +238,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Styles\ComboBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Styles\Drawer.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -251,6 +248,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Styles\SlideButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Styles\TextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Styles\TextBlock.xaml">
