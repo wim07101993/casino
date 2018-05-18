@@ -14,12 +14,28 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:Drawer}">
                     <Grid>
-                        <Grid
+                        <ToggleButton
                             x:Name="BackgroundGrid"
                             Background="Black"
+                            IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsOpen, Mode=TwoWay}"
                             Opacity="0"
                             Visibility="{TemplateBinding IsOpen,
-                                                         Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                         Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ToggleButton.Style>
+                                <Style TargetType="{x:Type ToggleButton}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                <Border
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderThickness="0"
+                                                    Visibility="{TemplateBinding Visibility}" />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ToggleButton.Style>
+                        </ToggleButton>
                         <Grid
                             x:Name="Drawer"
                             HorizontalAlignment="Left"
