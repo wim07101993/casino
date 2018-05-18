@@ -3,6 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:SlotMachine.Views.Controls"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/SlotMachine;component/Converters.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/SlotMachine;component/Views/Styles/IconCheckBox.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <Style x:Key="LeftDrawerStyle" TargetType="{x:Type controls:Drawer}">
         <Setter Property="Template">
             <Setter.Value>
