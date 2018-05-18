@@ -47,10 +47,6 @@ namespace SlotMachine.Views.Controls
         #region FIELDS
 
         private const string ElementTextBox = "TextBoxPart";
-
-        private double _intervalMultiplierForCalculation = 1;
-        private double _intervalLargeChange = 100;
-        private double _intervalValueSinceReset;
         private TextBox _valueTextBox;
 
         #endregion FIELDS
@@ -117,41 +113,15 @@ namespace SlotMachine.Views.Controls
             _valueTextBox.TextChanged += OnTextChanged;
 
             DataObject.AddPastingHandler(_valueTextBox, OnValueTextBoxPaste);
-
-            ResetInterval();
         }
 
         private void OnValueChanged(double oldValue, double newValue)
         {
-            if (newValue <= Minimum || newValue >= Maximum)
-                ResetInterval();
-
             if (_valueTextBox != null)
                 _valueTextBox.Text = newValue.ToString(CultureInfo.CurrentCulture);
 
             if (!Equals(oldValue, newValue))
                 RaiseEvent(new RoutedPropertyChangedEventArgs<double>(oldValue, newValue, ValueChangedEvent));
-        }
-
-        private void ChangeValueWithSpeedUp(bool toPositive)
-        {
-            double direction = toPositive ? 1 : -1;
-            var d = _intervalLargeChange;
-            if ((_intervalValueSinceReset += _intervalMultiplierForCalculation) > d)
-            {
-                _intervalLargeChange *= 10;
-                _intervalMultiplierForCalculation *= 10;
-            }
-
-            var increment = direction * _intervalMultiplierForCalculation;
-            Value = (double) CoerceValue(this, Value + increment);
-        }
-
-        private void ResetInterval()
-        {
-            _intervalLargeChange = 100;
-            _intervalMultiplierForCalculation = 1;
-            _intervalValueSinceReset = 0;
         }
 
         private static bool ValidateText(string text, out double convertedValue)
@@ -166,23 +136,10 @@ namespace SlotMachine.Views.Controls
             switch (e.Key)
             {
                 case Key.Up:
-                    ChangeValueWithSpeedUp(true);
+                    Value++;
                     break;
                 case Key.Down:
-                    ChangeValueWithSpeedUp(false);
-                    break;
-            }
-        }
-
-        protected override void OnPreviewKeyUp(KeyEventArgs e)
-        {
-            base.OnPreviewKeyUp(e);
-
-            switch (e.Key)
-            {
-                case Key.Down:
-                case Key.Up:
-                    ResetInterval();
+                    Value--;
                     break;
             }
         }
@@ -192,7 +149,7 @@ namespace SlotMachine.Views.Controls
             base.OnPreviewMouseWheel(e);
 
             var increment = e.Delta > 0 ? 1 : -1;
-            Value = (double) CoerceValue(this, Value + increment);
+            SetValue(ValueProperty, CoerceValue(this, Value + increment));
         }
 
         private static void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
