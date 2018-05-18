@@ -37,16 +37,7 @@ namespace SlotMachine.Views.Controls
         #endregion DEPENDENCY PROPERTIES
 
         #region ROUTED EVENTS
-
-        public static readonly RoutedEvent ValueIncrementedEvent = EventManager.RegisterRoutedEvent("ValueIncremented",
-            RoutingStrategy.Bubble, typeof(NumericBoxChangedRoutedEventHandler), typeof(NumericBox));
-
-        public static readonly RoutedEvent ValueDecrementedEvent = EventManager.RegisterRoutedEvent("ValueDecremented",
-            RoutingStrategy.Bubble, typeof(NumericBoxChangedRoutedEventHandler), typeof(NumericBox));
-
-        public static readonly RoutedEvent DelayChangedEvent = EventManager.RegisterRoutedEvent("DelayChanged",
-            RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NumericBox));
-
+        
         public static readonly RoutedEvent MaximumReachedEvent = EventManager.RegisterRoutedEvent("MaximumReached",
             RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NumericBox));
 
@@ -290,29 +281,16 @@ namespace SlotMachine.Views.Controls
                 _intervalMultiplierForCalculation *= 10;
             }
 
-            ChangeValueInternal(direction * _intervalMultiplierForCalculation);
+            ChangeValueBy(direction * _intervalMultiplierForCalculation);
+            _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
         }
 
         private void ChangeValueInternal(bool addInterval)
         {
-            ChangeValueInternal(addInterval ? 1 : -1);
+            ChangeValueBy(addInterval ? 1 : -1);
+            _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
         }
-
-        private void ChangeValueInternal(double interval)
-        {
-            var routedEvent = interval > 0
-                ? new NumericBoxChangedRoutedEventArgs(ValueIncrementedEvent, interval)
-                : new NumericBoxChangedRoutedEventArgs(ValueDecrementedEvent, interval);
-
-            RaiseEvent(routedEvent);
-
-            if (!routedEvent.Handled)
-            {
-                ChangeValueBy(routedEvent.Interval);
-                _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
-            }
-        }
-
+        
         private void ChangeValueBy(double difference)
         {
             var newValue = Value.GetValueOrDefault() + difference;
@@ -454,19 +432,6 @@ namespace SlotMachine.Views.Controls
             add => AddHandler(ValueChangedEvent, value);
             remove => RemoveHandler(ValueChangedEvent, value);
         }
-
-        public event NumericBoxChangedRoutedEventHandler ValueIncremented
-        {
-            add => AddHandler(ValueIncrementedEvent, value);
-            remove => RemoveHandler(ValueIncrementedEvent, value);
-        }
-
-        public event NumericBoxChangedRoutedEventHandler ValueDecremented
-        {
-            add => AddHandler(ValueDecrementedEvent, value);
-            remove => RemoveHandler(ValueDecrementedEvent, value);
-        }
-
         #endregion EVENTS
     }
 }
