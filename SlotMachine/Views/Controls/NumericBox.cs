@@ -285,7 +285,6 @@ namespace SlotMachine.Views.Controls
                 RaiseEvent(new RoutedPropertyChangedEventArgs<double?>(oldValue, newValue, ValueChangedEvent));
         }
 
-
         private void InternalSetText(double? newValue)
         {
             if (!newValue.HasValue)
@@ -448,9 +447,7 @@ namespace SlotMachine.Views.Controls
 
         private static void IntervalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var numericBox = (NumericBox) d;
-
-            numericBox.ResetInternal();
+            ((NumericBox)d).ResetInternal();
         }
 
         private static void OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -461,14 +458,12 @@ namespace SlotMachine.Views.Controls
         private static void OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             d.CoerceValue(MaximumProperty);
-            d.CoerceValue(MinimumProperty);
+            d.CoerceValue(ValueProperty);
         }
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var numericBox = (NumericBox) d;
-
-            numericBox.OnValueChanged((double?) e.OldValue, (double?) e.NewValue);
+            ((NumericBox)d).OnValueChanged((double?) e.OldValue, (double?) e.NewValue);
         }
 
         #endregion DEPENDENCY PROPERTY CALLBACK
