@@ -59,7 +59,7 @@ namespace SlotMachine.Models
         {
             while (IsRandomizing)
             {
-                Value = Random.Next(MinValue, MaxValue);
+                Value = Random.Next(MinValue, MaxValue + 1);
                 await Task.Delay(10);
             }
         }
