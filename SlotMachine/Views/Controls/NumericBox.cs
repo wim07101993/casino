@@ -331,71 +331,7 @@ namespace SlotMachine.Views.Controls
                 RaiseEvent(new RoutedPropertyChangedEventArgs<double?>(oldValue, newValue, ValueChangedEvent));
         }
 
-        private static object CoerceMaximum(DependencyObject d, object value)
-        {
-            var minimum = ((NumericBox) d).Minimum;
-            var val = (double) value;
-            return val < minimum ? minimum : val;
-        }
-
-        private static object CoerceValue(DependencyObject d, object value)
-        {
-            if (value == null)
-                return null;
-
-            var numericBox = (NumericBox) d;
-            var val = ((double?) value).Value;
-
-            if (numericBox.HasDecimals == false)
-                val = Math.Truncate(val);
-
-            if (val < numericBox.Minimum)
-                return numericBox.Minimum;
-
-            if (val > numericBox.Maximum)
-                return numericBox.Maximum;
-
-            return val;
-        }
-
-        private static void IntervalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var numericBox = (NumericBox) d;
-
-            numericBox.ResetInternal();
-        }
-
-        private static void OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var numericBox = (NumericBox) d;
-
-            numericBox.CoerceValue(ValueProperty);
-            numericBox.OnMaximumChanged((double) e.OldValue, (double) e.NewValue);
-        }
-
-        private static void OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var numericBox = (NumericBox) d;
-
-            numericBox.CoerceValue(MaximumProperty);
-            numericBox.CoerceValue(ValueProperty);
-            numericBox.OnMinimumChanged((double) e.OldValue, (double) e.NewValue);
-        }
-
-        private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var numericBox = (NumericBox) d;
-
-            numericBox.OnValueChanged((double?) e.OldValue, (double?) e.NewValue);
-        }
-
-        private static void OnHasDecimalsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var numericBox = (NumericBox) d;
-
-            if ((bool) e.NewValue == false && numericBox.Value != null)
-                numericBox.Value = Math.Truncate(numericBox.Value.GetValueOrDefault());
-        }
+      
 
         private void InternalSetText(double? newValue)
         {
@@ -567,6 +503,76 @@ namespace SlotMachine.Views.Controls
 
             return text;
         }
+
+        #region DEPENDENCY PROPERTY CALLBACK
+
+        private static object CoerceMaximum(DependencyObject d, object value)
+        {
+            var minimum = ((NumericBox)d).Minimum;
+            var val = (double)value;
+            return val < minimum ? minimum : val;
+        }
+
+        private static object CoerceValue(DependencyObject d, object value)
+        {
+            if (value == null)
+                return null;
+
+            var numericBox = (NumericBox)d;
+            var val = ((double?)value).Value;
+
+            if (numericBox.HasDecimals == false)
+                val = Math.Truncate(val);
+
+            if (val < numericBox.Minimum)
+                return numericBox.Minimum;
+
+            if (val > numericBox.Maximum)
+                return numericBox.Maximum;
+
+            return val;
+        }
+
+        private static void IntervalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var numericBox = (NumericBox)d;
+
+            numericBox.ResetInternal();
+        }
+
+        private static void OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var numericBox = (NumericBox)d;
+
+            numericBox.CoerceValue(ValueProperty);
+            numericBox.OnMaximumChanged((double)e.OldValue, (double)e.NewValue);
+        }
+
+        private static void OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var numericBox = (NumericBox)d;
+
+            numericBox.CoerceValue(MaximumProperty);
+            numericBox.CoerceValue(ValueProperty);
+            numericBox.OnMinimumChanged((double)e.OldValue, (double)e.NewValue);
+        }
+
+        private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var numericBox = (NumericBox)d;
+
+            numericBox.OnValueChanged((double?)e.OldValue, (double?)e.NewValue);
+        }
+
+        private static void OnHasDecimalsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var numericBox = (NumericBox)d;
+
+            if ((bool)e.NewValue == false && numericBox.Value != null)
+                numericBox.Value = Math.Truncate(numericBox.Value.GetValueOrDefault());
+        }
+
+        #endregion DEPENDENCY PROPERTY CALLBACK
 
         #region EVENTS
 
