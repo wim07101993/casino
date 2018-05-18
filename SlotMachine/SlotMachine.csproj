@@ -80,6 +80,9 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Helpers\PubSubEvents\AccentColorsChangedEvent.cs" />
+    <Compile Include="Helpers\PubSubEvents\PrimaryColorsChangedEvent.cs" />
+    <Compile Include="Helpers\PubSubEvents\SymbolsChangedEvent.cs" />
     <Compile Include="Services\Implementations\SymbolProvider.cs" />
     <Compile Include="Services\ISymbolProvider.cs" />
     <Compile Include="ViewModelInerfaces\ISymbolSelectorViewModel.cs" />

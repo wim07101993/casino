@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Prism.Events;
 using SlotMachine.Models;
 using SlotMachine.Services;
 using SlotMachine.Services.Implementations;
@@ -6,6 +7,7 @@ using SlotMachine.ViewModelInerfaces;
 using SlotMachine.ViewModels;
 using SlotMachine.Views;
 using Unity;
+using Unity.Lifetime;
 
 namespace SlotMachine
 {
@@ -32,10 +34,11 @@ namespace SlotMachine
         private void RegisterTypes()
         {
             UnityContainer = new UnityContainer()
-                .RegisterType<IColorProvider, ColorProvider>()
-                .RegisterType<IColorThemeService, ColorThemeService>()
-                .RegisterType<ISymbolProvider, SymbolProvider>()
-                .RegisterType<ISymbolThemeService, SymbolThemeService>()
+                .RegisterType<IEventAggregator, EventAggregator>(new ContainerControlledLifetimeManager())
+                .RegisterType<IColorProvider, ColorProvider>(new ContainerControlledLifetimeManager())
+                .RegisterType<IColorThemeService, ColorThemeService>(new ContainerControlledLifetimeManager())
+                .RegisterType<ISymbolProvider, SymbolProvider>(new ContainerControlledLifetimeManager())
+                .RegisterType<ISymbolThemeService, SymbolThemeService>(new ContainerControlledLifetimeManager())
                 .RegisterType<IColorSelectorViewModel, ColorSelectorViewModel>()
                 .RegisterType<ISymbolSelectorViewModel, SymbolSelectorViewModel>()
                 .RegisterType<IMainWindowViewModel, MainWindowViewModel>();

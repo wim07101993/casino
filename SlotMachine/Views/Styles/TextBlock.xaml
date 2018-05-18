@@ -7,6 +7,6 @@
 
     <Style x:Key="HintStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
-        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontSize" Value="14" />
     </Style>
 </ResourceDictionary>

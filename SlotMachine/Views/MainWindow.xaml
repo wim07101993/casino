@@ -129,12 +129,10 @@
         </controls:IconToggleButton>
 
         <controls:Drawer
-            DrawerDepth="300"
+            DrawerDepth="335"
             IsOpen="{Binding ElementName=Opener, Path=IsChecked, Mode=TwoWay}"
             Style="{StaticResource LeftDrawerStyle}">
             <StackPanel Margin="5">
-                <views:ColorSelector DataContext="{Binding ColorSelectorViewModel}" />
-
                 <Grid x:Name="SlotSelector" Margin="5,5,10,5">
                     <Grid.Style>
                         <Style TargetType="{x:Type Grid}">
@@ -154,6 +152,10 @@
                         Minimum="2"
                         Value="{Binding NumberOfSlots}" />
                 </Grid>
+
+                <views:ColorSelector DataContext="{Binding ColorSelectorViewModel}" />
+
+                <views:SymbolSelector DataContext="{Binding SymbolSelectorViewModel}" />
             </StackPanel>
         </controls:Drawer>
     </Grid>

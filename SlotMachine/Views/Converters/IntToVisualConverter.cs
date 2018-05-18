@@ -7,24 +7,12 @@ namespace SlotMachine.Views.Converters
 {
     public class IntToVisualConverter : IValueConverter
     {
-        private static readonly ResourceDictionary ResourceDictionary = new ResourceDictionary
-        {
-            Source = new Uri("pack://application:,,,/SlotMachine;component/Views/Icons/Symbols/Classic.xaml")
-        };
-
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value == null)
-                return null;
+            => value == null
+                ? null
+                : Application.Current.TryFindResource(value.ToString());
 
-            var symbols = ResourceDictionary[value.ToString()];
-            return symbols;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) 
+            => throw new NotImplementedException();
     }
 }

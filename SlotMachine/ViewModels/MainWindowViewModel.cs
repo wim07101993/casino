@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
+using SlotMachine.Helpers.PubSubEvents;
 using SlotMachine.Models;
 using SlotMachine.ViewModelInerfaces;
 
@@ -14,9 +16,10 @@ namespace SlotMachine.ViewModels
     {
         #region FIELDS
 
+        private readonly IEventAggregator _eventAggregator;
+
         private bool _youWon;
         private int _numberOfSlots;
-        private ObservableCollection<Number> _numbers;
         private bool _isRunning;
 
         #endregion FIELDS
@@ -24,11 +27,19 @@ namespace SlotMachine.ViewModels
 
         #region CONSTRUCTOR
 
-        public MainWindowViewModel(IColorSelectorViewModel colorSelectorViewModel)
+        public MainWindowViewModel(IColorSelectorViewModel colorSelectorViewModel,
+            ISymbolSelectorViewModel symbolSelectorViewModel, IEventAggregator eventAggregator)
         {
-            ColorSelectorViewModel = colorSelectorViewModel;
+            Numbers = new ObservableCollection<Number>();
 
-            SlotPossibilities = Enumerable.Range(2, 4);
+            _eventAggregator = eventAggregator;
+            _eventAggregator
+                .GetEvent<SymbolsChangedEvent>()
+                .Subscribe(x => RefreshSymbols());
+
+            ColorSelectorViewModel = colorSelectorViewModel;
+            SymbolSelectorViewModel = symbolSelectorViewModel;
+
             NumberOfSlots = 4;
 
             RollCommand = new DelegateCommand(RandomizeNumbers);
@@ -40,8 +51,7 @@ namespace SlotMachine.ViewModels
         #region PROPERTIES
 
         public IColorSelectorViewModel ColorSelectorViewModel { get; }
-
-        public IEnumerable<int> SlotPossibilities { get; }
+        public ISymbolSelectorViewModel SymbolSelectorViewModel { get; }
 
         public int NumberOfSlots
         {
@@ -51,21 +61,11 @@ namespace SlotMachine.ViewModels
                 if (!SetProperty(ref _numberOfSlots, value))
                     return;
 
-                Numbers = new ObservableCollection<Number>();
-                for (var i = 0; i < _numberOfSlots; i++)
-                {
-                    var number = new Number();
-                    number.PropertyChanged += OnNumberPropertyChanged;
-                    Numbers.Add(number);
-                }
+                RefreshSymbols();
             }
         }
 
-        public ObservableCollection<Number> Numbers
-        {
-            get => _numbers;
-            private set => SetProperty(ref _numbers, value);
-        }
+        public ObservableCollection<Number> Numbers { get; }
 
         public ICommand RollCommand { get; }
 
@@ -85,6 +85,17 @@ namespace SlotMachine.ViewModels
 
 
         #region METHODS
+
+        public void RefreshSymbols()
+        {
+            Numbers.Clear();
+            for (var i = 0; i < _numberOfSlots; i++)
+            {
+                var number = new Number {Value = Number.MaxValue};
+                number.PropertyChanged += OnNumberPropertyChanged;
+                Numbers.Add(number);
+            }
+        }
 
         public void RandomizeNumbers()
         {

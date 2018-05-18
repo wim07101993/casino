@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid x:Key="0">
+    <Grid x:Key="1">
         <Path
             Width="256"
             Height="256"
@@ -9,7 +9,7 @@
             Stretch="Uniform" />
     </Grid>
 
-    <Grid x:Key="1">
+    <Grid x:Key="2">
         <Path
             Width="256"
             Height="256"
@@ -19,7 +19,7 @@
             Stretch="Uniform" />
     </Grid>
 
-    <Grid x:Key="2">
+    <Grid x:Key="3">
         <Path
             Width="256"
             Height="256"
@@ -29,7 +29,7 @@
             Stretch="Uniform" />
     </Grid>
 
-    <Grid x:Key="3">
+    <Grid x:Key="4">
         <Path
             Width="256"
             Height="256"
@@ -39,7 +39,7 @@
             Stretch="Uniform" />
     </Grid>
 
-    <Grid x:Key="4">
+    <Grid x:Key="5">
         <Path
             Width="256"
             Height="256"
@@ -49,7 +49,7 @@
             Stretch="Uniform" />
     </Grid>
 
-    <Grid x:Key="5">
+    <Grid x:Key="6">
         <Path
             Width="256"
             Height="256"
@@ -59,7 +59,7 @@
             Stretch="Uniform" />
     </Grid>
 
-    <Grid x:Key="6">
+    <Grid x:Key="7">
         <Path
             Width="256"
             Height="256"

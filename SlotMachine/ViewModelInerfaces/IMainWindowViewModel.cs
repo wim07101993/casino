@@ -8,8 +8,8 @@ namespace SlotMachine.ViewModelInerfaces
     public interface IMainWindowViewModel
     {
         IColorSelectorViewModel ColorSelectorViewModel { get; }
+        ISymbolSelectorViewModel SymbolSelectorViewModel { get; }
 
-        IEnumerable<int> SlotPossibilities { get; }
         int NumberOfSlots { get; set; }
 
         ObservableCollection<Number> Numbers { get; }

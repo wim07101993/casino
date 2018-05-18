@@ -1,17 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media;
+using Prism.Events;
+using SlotMachine.Helpers.PubSubEvents;
 using SlotMachine.Models;
 
 namespace SlotMachine.Services.Implementations
 {
     public class ColorThemeService : AResourceService, IColorThemeService
     {
-        public void ReplacePrimaryColor(ColorTheme colorTheme) 
-            => ReplaceColor(colorTheme, "Primary");
+        private readonly IEventAggregator _eventAggregator;
 
-        public void ReplaceAccentColor(ColorTheme colorTheme) 
-            => ReplaceColor(colorTheme, "Accent");
+
+        public ColorThemeService(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+        }
+
+
+        public void ReplacePrimaryColor(ColorTheme colorTheme)
+        {
+            ReplaceColor(colorTheme, "Primary");
+            _eventAggregator
+                .GetEvent<PrimaryColorsChangedEvent>()
+                .Publish(colorTheme);
+        }
+
+        public void ReplaceAccentColor(ColorTheme colorTheme)
+        {
+            ReplaceColor(colorTheme, "Accent");
+            _eventAggregator
+                .GetEvent<AccentColorsChangedEvent>()
+                .Publish(colorTheme);
+        }
 
         private void ReplaceColor(ColorTheme colorTheme, string colorType)
         {

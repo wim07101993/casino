@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Prism.Mvvm;
-using SlotMachine.Helpers.Extensions;
 using SlotMachine.Models;
 using SlotMachine.Services;
 using SlotMachine.ViewModelInerfaces;

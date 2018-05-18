@@ -11,71 +11,32 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <ItemsPanelTemplate x:Key="ItemsPanelTemplate">
-            <WrapPanel Orientation="Horizontal" />
-        </ItemsPanelTemplate>
-
         <Style TargetType="ListBox">
             <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-            <Setter Property="ItemsPanel" Value="{StaticResource ItemsPanelTemplate}" />
             <Setter Property="ItemContainerStyle">
                 <Setter.Value>
                     <Style TargetType="{x:Type ListBoxItem}">
                         <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-                        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-                        <Setter Property="Padding" Value="2,0,0,0" />
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Border
-                                        x:Name="Border"
-                                        Width="30"
-                                        Height="30"
-                                        Margin="5"
-                                        BorderBrush="{DynamicResource ShadowColorBrush}"
-                                        BorderThickness="0"
-                                        CornerRadius="15">
-                                        <Border.Effect>
-                                            <DropShadowEffect
-                                                BlurRadius="4"
-                                                Direction="270"
-                                                Opacity="0.42"
-                                                ShadowDepth="0.5"
-                                                Color="{DynamicResource ShadowColor}" />
-                                        </Border.Effect>
-
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    </Border>
+                                    <Grid>
+                                        <Border x:Name="Border" Margin="10">
+                                            <Border.Effect>
+                                                <DropShadowEffect
+                                                    BlurRadius="4"
+                                                    Direction="270"
+                                                    Opacity="0.42"
+                                                    ShadowDepth="0.5"
+                                                    Color="{DynamicResource ShadowColor}" />
+                                            </Border.Effect>
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                    </Grid>
                                     <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <BeginStoryboard.Storyboard>
-                                                        <Storyboard TargetProperty="BorderThickness" TargetName="Border">
-                                                            <ThicknessAnimation
-                                                                From="0"
-                                                                To="1"
-                                                                Duration="0:0:0.3" />
-                                                        </Storyboard>
-                                                    </BeginStoryboard.Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <BeginStoryboard.Storyboard>
-                                                        <Storyboard TargetProperty="BorderThickness" TargetName="Border">
-                                                            <ThicknessAnimation
-                                                                From="1"
-                                                                To="0"
-                                                                Duration="0:0:0.3" />
-                                                        </Storyboard>
-                                                    </BeginStoryboard.Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                        </Trigger>
-
                                         <EventTrigger RoutedEvent="MouseEnter" SourceName="Border">
                                             <BeginStoryboard>
                                                 <BeginStoryboard.Storyboard>
@@ -116,18 +77,41 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <TextBlock
+            Grid.Row="0"
+            Margin="5"
+            Text="Symbols" />
+
         <ListBox
             Grid.Row="1"
-            ItemsPanel="{StaticResource ItemsPanelTemplate}"
+            HorizontalAlignment="Left"
             ItemsSource="{Binding Symbols}"
             SelectedItem="{Binding SelectedSymbols, Mode=OneWayToSource}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Ellipse
-                        Width="28"
-                        Height="28"
-                        Fill="{Binding Six, Converter={StaticResource ColorToSolidColorBrushConverter}}"
-                        Visibility="{Binding Six, Converter={StaticResource ObjectToVisibilityConverter}}" />
+                    <ItemsControl Background="Transparent" ItemsSource="{Binding Visuals}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Rectangle
+                                    Width="28"
+                                    Height="28"
+                                    Margin="0,2,2,2"
+                                    HorizontalAlignment="Left"
+                                    Fill="{DynamicResource PrimaryDarkBrush}"
+                                    Visibility="{Binding ., Converter={StaticResource ObjectToVisibilityConverter}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Visual="{Binding Value}" />
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
