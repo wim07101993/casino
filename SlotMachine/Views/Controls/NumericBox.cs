@@ -47,8 +47,7 @@ namespace SlotMachine.Views.Controls
         #region FIELDS
 
         private const string ElementTextBox = "TextBoxPart";
-        private const string ScientificNotationChar = "E";
-
+      
         private double _intervalMultiplierForCalculation = 1;
         private double _intervalLargeChange = 100;
         private double _intervalValueSinceReset;
@@ -122,105 +121,6 @@ namespace SlotMachine.Views.Controls
             ResetInterval();
         }
 
-        #region keyboard and mouse increment/decrement
-
-        protected override void OnPreviewKeyDown(KeyEventArgs e)
-        {
-            base.OnPreviewKeyDown(e);
-
-            switch (e.Key)
-            {
-                case Key.Up:
-                    ChangeValueWithSpeedUp(true);
-                    _valueTextBox.Text = Value.ToString(CultureInfo.CurrentCulture);
-                    break;
-                case Key.Down:
-                    ChangeValueWithSpeedUp(false);
-                    _valueTextBox.Text = Value.ToString(CultureInfo.CurrentCulture);
-                    break;
-            }
-        }
-
-        protected override void OnPreviewKeyUp(KeyEventArgs e)
-        {
-            base.OnPreviewKeyUp(e);
-
-            if (e.Key == Key.Down ||
-                e.Key == Key.Up)
-                ResetInterval();
-        }
-
-        protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
-        {
-            base.OnPreviewMouseWheel(e);
-
-            if (!IsFocused && !_valueTextBox.IsFocused)
-                return;
-
-            var increment = e.Delta > 0 ? 1 : -1;
-            Value = (double) CoerceValue(this, Value + increment);
-            _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
-        }
-
-        #endregion keyboard and mouse increment/decrement
-
-        private static void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = true;
-            if (string.IsNullOrWhiteSpace(e.Text) ||
-                e.Text.Length != 1)
-                return;
-
-            var text = e.Text;
-            if (char.IsDigit(text[0]))
-                e.Handled = false;
-            else
-            {
-                var equivalentCulture = CultureInfo.CurrentCulture;
-                var numberFormatInfo = equivalentCulture.NumberFormat;
-                var textBox = (TextBox) sender;
-                var allTextSelected = textBox.SelectedText == textBox.Text;
-
-                if (numberFormatInfo.NumberDecimalSeparator == text)
-                    return;
-
-                if (numberFormatInfo.NegativeSign == text ||
-                    text == numberFormatInfo.PositiveSign)
-                {
-                    if (textBox.SelectionStart == 0)
-                    {
-                        if (textBox.Text.Length > 1)
-                        {
-                            if (allTextSelected ||
-                                !textBox.Text.StartsWith(numberFormatInfo.NegativeSign,
-                                    StringComparison.CurrentCultureIgnoreCase) &&
-                                !textBox.Text.StartsWith(numberFormatInfo.PositiveSign,
-                                    StringComparison.CurrentCultureIgnoreCase))
-                                e.Handled = false;
-                        }
-                        else
-                            e.Handled = false;
-                    }
-                    else if (textBox.SelectionStart > 0)
-                    {
-                        var elementBeforeCaret = textBox.Text
-                            .ElementAt(textBox.SelectionStart - 1)
-                            .ToString(equivalentCulture);
-
-                        if (elementBeforeCaret.Equals(ScientificNotationChar,
-                            StringComparison.CurrentCultureIgnoreCase))
-                            e.Handled = false;
-                    }
-                }
-                else if (text.Equals(ScientificNotationChar, StringComparison.CurrentCultureIgnoreCase) &&
-                         textBox.SelectionStart > 0 &&
-                         !textBox.Text.Any(i =>
-                             i.ToString(equivalentCulture).Equals(ScientificNotationChar,
-                                 StringComparison.CurrentCultureIgnoreCase)))
-                    e.Handled = false;
-            }
-        }
-
         private void OnValueChanged(double oldValue, double newValue)
         {
             if (newValue <= Minimum || newValue >= Maximum)
@@ -245,7 +145,6 @@ namespace SlotMachine.Views.Controls
 
             var increment = direction * _intervalMultiplierForCalculation;
             Value = (double) CoerceValue(this, Value + increment);
-            _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
         }
 
         private void ResetInterval()
@@ -255,8 +154,100 @@ namespace SlotMachine.Views.Controls
             _intervalValueSinceReset = 0;
         }
 
-        private bool ValidateText(string text, out double convertedValue)
+        private static bool ValidateText(string text, out double convertedValue)
             => double.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out convertedValue);
+
+        #region keyboard and mouse increment/decrement
+
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+
+            switch (e.Key)
+            {
+                case Key.Up:
+                    ChangeValueWithSpeedUp(true);
+                    break;
+                case Key.Down:
+                    ChangeValueWithSpeedUp(false);
+                    break;
+            }
+        }
+
+        protected override void OnPreviewKeyUp(KeyEventArgs e)
+        {
+            base.OnPreviewKeyUp(e);
+
+            if (e.Key == Key.Down ||
+                e.Key == Key.Up)
+                ResetInterval();
+        }
+
+        protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
+        {
+            base.OnPreviewMouseWheel(e);
+
+            if (!IsFocused && !_valueTextBox.IsFocused)
+                return;
+
+            var increment = e.Delta > 0 ? 1 : -1;
+            Value = (double) CoerceValue(this, Value + increment);
+        }
+
+        private static void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = true;
+            if (string.IsNullOrWhiteSpace(e.Text) || e.Text.Length != 1)
+                return;
+
+            var text = e.Text;
+            if (char.IsDigit(text[0]))
+                e.Handled = false;
+            else
+            {
+                var culture = CultureInfo.CurrentCulture;
+                var format = culture.NumberFormat;
+                var comp = StringComparison.CurrentCultureIgnoreCase;
+
+                var textBox = (TextBox) sender;
+                var allTextSelected = textBox.SelectedText == textBox.Text;
+
+                if (format.NumberDecimalSeparator == text)
+                    return;
+
+                if (format.NegativeSign == text ||
+                    text == format.PositiveSign)
+                {
+                    if (textBox.SelectionStart == 0)
+                    {
+                        if (textBox.Text.Length > 1)
+                        {
+                            if (allTextSelected ||
+                                !textBox.Text.StartsWith(format.NegativeSign, comp) &&
+                                !textBox.Text.StartsWith(format.PositiveSign, comp))
+                                e.Handled = false;
+                        }
+                        else
+                            e.Handled = false;
+                    }
+                    else if (textBox.SelectionStart > 0)
+                    {
+                        var elementBeforeCaret = textBox.Text
+                            .ElementAt(textBox.SelectionStart - 1)
+                            .ToString(culture);
+
+                        if (elementBeforeCaret.Equals("E", comp))
+                            e.Handled = false;
+                    }
+                }
+                else if (text.Equals("E", comp) &&
+                         textBox.SelectionStart > 0 &&
+                         !textBox.Text.Any(i => i.ToString(culture).Equals("E", comp)))
+                    e.Handled = false;
+            }
+        }
+
+        #endregion keyboard and mouse increment/decrement
 
         #region text box event handlers
 
@@ -300,7 +291,7 @@ namespace SlotMachine.Views.Controls
             }
         }
 
-        private void OnValueTextBoxPaste(object sender, DataObjectPastingEventArgs e)
+        private static void OnValueTextBoxPaste(object sender, DataObjectPastingEventArgs e)
         {
             var textBox = (TextBox) sender;
             var textPresent = textBox.Text;
