@@ -68,8 +68,8 @@ namespace SlotMachine.Views.Controls
         private readonly Tuple<string, string> _removeFromText = new Tuple<string, string>(string.Empty, string.Empty);
 
         private double _interval = 1;
-        private double _internalIntervalMultiplierForCalculation = DefaultInterval;
-        private double _internalLargeChange = DefaultInterval * 100;
+        private double _intervalMultiplierForCalculation = DefaultInterval;
+        private double _intervalLargeChange = DefaultInterval * 100;
         private double _intervalValueSinceReset;
         private TextBox _valueTextBox;
 
@@ -161,7 +161,7 @@ namespace SlotMachine.Views.Controls
 
             if (e.Key == Key.Down ||
                 e.Key == Key.Up)
-                ResetInternal();
+                ResetInterval();
         }
 
         protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
@@ -247,7 +247,7 @@ namespace SlotMachine.Views.Controls
 
             if (newValue <= Minimum)
             {
-                ResetInternal();
+                ResetInterval();
 
                 if (IsLoaded)
                     RaiseEvent(new RoutedEventArgs(MinimumReachedEvent));
@@ -255,7 +255,7 @@ namespace SlotMachine.Views.Controls
 
             if (newValue >= Maximum)
             {
-                ResetInternal();
+                ResetInterval();
                 if (IsLoaded)
                     RaiseEvent(new RoutedEventArgs(MaximumReachedEvent));
             }
@@ -281,14 +281,14 @@ namespace SlotMachine.Views.Controls
         private void ChangeValueWithSpeedUp(bool toPositive)
         {
             double direction = toPositive ? 1 : -1;
-            var d = _interval * _internalLargeChange;
-            if ((_intervalValueSinceReset += _interval * _internalIntervalMultiplierForCalculation) > d)
+            var d = _interval * _intervalLargeChange;
+            if ((_intervalValueSinceReset += _interval * _intervalMultiplierForCalculation) > d)
             {
-                _internalLargeChange *= 10;
-                _internalIntervalMultiplierForCalculation *= 10;
+                _intervalLargeChange *= 10;
+                _intervalMultiplierForCalculation *= 10;
             }
 
-            ChangeValueInternal(direction * _internalIntervalMultiplierForCalculation);
+            ChangeValueInternal(direction * _intervalMultiplierForCalculation);
         }
 
         private void ChangeValueInternal(bool addInterval)
@@ -317,10 +317,10 @@ namespace SlotMachine.Views.Controls
             Value = (double) CoerceValue(this, newValue);
         }
 
-        private void ResetInternal()
+        private void ResetInterval()
         {
-            _internalLargeChange = 100 * _interval;
-            _internalIntervalMultiplierForCalculation = _interval;
+            _intervalLargeChange = 100 * _interval;
+            _intervalMultiplierForCalculation = _interval;
             _intervalValueSinceReset = 0;
         }
 
