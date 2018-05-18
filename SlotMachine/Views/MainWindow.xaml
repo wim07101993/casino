@@ -41,8 +41,15 @@
                                 Width="100"
                                 Height="100"
                                 Margin="15"
-                                Background="{DynamicResource PrimaryDarkBrush}"
-                                Effect="{StaticResource Shadow14}">
+                                Background="{DynamicResource PrimaryDarkBrush}">
+                                <Grid.Effect>
+                                    <DropShadowEffect
+                                        BlurRadius="14"
+                                        Direction="270"
+                                        Opacity="0.42"
+                                        ShadowDepth="4.5"
+                                        Color="{DynamicResource ShadowColor}" />
+                                </Grid.Effect>
                                 <Grid.OpacityMask>
                                     <VisualBrush Visual="{Binding Value, Converter={StaticResource IntToVisualConverter}}" />
                                 </Grid.OpacityMask>
@@ -56,12 +63,19 @@
                     Grid.Row="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Effect="{StaticResource Shadow14}"
                     FontSize="100"
                     FontWeight="Bold"
                     Foreground="{DynamicResource AccentDarkBrush}"
                     Text="YOU WON"
                     Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect
+                            BlurRadius="14"
+                            Direction="270"
+                            Opacity="0.42"
+                            ShadowDepth="4.5"
+                            Color="{DynamicResource ShadowColor}" />
+                    </TextBlock.Effect>
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}">
                             <Style.Triggers>
@@ -69,7 +83,14 @@
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard Name="Flash">
                                             <BeginStoryboard.Storyboard>
-                                                <StaticResource ResourceKey="FlashStoryBoard" />
+                                                <Storyboard TargetProperty="Opacity">
+                                                    <DoubleAnimation
+                                                        AutoReverse="True"
+                                                        RepeatBehavior="Forever"
+                                                        From="1"
+                                                        To="0"
+                                                        Duration="0:0:0.5" />
+                                                </Storyboard>
                                             </BeginStoryboard.Storyboard>
                                         </BeginStoryboard>
                                     </DataTrigger.EnterActions>

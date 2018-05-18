@@ -45,8 +45,16 @@
                                     Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Top"
-                                    Effect="{StaticResource Shadow8}"
-                                    Fill="{TemplateBinding Background}" />
+                                    Fill="{TemplateBinding Background}">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect
+                                            BlurRadius="8"
+                                            Direction="270"
+                                            Opacity="0.42"
+                                            ShadowDepth="1.5"
+                                            Color="{DynamicResource ShadowColor}" />
+                                    </Ellipse.Effect>
+                                </Ellipse>
                             </Grid>
                         </Grid>
 

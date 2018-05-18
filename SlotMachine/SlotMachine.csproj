@@ -240,13 +240,7 @@
     <Page Include="Views\Styles\Drawer.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Styles\FlashStoryBoard.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Styles\IconCheckBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Styles\Shadows.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Styles\SlideButton.xaml">

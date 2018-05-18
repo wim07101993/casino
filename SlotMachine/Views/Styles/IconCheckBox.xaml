@@ -6,10 +6,16 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:IconCheckBox}">
-                    <Grid
-                        Background="{TemplateBinding Foreground}"
-                        Effect="{StaticResource Shadow4}"
-                        OpacityMask="{TemplateBinding Icon}" />
+                    <Grid Background="{TemplateBinding Foreground}" OpacityMask="{TemplateBinding Icon}">
+                        <Grid.Effect>
+                            <DropShadowEffect
+                                BlurRadius="4"
+                                Direction="270"
+                                Opacity="0.42"
+                                ShadowDepth="0.5"
+                                Color="{DynamicResource ShadowColor}" />
+                        </Grid.Effect>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
