@@ -33,7 +33,7 @@ namespace SlotMachine.Views.Controls
             typeof(double),
             typeof(NumericBox),
             new FrameworkPropertyMetadata(double.MaxValue, OnMaximumChanged, CoerceMaximum));
-
+        
         #endregion DEPENDENCY PROPERTIES
 
         #region ROUTED EVENTS
@@ -93,7 +93,7 @@ namespace SlotMachine.Views.Controls
 
 
         #region PROPERTIES
-
+        
         public double Maximum
         {
             get => (double) GetValue(MaximumProperty);
@@ -137,7 +137,7 @@ namespace SlotMachine.Views.Controls
 
             OnValueChanged(Value, Value);
         }
-
+        
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
@@ -146,13 +146,13 @@ namespace SlotMachine.Views.Controls
             {
                 case Key.Up:
                     ChangeValueWithSpeedUp(true);
+                    InternalSetText(Value);
                     break;
                 case Key.Down:
                     ChangeValueWithSpeedUp(false);
+                    InternalSetText(Value);
                     break;
             }
-
-            InternalSetText(Value);
         }
 
         protected override void OnPreviewKeyUp(KeyEventArgs e)
@@ -231,7 +231,7 @@ namespace SlotMachine.Views.Controls
                     e.Handled = false;
             }
         }
-
+        
         private void OnValueChanged(double? oldValue, double? newValue)
         {
             if (!newValue.HasValue)
@@ -426,7 +426,7 @@ namespace SlotMachine.Views.Controls
 
             return val;
         }
-
+        
         private static void OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             d.CoerceValue(ValueProperty);
@@ -440,7 +440,7 @@ namespace SlotMachine.Views.Controls
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((NumericBox) d).OnValueChanged((double?) e.OldValue, (double?) e.NewValue);
+            ((NumericBox)d).OnValueChanged((double?) e.OldValue, (double?) e.NewValue);
         }
 
         #endregion DEPENDENCY PROPERTY CALLBACK
