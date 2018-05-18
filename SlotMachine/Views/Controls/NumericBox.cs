@@ -82,9 +82,8 @@ namespace SlotMachine.Views.Controls
         private double _internalIntervalMultiplierForCalculation = DefaultInterval;
         private double _internalLargeChange = DefaultInterval * 100;
         private double _intervalValueSinceReset;
-        private bool _manualChange;
         private TextBox _valueTextBox;
-        
+
         #endregion FIELDS
 
 
@@ -191,7 +190,6 @@ namespace SlotMachine.Views.Controls
 
             if (e.Handled)
             {
-                _manualChange = false;
                 InternalSetText(Value);
             }
         }
@@ -213,7 +211,6 @@ namespace SlotMachine.Views.Controls
                 return;
 
             var increment = e.Delta > 0;
-            _manualChange = false;
             ChangeValueInternal(increment);
         }
 
@@ -287,43 +284,39 @@ namespace SlotMachine.Views.Controls
 
         protected virtual void OnValueChanged(double? oldValue, double? newValue)
         {
-            if (!_manualChange)
+            if (!newValue.HasValue)
             {
-                if (!newValue.HasValue)
-                {
-                    if (_valueTextBox != null)
-                        _valueTextBox.Text = null;
-
-                    if (oldValue != null)
-                        RaiseEvent(new RoutedPropertyChangedEventArgs<double?>(oldValue, null, ValueChangedEvent));
-
-                    return;
-                }
-
-                if (newValue <= Minimum)
-                {
-                    ResetInternal();
-
-                    if (IsLoaded)
-                        RaiseEvent(new RoutedEventArgs(MinimumReachedEvent));
-                }
-
-                if (newValue >= Maximum)
-                {
-                    ResetInternal();
-                    if (IsLoaded)
-                        RaiseEvent(new RoutedEventArgs(MaximumReachedEvent));
-                }
-
                 if (_valueTextBox != null)
-                    InternalSetText(newValue);
+                    _valueTextBox.Text = null;
+
+                if (oldValue != null)
+                    RaiseEvent(new RoutedPropertyChangedEventArgs<double?>(oldValue, null, ValueChangedEvent));
+
+                return;
             }
+
+            if (newValue <= Minimum)
+            {
+                ResetInternal();
+
+                if (IsLoaded)
+                    RaiseEvent(new RoutedEventArgs(MinimumReachedEvent));
+            }
+
+            if (newValue >= Maximum)
+            {
+                ResetInternal();
+                if (IsLoaded)
+                    RaiseEvent(new RoutedEventArgs(MaximumReachedEvent));
+            }
+
+            if (_valueTextBox != null)
+                InternalSetText(newValue);
 
             if (oldValue != null && !Equals(oldValue, newValue))
                 RaiseEvent(new RoutedPropertyChangedEventArgs<double?>(oldValue, newValue, ValueChangedEvent));
         }
 
-      
 
         private void InternalSetText(double? newValue)
         {
@@ -404,8 +397,6 @@ namespace SlotMachine.Views.Controls
 
         private void OnTextBoxKeyDown(object sender, KeyEventArgs e)
         {
-            _manualChange = true;
-
             if (!HasDecimals || e.Key != Key.Decimal && e.Key != Key.OemPeriod)
                 return;
 
@@ -424,9 +415,8 @@ namespace SlotMachine.Views.Controls
 
         private void OnTextBoxLostFocus(object sender, RoutedEventArgs e)
         {
-            var tb = (TextBox)sender;
-            _manualChange = false;
-
+            var tb = (TextBox) sender;
+          
             if (ValidateText(tb.Text, out var convertedValue))
             {
                 if (Equals(Value, convertedValue))
@@ -455,18 +445,18 @@ namespace SlotMachine.Views.Controls
 
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrEmpty(((TextBox)sender).Text))
+            if (string.IsNullOrEmpty(((TextBox) sender).Text))
                 Value = null;
-            else if (_manualChange && ValidateText(((TextBox)sender).Text, out var convertedValue))
+            else if (ValidateText(((TextBox) sender).Text, out var convertedValue))
             {
-                Value = (double?)CoerceValue(this, convertedValue);
+                Value = (double?) CoerceValue(this, convertedValue);
                 e.Handled = true;
             }
         }
 
         private void OnValueTextBoxPaste(object sender, DataObjectPastingEventArgs e)
         {
-            var textBox = (TextBox)sender;
+            var textBox = (TextBox) sender;
             var textPresent = textBox.Text;
 
             var isText = e.SourceDataObject.GetDataPresent(DataFormats.Text, true);
@@ -490,8 +480,8 @@ namespace SlotMachine.Views.Controls
 
         private static object CoerceMaximum(DependencyObject d, object value)
         {
-            var minimum = ((NumericBox)d).Minimum;
-            var val = (double)value;
+            var minimum = ((NumericBox) d).Minimum;
+            var val = (double) value;
             return val < minimum ? minimum : val;
         }
 
@@ -500,8 +490,8 @@ namespace SlotMachine.Views.Controls
             if (value == null)
                 return null;
 
-            var numericBox = (NumericBox)d;
-            var val = ((double?)value).Value;
+            var numericBox = (NumericBox) d;
+            var val = ((double?) value).Value;
 
             if (numericBox.HasDecimals == false)
                 val = Math.Truncate(val);
@@ -517,40 +507,40 @@ namespace SlotMachine.Views.Controls
 
         private static void IntervalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var numericBox = (NumericBox)d;
+            var numericBox = (NumericBox) d;
 
             numericBox.ResetInternal();
         }
 
         private static void OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var numericBox = (NumericBox)d;
+            var numericBox = (NumericBox) d;
 
             numericBox.CoerceValue(ValueProperty);
-            numericBox.OnMaximumChanged((double)e.OldValue, (double)e.NewValue);
+            numericBox.OnMaximumChanged((double) e.OldValue, (double) e.NewValue);
         }
 
         private static void OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var numericBox = (NumericBox)d;
+            var numericBox = (NumericBox) d;
 
             numericBox.CoerceValue(MaximumProperty);
             numericBox.CoerceValue(ValueProperty);
-            numericBox.OnMinimumChanged((double)e.OldValue, (double)e.NewValue);
+            numericBox.OnMinimumChanged((double) e.OldValue, (double) e.NewValue);
         }
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var numericBox = (NumericBox)d;
+            var numericBox = (NumericBox) d;
 
-            numericBox.OnValueChanged((double?)e.OldValue, (double?)e.NewValue);
+            numericBox.OnValueChanged((double?) e.OldValue, (double?) e.NewValue);
         }
 
         private static void OnHasDecimalsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var numericBox = (NumericBox)d;
+            var numericBox = (NumericBox) d;
 
-            if ((bool)e.NewValue == false && numericBox.Value != null)
+            if ((bool) e.NewValue == false && numericBox.Value != null)
                 numericBox.Value = Math.Truncate(numericBox.Value.GetValueOrDefault());
         }
 
