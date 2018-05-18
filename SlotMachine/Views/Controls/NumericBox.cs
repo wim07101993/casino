@@ -33,7 +33,7 @@ namespace SlotMachine.Views.Controls
             typeof(double),
             typeof(NumericBox),
             new FrameworkPropertyMetadata(double.MaxValue, OnMaximumChanged, CoerceMaximum));
-        
+
         #endregion DEPENDENCY PROPERTIES
 
         #region ROUTED EVENTS
@@ -93,7 +93,7 @@ namespace SlotMachine.Views.Controls
 
 
         #region PROPERTIES
-        
+
         public double Maximum
         {
             get => (double) GetValue(MaximumProperty);
@@ -137,7 +137,9 @@ namespace SlotMachine.Views.Controls
 
             OnValueChanged(Value, Value);
         }
-        
+
+        #region keyoard and mous increment/decrement
+
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
@@ -174,6 +176,9 @@ namespace SlotMachine.Views.Controls
             var increment = e.Delta > 0;
             ChangeValueInternal(increment);
         }
+
+        #endregion keyoard and mous increment/decrement
+
 
         private static void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -231,7 +236,7 @@ namespace SlotMachine.Views.Controls
                     e.Handled = false;
             }
         }
-        
+
         private void OnValueChanged(double? oldValue, double? newValue)
         {
             if (!newValue.HasValue)
@@ -335,7 +340,7 @@ namespace SlotMachine.Views.Controls
             return double.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out convertedValue);
         }
 
-        #region TEXT BOX EVENT HANDLERS
+        #region text box event handlers
 
         private void OnTextBoxLostFocus(object sender, RoutedEventArgs e)
         {
@@ -398,9 +403,9 @@ namespace SlotMachine.Views.Controls
                 e.CancelCommand();
         }
 
-        #endregion TEXT BOX EVENT HANDLERS
+        # endregion text box event handlers
 
-        #region DEPENDENCY PROPERTY CALLBACK
+        #region dependency property callbacks
 
         private static object CoerceMaximum(DependencyObject d, object value)
         {
@@ -426,7 +431,7 @@ namespace SlotMachine.Views.Controls
 
             return val;
         }
-        
+
         private static void OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             d.CoerceValue(ValueProperty);
@@ -440,10 +445,10 @@ namespace SlotMachine.Views.Controls
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((NumericBox)d).OnValueChanged((double?) e.OldValue, (double?) e.NewValue);
+            ((NumericBox) d).OnValueChanged((double?) e.OldValue, (double?) e.NewValue);
         }
 
-        #endregion DEPENDENCY PROPERTY CALLBACK
+        #endregion dependency property callbacks
 
         #region EVENTS
 
