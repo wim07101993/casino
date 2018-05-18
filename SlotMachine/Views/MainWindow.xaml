@@ -134,31 +134,33 @@
             DrawerDepth="335"
             IsOpen="{Binding ElementName=Opener, Path=IsChecked, Mode=TwoWay}"
             Style="{StaticResource LeftDrawerStyle}">
-            <StackPanel Margin="5">
-                <Grid x:Name="SlotSelector" Margin="5,5,10,5">
-                    <Grid.Style>
-                        <Style TargetType="{x:Type Grid}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsRunning}" Value="True">
-                                    <DataTrigger.Setters>
-                                        <Setter Property="IsEnabled" Value="False" />
-                                    </DataTrigger.Setters>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="5">
+                    <Grid x:Name="SlotSelector" Margin="5,5,10,5">
+                        <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
 
-                    <controls:NumericBox
-                        Hint="Number of slots"
-                        Maximum="6"
-                        Minimum="2"
-                        Value="{Binding NumberOfSlots}" />
-                </Grid>
+                        <controls:NumericBox
+                            Hint="Number of slots"
+                            Maximum="6"
+                            Minimum="2"
+                            Value="{Binding NumberOfSlots}" />
+                    </Grid>
 
-                <views:ColorSelector DataContext="{Binding ColorSelectorViewModel}" />
+                    <views:ColorSelector DataContext="{Binding ColorSelectorViewModel}" />
 
-                <views:SymbolSelector DataContext="{Binding SymbolSelectorViewModel}" />
-            </StackPanel>
+                    <views:SymbolSelector DataContext="{Binding SymbolSelectorViewModel}" />
+                </StackPanel>
+            </ScrollViewer>
         </controls:Drawer>
     </Grid>
 </Window>
