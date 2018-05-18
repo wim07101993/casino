@@ -17,9 +17,9 @@ namespace SlotMachine.Views.Controls
 
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             nameof(Value),
-            typeof(double?),
+            typeof(double),
             typeof(NumericBox),
-            new FrameworkPropertyMetadata(default(double?), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+            new FrameworkPropertyMetadata(default(double), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 OnValueChanged, CoerceValue));
 
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
@@ -77,7 +77,6 @@ namespace SlotMachine.Views.Controls
             HorizontalContentAlignmentProperty.OverrideMetadata(typeof(NumericBox),
                 new FrameworkPropertyMetadata(HorizontalAlignment.Right));
         }
-
         #endregion CONSTRUCTORS
 
 
@@ -101,9 +100,9 @@ namespace SlotMachine.Views.Controls
             set => SetValue(TextAlignmentProperty, value);
         }
 
-        public double? Value
+        public double Value
         {
-            get => (double?) GetValue(ValueProperty);
+            get => (double) GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
 
@@ -282,14 +281,14 @@ namespace SlotMachine.Views.Controls
             }
 
             var increment = direction * _intervalMultiplierForCalculation;
-            Value = (double)CoerceValue(this, Value.GetValueOrDefault() + increment);
+            Value = (double)CoerceValue(this, Value + increment);
             _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
         }
 
         private void ChangeValueInternal(bool addInterval)
         {
             var increment = addInterval ? 1 : -1;
-            Value = (double)CoerceValue(this, Value.GetValueOrDefault() + increment);
+            Value = (double)CoerceValue(this, Value + increment);
             _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
         }
 
@@ -346,10 +345,10 @@ namespace SlotMachine.Views.Controls
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrEmpty(((TextBox) sender).Text))
-                Value = null;
+                Value = 0;
             else if (ValidateText(((TextBox) sender).Text, out var convertedValue))
             {
-                Value = (double?) CoerceValue(this, convertedValue);
+                Value = (double) CoerceValue(this, convertedValue);
                 e.Handled = true;
             }
         }
@@ -387,20 +386,19 @@ namespace SlotMachine.Views.Controls
 
         private static object CoerceValue(DependencyObject d, object value)
         {
-            if (value == null)
-                return null;
+            if (!(value is double dValue))
+                return 0;
 
             var numericBox = (NumericBox) d;
-            var val = ((double?) value).Value;
-            val = Math.Truncate(val);
+            dValue = Math.Truncate(dValue);
 
-            if (val < numericBox.Minimum)
+            if (dValue < numericBox.Minimum)
                 return numericBox.Minimum;
 
-            if (val > numericBox.Maximum)
+            if (dValue > numericBox.Maximum)
                 return numericBox.Maximum;
 
-            return val;
+            return dValue;
         }
 
         private static void OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
