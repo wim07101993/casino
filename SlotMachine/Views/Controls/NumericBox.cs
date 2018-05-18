@@ -178,15 +178,19 @@ namespace SlotMachine.Views.Controls
         {
             base.OnPreviewKeyUp(e);
 
-            if (e.Key == Key.Down ||
-                e.Key == Key.Up)
-                ResetInterval();
+            switch (e.Key)
+            {
+                case Key.Down:
+                case Key.Up:
+                    ResetInterval();
+                    break;
+            }
         }
 
         protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
         {
             base.OnPreviewMouseWheel(e);
-            
+
             var increment = e.Delta > 0 ? 1 : -1;
             Value = (double) CoerceValue(this, Value + increment);
         }
