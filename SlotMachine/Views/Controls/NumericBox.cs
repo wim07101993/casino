@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -80,14 +79,12 @@ namespace SlotMachine.Views.Controls
 
         private readonly Tuple<string, string> _removeFromText = new Tuple<string, string>(string.Empty, string.Empty);
 
-        private Lazy<PropertyInfo> _handlesMouseWheelScrolling = new Lazy<PropertyInfo>();
         private double _internalIntervalMultiplierForCalculation = DefaultInterval;
         private double _internalLargeChange = DefaultInterval * 100;
         private double _intervalValueSinceReset;
         private bool _manualChange;
         private TextBox _valueTextBox;
-        private ScrollViewer _scrollViewer;
-
+        
         #endregion FIELDS
 
 
@@ -164,8 +161,6 @@ namespace SlotMachine.Views.Controls
             DataObject.AddPastingHandler(_valueTextBox, OnValueTextBoxPaste);
 
             OnValueChanged(Value, Value);
-
-            _scrollViewer = TryFindScrollViewer();
         }
 
         public void SelectAll() => _valueTextBox?.SelectAll();
@@ -214,15 +209,12 @@ namespace SlotMachine.Views.Controls
         {
             base.OnPreviewMouseWheel(e);
 
-            if (IsFocused || _valueTextBox.IsFocused)
-            {
-                var increment = e.Delta > 0;
-                _manualChange = false;
-                ChangeValueInternal(increment);
-            }
+            if (!IsFocused && !_valueTextBox.IsFocused)
+                return;
 
-            if (_scrollViewer != null && _handlesMouseWheelScrolling.Value != null)
-                _handlesMouseWheelScrolling.Value.SetValue(_scrollViewer, _valueTextBox.IsFocused, null);
+            var increment = e.Delta > 0;
+            _manualChange = false;
+            ChangeValueInternal(increment);
         }
 
         protected void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -342,20 +334,6 @@ namespace SlotMachine.Views.Controls
             }
 
             _valueTextBox.Text = newValue.Value.ToString(CultureInfo.CurrentCulture);
-        }
-
-        private ScrollViewer TryFindScrollViewer()
-        {
-            _valueTextBox.ApplyTemplate();
-            var scrollViewer = _valueTextBox.Template.FindName("PART_ContentHost", _valueTextBox) as ScrollViewer;
-            if (scrollViewer != null)
-            {
-                _handlesMouseWheelScrolling = new Lazy<PropertyInfo>(() =>
-                    _scrollViewer.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance)
-                        .SingleOrDefault(i => i.Name == "HandlesMouseWheelScrolling"));
-            }
-
-            return scrollViewer;
         }
 
         private void ChangeValueWithSpeedUp(bool toPositive)
