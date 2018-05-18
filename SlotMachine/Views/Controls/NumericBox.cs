@@ -37,7 +37,7 @@ namespace SlotMachine.Views.Controls
         #endregion DEPENDENCY PROPERTIES
 
         #region ROUTED EVENTS
-        
+
         public static readonly RoutedEvent MaximumReachedEvent = EventManager.RegisterRoutedEvent("MaximumReached",
             RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NumericBox));
 
@@ -77,6 +77,7 @@ namespace SlotMachine.Views.Controls
             HorizontalContentAlignmentProperty.OverrideMetadata(typeof(NumericBox),
                 new FrameworkPropertyMetadata(HorizontalAlignment.Right));
         }
+
         #endregion CONSTRUCTORS
 
 
@@ -126,7 +127,7 @@ namespace SlotMachine.Views.Controls
             OnValueChanged(Value, Value);
         }
 
-        #region keyoard and mous increment/decrement
+        #region keyboard and mouse increment/decrement
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
@@ -136,11 +137,11 @@ namespace SlotMachine.Views.Controls
             {
                 case Key.Up:
                     ChangeValueWithSpeedUp(true);
-                    InternalSetText(Value);
+                    _valueTextBox.Text = Value.ToString(CultureInfo.CurrentCulture);
                     break;
                 case Key.Down:
                     ChangeValueWithSpeedUp(false);
-                    InternalSetText(Value);
+                    _valueTextBox.Text = Value.ToString(CultureInfo.CurrentCulture);
                     break;
             }
         }
@@ -165,7 +166,7 @@ namespace SlotMachine.Views.Controls
             ChangeValueInternal(increment);
         }
 
-        #endregion keyoard and mous increment/decrement
+        #endregion keyboard and mouse increment/decrement
 
         private static void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -224,19 +225,8 @@ namespace SlotMachine.Views.Controls
             }
         }
 
-        private void OnValueChanged(double? oldValue, double? newValue)
+        private void OnValueChanged(double oldValue, double newValue)
         {
-            if (!newValue.HasValue)
-            {
-                if (_valueTextBox != null)
-                    _valueTextBox.Text = null;
-
-                if (oldValue != null)
-                    RaiseEvent(new RoutedPropertyChangedEventArgs<double?>(oldValue, null, ValueChangedEvent));
-
-                return;
-            }
-
             if (newValue <= Minimum)
             {
                 ResetInterval();
@@ -253,22 +243,12 @@ namespace SlotMachine.Views.Controls
             }
 
             if (_valueTextBox != null)
-                InternalSetText(newValue);
+                _valueTextBox.Text = newValue.ToString(CultureInfo.CurrentCulture);
 
-            if (oldValue != null && !Equals(oldValue, newValue))
+            if (!Equals(oldValue, newValue))
                 RaiseEvent(new RoutedPropertyChangedEventArgs<double?>(oldValue, newValue, ValueChangedEvent));
         }
 
-        private void InternalSetText(double? newValue)
-        {
-            if (!newValue.HasValue)
-            {
-                _valueTextBox.Text = null;
-                return;
-            }
-
-            _valueTextBox.Text = newValue.Value.ToString(CultureInfo.CurrentCulture);
-        }
 
         private void ChangeValueWithSpeedUp(bool toPositive)
         {
@@ -281,14 +261,14 @@ namespace SlotMachine.Views.Controls
             }
 
             var increment = direction * _intervalMultiplierForCalculation;
-            Value = (double)CoerceValue(this, Value + increment);
+            Value = (double) CoerceValue(this, Value + increment);
             _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
         }
 
         private void ChangeValueInternal(bool addInterval)
         {
             var increment = addInterval ? 1 : -1;
-            Value = (double)CoerceValue(this, Value + increment);
+            Value = (double) CoerceValue(this, Value + increment);
             _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
         }
 
@@ -414,7 +394,7 @@ namespace SlotMachine.Views.Controls
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((NumericBox) d).OnValueChanged((double?) e.OldValue, (double?) e.NewValue);
+            ((NumericBox) d).OnValueChanged((double) e.OldValue, (double) e.NewValue);
         }
 
         #endregion dependency property callbacks
@@ -426,6 +406,7 @@ namespace SlotMachine.Views.Controls
             add => AddHandler(ValueChangedEvent, value);
             remove => RemoveHandler(ValueChangedEvent, value);
         }
+
         #endregion EVENTS
     }
 }
