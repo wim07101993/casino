@@ -57,8 +57,8 @@
 
                             <controls:IconToggleButton
                                 x:Name="Opener"
-                                Width="35"
-                                Height="35"
+                                Width="40"
+                                Height="40"
                                 Margin="5"
                                 HorizontalAlignment="Right"
                                 Foreground="{DynamicResource PrimaryDarkBrush}"
