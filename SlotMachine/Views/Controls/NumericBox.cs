@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,10 +10,7 @@ namespace SlotMachine.Views.Controls
     public class NumericBox : Control
     {
         #region DEPENDENCY PROPERTIES
-
-        public static readonly DependencyProperty TextAlignmentProperty =
-            TextBox.TextAlignmentProperty.AddOwner(typeof(NumericBox));
-
+        
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             nameof(Value),
             typeof(double),
@@ -36,10 +32,14 @@ namespace SlotMachine.Views.Controls
 
         #endregion DEPENDENCY PROPERTIES
 
+
         #region ROUTED EVENTS
 
-        public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent("ValueChanged",
-            RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<double?>), typeof(NumericBox));
+        public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent(
+            nameof(ValueChanged),
+            RoutingStrategy.Bubble,
+            typeof(RoutedPropertyChangedEventHandler<double>),
+            typeof(NumericBox));
 
         #endregion ROUTED EVENTS
 
@@ -81,13 +81,7 @@ namespace SlotMachine.Views.Controls
             get => (double) GetValue(MinimumProperty);
             set => SetValue(MinimumProperty, value);
         }
-
-        public TextAlignment TextAlignment
-        {
-            get => (TextAlignment) GetValue(TextAlignmentProperty);
-            set => SetValue(TextAlignmentProperty, value);
-        }
-
+        
         public double Value
         {
             get => (double) GetValue(ValueProperty);

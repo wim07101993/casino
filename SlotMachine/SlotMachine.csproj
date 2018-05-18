@@ -230,8 +230,6 @@
     <Compile Include="Views\Controls\Drawer.cs" />
     <Compile Include="Views\Controls\IconCheckBox.cs" />
     <Compile Include="Views\Controls\NumericBox.cs" />
-    <Compile Include="Views\Controls\NumericBoxChangedRoutedEventArgs.cs" />
-    <Compile Include="Views\Controls\NumericBoxChangedRoutedEventHandler.cs" />
     <Compile Include="Views\Converters\ColorToSolidColorBrushConverter.cs" />
     <Compile Include="Views\Converters\MultiplyConverter.cs" />
     <Compile Include="Views\Converters\IntToVisualConverter.cs" />
