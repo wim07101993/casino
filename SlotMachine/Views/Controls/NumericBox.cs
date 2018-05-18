@@ -230,7 +230,7 @@ namespace SlotMachine.Views.Controls
                 _valueTextBox.Text = newValue.ToString(CultureInfo.CurrentCulture);
 
             if (!Equals(oldValue, newValue))
-                RaiseEvent(new RoutedPropertyChangedEventArgs<double?>(oldValue, newValue, ValueChangedEvent));
+                RaiseEvent(new RoutedPropertyChangedEventArgs<double>(oldValue, newValue, ValueChangedEvent));
         }
 
         private void ChangeValueWithSpeedUp(bool toPositive)
@@ -262,32 +262,31 @@ namespace SlotMachine.Views.Controls
 
         private void OnTextBoxLostFocus(object sender, RoutedEventArgs e)
         {
-            var tb = (TextBox) sender;
-
-            if (ValidateText(tb.Text, out var convertedValue))
+            if (!ValidateText(((TextBox) sender).Text, out var convertedValue))
             {
-                if (Equals(Value, convertedValue))
-                    OnValueChanged(Value, Value);
+                OnValueChanged(Value, Value);
+                return;
+            }
 
-                if (convertedValue > Maximum)
-                {
-                    if (Equals(Value, Maximum))
-                        OnValueChanged(Value, Value);
-                    else
-                        SetValue(ValueProperty, Maximum);
-                }
-                else if (convertedValue < Minimum)
-                {
-                    if (Equals(Value, Minimum))
-                        OnValueChanged(Value, Value);
-                    else
-                        SetValue(ValueProperty, Minimum);
-                }
+            if (Equals(Value, convertedValue))
+                OnValueChanged(Value, Value);
+
+            if (convertedValue > Maximum)
+            {
+                if (Equals(Value, Maximum))
+                    OnValueChanged(Value, Value);
                 else
-                    SetValue(ValueProperty, convertedValue);
+                    SetValue(ValueProperty, Maximum);
+            }
+            else if (convertedValue < Minimum)
+            {
+                if (Equals(Value, Minimum))
+                    OnValueChanged(Value, Value);
+                else
+                    SetValue(ValueProperty, Minimum);
             }
             else
-                OnValueChanged(Value, Value);
+                SetValue(ValueProperty, convertedValue);
         }
 
         private void OnTextChanged(object sender, TextChangedEventArgs e)
@@ -372,7 +371,7 @@ namespace SlotMachine.Views.Controls
 
         #region EVENTS
 
-        public event RoutedPropertyChangedEventHandler<double?> ValueChanged
+        public event RoutedPropertyChangedEventHandler<double> ValueChanged
         {
             add => AddHandler(ValueChangedEvent, value);
             remove => RemoveHandler(ValueChangedEvent, value);
