@@ -195,57 +195,7 @@ namespace SlotMachine.Views.Controls
         }
 
         private static void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = true;
-            if (string.IsNullOrWhiteSpace(e.Text) || e.Text.Length != 1)
-                return;
-
-            var text = e.Text;
-            if (char.IsDigit(text[0]))
-                e.Handled = false;
-            else
-            {
-                var culture = CultureInfo.CurrentCulture;
-                var format = culture.NumberFormat;
-                var comp = StringComparison.CurrentCultureIgnoreCase;
-
-                var textBox = (TextBox) sender;
-                var allTextSelected = textBox.SelectedText == textBox.Text;
-
-                if (format.NumberDecimalSeparator == text)
-                    return;
-
-                if (format.NegativeSign == text ||
-                    text == format.PositiveSign)
-                {
-                    if (textBox.SelectionStart == 0)
-                    {
-                        if (textBox.Text.Length > 1)
-                        {
-                            if (allTextSelected ||
-                                !textBox.Text.StartsWith(format.NegativeSign, comp) &&
-                                !textBox.Text.StartsWith(format.PositiveSign, comp))
-                                e.Handled = false;
-                        }
-                        else
-                            e.Handled = false;
-                    }
-                    else if (textBox.SelectionStart > 0)
-                    {
-                        var elementBeforeCaret = textBox.Text
-                            .ElementAt(textBox.SelectionStart - 1)
-                            .ToString(culture);
-
-                        if (elementBeforeCaret.Equals("E", comp))
-                            e.Handled = false;
-                    }
-                }
-                else if (text.Equals("E", comp) &&
-                         textBox.SelectionStart > 0 &&
-                         !textBox.Text.Any(i => i.ToString(culture).Equals("E", comp)))
-                    e.Handled = false;
-            }
-        }
+            => e.Handled = string.IsNullOrWhiteSpace(e.Text) || e.Text.Length != 1 || !char.IsDigit(e.Text[0]);
 
         #endregion keyboard and mouse increment/decrement
 
