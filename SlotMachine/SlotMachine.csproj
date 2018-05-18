@@ -80,6 +80,13 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Services\Implementations\SymbolProvider.cs" />
+    <Compile Include="Services\ISymbolProvider.cs" />
+    <Compile Include="ViewModelInerfaces\ISymbolSelectorViewModel.cs" />
+    <Compile Include="ViewModels\SymbolSelectorViewModel.cs" />
+    <Compile Include="Views\SymbolSelector.xaml.cs">
+      <DependentUpon>SymbolSelector.xaml</DependentUpon>
+    </Compile>
     <Page Include="Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -203,6 +210,12 @@
     <Page Include="Views\Icons\Symbols\Classic.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Icons\Symbols\Emoticons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Icons\Symbols\Numbers.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -215,11 +228,14 @@
     <Compile Include="Helpers\Extensions\ResourceDictionaryExtensions.cs" />
     <Compile Include="Models\ColorTheme.cs" />
     <Compile Include="Models\Number.cs" />
+    <Compile Include="Models\SymbolTheme.cs" />
     <Compile Include="Services\AResourceService.cs" />
     <Compile Include="Services\IColorProvider.cs" />
     <Compile Include="Services\Implementations\ColorProvider.cs" />
     <Compile Include="Services\Implementations\ColorThemeService.cs" />
     <Compile Include="Services\IColorThemeService.cs" />
+    <Compile Include="Services\Implementations\SymbolThemeService.cs" />
+    <Compile Include="Services\ISymbolThemeService.cs" />
     <Compile Include="ViewModelInerfaces\IColorSelectorViewModel.cs" />
     <Compile Include="ViewModelInerfaces\IMainWindowViewModel.cs" />
     <Compile Include="ViewModels\ColorSelectorViewModel.cs" />
@@ -254,6 +270,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Styles\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SymbolSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

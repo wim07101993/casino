@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
-using Prism.Commands;
+using Prism.Mvvm;
 using SlotMachine.Helpers.Extensions;
 using SlotMachine.Models;
 using SlotMachine.Services;
@@ -10,7 +8,7 @@ using SlotMachine.ViewModelInerfaces;
 
 namespace SlotMachine.ViewModels
 {
-    public class ColorSelectorViewModel : IColorSelectorViewModel
+    public class ColorSelectorViewModel : BindableBase, IColorSelectorViewModel
     {
         private readonly IColorThemeService _colorThemeService;
 

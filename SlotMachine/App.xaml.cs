@@ -15,8 +15,6 @@ namespace SlotMachine
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            Number.MaxValue = 3;
-
             Number.MinSpinTime = 100;
             Number.MaxSpinTime = 2000;
 
@@ -36,8 +34,10 @@ namespace SlotMachine
             UnityContainer = new UnityContainer()
                 .RegisterType<IColorProvider, ColorProvider>()
                 .RegisterType<IColorThemeService, ColorThemeService>()
-
+                .RegisterType<ISymbolProvider, SymbolProvider>()
+                .RegisterType<ISymbolThemeService, SymbolThemeService>()
                 .RegisterType<IColorSelectorViewModel, ColorSelectorViewModel>()
+                .RegisterType<ISymbolSelectorViewModel, SymbolSelectorViewModel>()
                 .RegisterType<IMainWindowViewModel, MainWindowViewModel>();
         }
     }

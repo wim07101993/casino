@@ -1,11 +1,13 @@
 ﻿<UserControl
-    x:Class="SlotMachine.Views.ColorSelector"
+    x:Class="SlotMachine.Views.SymbolSelector"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModelInerfaces="clr-namespace:SlotMachine.ViewModelInerfaces"
-    d:DataContext="{d:DesignInstance viewModelInerfaces:IColorSelectorViewModel}"
+    d:DataContext="{d:DesignInstance viewModelInerfaces:ISymbolSelectorViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -112,48 +114,20 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
-        <TextBlock
-            Grid.Row="0"
-            Margin="5"
-            Text="Accent Color" />
 
         <ListBox
             Grid.Row="1"
             ItemsPanel="{StaticResource ItemsPanelTemplate}"
-            ItemsSource="{Binding AccentColorThemes}"
-            SelectedItem="{Binding SelectedAccent, Mode=OneWayToSource}">
+            ItemsSource="{Binding Symbols}"
+            SelectedItem="{Binding SelectedSymbols, Mode=OneWayToSource}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Ellipse
                         Width="28"
                         Height="28"
-                        Fill="{Binding Accent700, Converter={StaticResource ColorToSolidColorBrushConverter}}"
-                        Visibility="{Binding Accent700, Converter={StaticResource ObjectToVisibilityConverter}}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
-        <TextBlock
-            Grid.Row="2"
-            Margin="5"
-            Text="Primary Color" />
-
-        <ListBox
-            Grid.Row="3"
-            ItemsPanel="{StaticResource ItemsPanelTemplate}"
-            ItemsSource="{Binding PrimaryColorThemes}"
-            SelectedItem="{Binding SelectedPrimary, Mode=OneWayToSource}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Ellipse
-                        Width="28"
-                        Height="28"
-                        Fill="{Binding Primary700, Converter={StaticResource ColorToSolidColorBrushConverter}}"
-                        Visibility="{Binding Primary700, Converter={StaticResource ObjectToVisibilityConverter}}" />
+                        Fill="{Binding Six, Converter={StaticResource ColorToSolidColorBrushConverter}}"
+                        Visibility="{Binding Six, Converter={StaticResource ObjectToVisibilityConverter}}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

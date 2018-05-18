@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Input;
 using SlotMachine.Models;
 
 namespace SlotMachine.ViewModelInerfaces
