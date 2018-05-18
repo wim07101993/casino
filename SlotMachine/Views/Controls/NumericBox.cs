@@ -121,7 +121,7 @@ namespace SlotMachine.Views.Controls
 
             DataObject.AddPastingHandler(_valueTextBox, OnValueTextBoxPaste);
 
-            OnValueChanged(Value, Value);
+            ResetInterval();
         }
 
         #region keyboard and mouse increment/decrement
@@ -228,7 +228,8 @@ namespace SlotMachine.Views.Controls
             if (newValue <= Minimum || newValue >= Maximum)
                 ResetInterval();
 
-            _valueTextBox.Text = newValue.ToString(CultureInfo.CurrentCulture);
+            if (_valueTextBox != null)
+                _valueTextBox.Text = newValue.ToString(CultureInfo.CurrentCulture);
 
             if (!Equals(oldValue, newValue))
                 RaiseEvent(new RoutedPropertyChangedEventArgs<double?>(oldValue, newValue, ValueChangedEvent));
