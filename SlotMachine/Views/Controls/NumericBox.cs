@@ -61,15 +61,13 @@ namespace SlotMachine.Views.Controls
 
         #region FIELDS
 
-        private const double DefaultInterval = 1d;
         private const string ElementTextBox = "TextBoxPart";
         private const string ScientificNotationChar = "E";
 
         private readonly Tuple<string, string> _removeFromText = new Tuple<string, string>(string.Empty, string.Empty);
 
-        private double _interval = 1;
-        private double _intervalMultiplierForCalculation = DefaultInterval;
-        private double _intervalLargeChange = DefaultInterval * 100;
+        private double _intervalMultiplierForCalculation = 1;
+        private double _intervalLargeChange = 100;
         private double _intervalValueSinceReset;
         private TextBox _valueTextBox;
 
@@ -179,7 +177,6 @@ namespace SlotMachine.Views.Controls
 
         #endregion keyoard and mous increment/decrement
 
-
         private static void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = true;
@@ -286,8 +283,8 @@ namespace SlotMachine.Views.Controls
         private void ChangeValueWithSpeedUp(bool toPositive)
         {
             double direction = toPositive ? 1 : -1;
-            var d = _interval * _intervalLargeChange;
-            if ((_intervalValueSinceReset += _interval * _intervalMultiplierForCalculation) > d)
+            var d = _intervalLargeChange;
+            if ((_intervalValueSinceReset += _intervalMultiplierForCalculation) > d)
             {
                 _intervalLargeChange *= 10;
                 _intervalMultiplierForCalculation *= 10;
@@ -298,7 +295,7 @@ namespace SlotMachine.Views.Controls
 
         private void ChangeValueInternal(bool addInterval)
         {
-            ChangeValueInternal(addInterval ? _interval : -_interval);
+            ChangeValueInternal(addInterval ? 1 : -1);
         }
 
         private void ChangeValueInternal(double interval)
@@ -324,8 +321,8 @@ namespace SlotMachine.Views.Controls
 
         private void ResetInterval()
         {
-            _intervalLargeChange = 100 * _interval;
-            _intervalMultiplierForCalculation = _interval;
+            _intervalLargeChange = 100;
+            _intervalMultiplierForCalculation = 1;
             _intervalValueSinceReset = 0;
         }
 
