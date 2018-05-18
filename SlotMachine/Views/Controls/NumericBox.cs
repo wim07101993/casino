@@ -49,8 +49,6 @@ namespace SlotMachine.Views.Controls
         private const string ElementTextBox = "TextBoxPart";
         private const string ScientificNotationChar = "E";
 
-        private readonly Tuple<string, string> _removeFromText = new Tuple<string, string>(string.Empty, string.Empty);
-
         private double _intervalMultiplierForCalculation = 1;
         private double _intervalLargeChange = 100;
         private double _intervalValueSinceReset;
@@ -258,15 +256,7 @@ namespace SlotMachine.Views.Controls
         }
 
         private bool ValidateText(string text, out double convertedValue)
-        {
-            if (!string.IsNullOrEmpty(_removeFromText.Item1))
-                text = text.Replace(_removeFromText.Item1, string.Empty);
-
-            if (!string.IsNullOrEmpty(_removeFromText.Item2))
-                text = text.Replace(_removeFromText.Item2, string.Empty);
-
-            return double.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out convertedValue);
-        }
+            => double.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out convertedValue);
 
         #region text box event handlers
 
