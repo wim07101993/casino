@@ -281,20 +281,16 @@ namespace SlotMachine.Views.Controls
                 _intervalMultiplierForCalculation *= 10;
             }
 
-            ChangeValueBy(direction * _intervalMultiplierForCalculation);
+            var increment = direction * _intervalMultiplierForCalculation;
+            Value = (double)CoerceValue(this, Value.GetValueOrDefault() + increment);
             _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
         }
 
         private void ChangeValueInternal(bool addInterval)
         {
-            ChangeValueBy(addInterval ? 1 : -1);
+            var increment = addInterval ? 1 : -1;
+            Value = (double)CoerceValue(this, Value.GetValueOrDefault() + increment);
             _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
-        }
-        
-        private void ChangeValueBy(double difference)
-        {
-            var newValue = Value.GetValueOrDefault() + difference;
-            Value = (double) CoerceValue(this, newValue);
         }
 
         private void ResetInterval()
