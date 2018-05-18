@@ -38,12 +38,6 @@ namespace SlotMachine.Views.Controls
 
         #region ROUTED EVENTS
 
-        public static readonly RoutedEvent MaximumReachedEvent = EventManager.RegisterRoutedEvent("MaximumReached",
-            RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NumericBox));
-
-        public static readonly RoutedEvent MinimumReachedEvent = EventManager.RegisterRoutedEvent("MinimumReached",
-            RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NumericBox));
-
         public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent("ValueChanged",
             RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<double?>), typeof(NumericBox));
 
@@ -165,8 +159,9 @@ namespace SlotMachine.Views.Controls
             if (!IsFocused && !_valueTextBox.IsFocused)
                 return;
 
-            var increment = e.Delta > 0;
-            ChangeValueInternal(increment);
+            var increment = e.Delta > 0 ? 1 : -1;
+            Value = (double) CoerceValue(this, Value + increment);
+            _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
         }
 
         #endregion keyboard and mouse increment/decrement
@@ -185,7 +180,7 @@ namespace SlotMachine.Views.Controls
             {
                 var equivalentCulture = CultureInfo.CurrentCulture;
                 var numberFormatInfo = equivalentCulture.NumberFormat;
-                var textBox = (TextBox)sender;
+                var textBox = (TextBox) sender;
                 var allTextSelected = textBox.SelectedText == textBox.Text;
 
                 if (numberFormatInfo.NumberDecimalSeparator == text)
@@ -230,28 +225,14 @@ namespace SlotMachine.Views.Controls
 
         private void OnValueChanged(double oldValue, double newValue)
         {
-            if (newValue <= Minimum)
-            {
+            if (newValue <= Minimum || newValue >= Maximum)
                 ResetInterval();
 
-                if (IsLoaded)
-                    RaiseEvent(new RoutedEventArgs(MinimumReachedEvent));
-            }
-
-            if (newValue >= Maximum)
-            {
-                ResetInterval();
-                if (IsLoaded)
-                    RaiseEvent(new RoutedEventArgs(MaximumReachedEvent));
-            }
-
-            if (_valueTextBox != null)
-                _valueTextBox.Text = newValue.ToString(CultureInfo.CurrentCulture);
+            _valueTextBox.Text = newValue.ToString(CultureInfo.CurrentCulture);
 
             if (!Equals(oldValue, newValue))
                 RaiseEvent(new RoutedPropertyChangedEventArgs<double?>(oldValue, newValue, ValueChangedEvent));
         }
-
 
         private void ChangeValueWithSpeedUp(bool toPositive)
         {
@@ -264,14 +245,7 @@ namespace SlotMachine.Views.Controls
             }
 
             var increment = direction * _intervalMultiplierForCalculation;
-            Value = (double)CoerceValue(this, Value + increment);
-            _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
-        }
-
-        private void ChangeValueInternal(bool addInterval)
-        {
-            var increment = addInterval ? 1 : -1;
-            Value = (double)CoerceValue(this, Value + increment);
+            Value = (double) CoerceValue(this, Value + increment);
             _valueTextBox.CaretIndex = _valueTextBox.Text.Length;
         }
 
@@ -297,7 +271,7 @@ namespace SlotMachine.Views.Controls
 
         private void OnTextBoxLostFocus(object sender, RoutedEventArgs e)
         {
-            var tb = (TextBox)sender;
+            var tb = (TextBox) sender;
 
             if (ValidateText(tb.Text, out var convertedValue))
             {
@@ -327,18 +301,18 @@ namespace SlotMachine.Views.Controls
 
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrEmpty(((TextBox)sender).Text))
+            if (string.IsNullOrEmpty(((TextBox) sender).Text))
                 Value = 0;
-            else if (ValidateText(((TextBox)sender).Text, out var convertedValue))
+            else if (ValidateText(((TextBox) sender).Text, out var convertedValue))
             {
-                Value = (double)CoerceValue(this, convertedValue);
+                Value = (double) CoerceValue(this, convertedValue);
                 e.Handled = true;
             }
         }
 
         private void OnValueTextBoxPaste(object sender, DataObjectPastingEventArgs e)
         {
-            var textBox = (TextBox)sender;
+            var textBox = (TextBox) sender;
             var textPresent = textBox.Text;
 
             var isText = e.SourceDataObject.GetDataPresent(DataFormats.Text, true);
@@ -362,8 +336,8 @@ namespace SlotMachine.Views.Controls
 
         private static object CoerceMaximum(DependencyObject d, object value)
         {
-            var minimum = ((NumericBox)d).Minimum;
-            var val = (double)value;
+            var minimum = ((NumericBox) d).Minimum;
+            var val = (double) value;
             return val < minimum ? minimum : val;
         }
 
@@ -372,7 +346,7 @@ namespace SlotMachine.Views.Controls
             if (!(value is double dValue))
                 return 0;
 
-            var numericBox = (NumericBox)d;
+            var numericBox = (NumericBox) d;
             dValue = Math.Truncate(dValue);
 
             if (dValue < numericBox.Minimum)
@@ -397,7 +371,7 @@ namespace SlotMachine.Views.Controls
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((NumericBox)d).OnValueChanged((double)e.OldValue, (double)e.NewValue);
+            ((NumericBox) d).OnValueChanged((double) e.OldValue, (double) e.NewValue);
         }
 
         #endregion dependency property callbacks
