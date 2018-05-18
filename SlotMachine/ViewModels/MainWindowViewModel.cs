@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using SlotMachine.Helpers.Extensions;
 using SlotMachine.Helpers.PubSubEvents;
 using SlotMachine.Models;
 using SlotMachine.ViewModelInerfaces;
@@ -21,6 +22,7 @@ namespace SlotMachine.ViewModels
         private bool _youWon;
         private int _numberOfSlots;
         private bool _isRunning;
+        private ObservableCollection<Number> _numbers;
 
         #endregion FIELDS
 
@@ -65,7 +67,11 @@ namespace SlotMachine.ViewModels
             }
         }
 
-        public ObservableCollection<Number> Numbers { get; }
+        public ObservableCollection<Number> Numbers
+        {
+            get => _numbers;
+            set => SetProperty(ref _numbers, value);
+        }
 
         public ICommand RollCommand { get; }
 
@@ -88,6 +94,12 @@ namespace SlotMachine.ViewModels
 
         public void RefreshSymbols()
         {
+            if (NumberOfSlots == Numbers.Count)
+            {
+                Numbers = Numbers.ToObservableCollection();
+                return;
+            }
+
             Numbers.Clear();
             for (var i = 0; i < _numberOfSlots; i++)
             {
