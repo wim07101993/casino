@@ -150,15 +150,7 @@ namespace SlotMachine.Views.Controls
         }
 
         public void SelectAll() => _valueTextBox?.SelectAll();
-
-        protected virtual void OnMaximumChanged(double oldMaximum, double newMaximum)
-        {
-        }
-
-        protected virtual void OnMinimumChanged(double oldMinimum, double newMinimum)
-        {
-        }
-
+        
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
@@ -201,7 +193,7 @@ namespace SlotMachine.Views.Controls
             ChangeValueInternal(increment);
         }
 
-        protected void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        private static void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = true;
             if (string.IsNullOrWhiteSpace(e.Text) ||
@@ -257,12 +249,8 @@ namespace SlotMachine.Views.Controls
                     e.Handled = false;
             }
         }
-
-        protected virtual void OnSpeedupChanged(bool oldSpeedup, bool newSpeedup)
-        {
-        }
-
-        protected virtual void OnValueChanged(double? oldValue, double? newValue)
+        
+        private void OnValueChanged(double? oldValue, double? newValue)
         {
             if (!newValue.HasValue)
             {
@@ -357,20 +345,13 @@ namespace SlotMachine.Views.Controls
 
         private bool ValidateText(string text, out double convertedValue)
         {
-            text = RemoveStringFormatFromText(text);
-
-            return double.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out convertedValue);
-        }
-
-        private string RemoveStringFormatFromText(string text)
-        {
             if (!string.IsNullOrEmpty(_removeFromText.Item1))
                 text = text.Replace(_removeFromText.Item1, string.Empty);
 
             if (!string.IsNullOrEmpty(_removeFromText.Item2))
                 text = text.Replace(_removeFromText.Item2, string.Empty);
 
-            return text;
+            return double.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out convertedValue);
         }
 
         #region TEXT BOX EVENT HANDLERS
@@ -474,19 +455,13 @@ namespace SlotMachine.Views.Controls
 
         private static void OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var numericBox = (NumericBox) d;
-
-            numericBox.CoerceValue(ValueProperty);
-            numericBox.OnMaximumChanged((double) e.OldValue, (double) e.NewValue);
+            d.CoerceValue(ValueProperty);
         }
 
         private static void OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var numericBox = (NumericBox) d;
-
-            numericBox.CoerceValue(MaximumProperty);
-            numericBox.CoerceValue(ValueProperty);
-            numericBox.OnMinimumChanged((double) e.OldValue, (double) e.NewValue);
+            d.CoerceValue(MaximumProperty);
+            d.CoerceValue(MinimumProperty);
         }
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
