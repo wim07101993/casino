@@ -34,12 +34,6 @@ namespace SlotMachine.Views.Controls
             typeof(NumericBox),
             new FrameworkPropertyMetadata(double.MaxValue, OnMaximumChanged, CoerceMaximum));
 
-        public static readonly DependencyProperty IntervalProperty = DependencyProperty.Register(
-            nameof(Interval),
-            typeof(double),
-            typeof(NumericBox),
-            new FrameworkPropertyMetadata(DefaultInterval, IntervalChanged));
-
         #endregion DEPENDENCY PROPERTIES
 
         #region ROUTED EVENTS
@@ -73,6 +67,7 @@ namespace SlotMachine.Views.Controls
 
         private readonly Tuple<string, string> _removeFromText = new Tuple<string, string>(string.Empty, string.Empty);
 
+        private double _interval = 1;
         private double _internalIntervalMultiplierForCalculation = DefaultInterval;
         private double _internalLargeChange = DefaultInterval * 100;
         private double _intervalValueSinceReset;
@@ -98,12 +93,6 @@ namespace SlotMachine.Views.Controls
 
 
         #region PROPERTIES
-
-        public double Interval
-        {
-            get => (double) GetValue(IntervalProperty);
-            set => SetValue(IntervalProperty, value);
-        }
 
         public double Maximum
         {
@@ -150,7 +139,7 @@ namespace SlotMachine.Views.Controls
         }
 
         public void SelectAll() => _valueTextBox?.SelectAll();
-        
+
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
@@ -159,18 +148,13 @@ namespace SlotMachine.Views.Controls
             {
                 case Key.Up:
                     ChangeValueWithSpeedUp(true);
-                    e.Handled = true;
                     break;
                 case Key.Down:
                     ChangeValueWithSpeedUp(false);
-                    e.Handled = true;
                     break;
             }
 
-            if (e.Handled)
-            {
-                InternalSetText(Value);
-            }
+            InternalSetText(Value);
         }
 
         protected override void OnPreviewKeyUp(KeyEventArgs e)
@@ -249,7 +233,7 @@ namespace SlotMachine.Views.Controls
                     e.Handled = false;
             }
         }
-        
+
         private void OnValueChanged(double? oldValue, double? newValue)
         {
             if (!newValue.HasValue)
@@ -299,8 +283,8 @@ namespace SlotMachine.Views.Controls
         private void ChangeValueWithSpeedUp(bool toPositive)
         {
             double direction = toPositive ? 1 : -1;
-            var d = Interval * _internalLargeChange;
-            if ((_intervalValueSinceReset += Interval * _internalIntervalMultiplierForCalculation) > d)
+            var d = _interval * _internalLargeChange;
+            if ((_intervalValueSinceReset += _interval * _internalIntervalMultiplierForCalculation) > d)
             {
                 _internalLargeChange *= 10;
                 _internalIntervalMultiplierForCalculation *= 10;
@@ -311,7 +295,7 @@ namespace SlotMachine.Views.Controls
 
         private void ChangeValueInternal(bool addInterval)
         {
-            ChangeValueInternal(addInterval ? Interval : -Interval);
+            ChangeValueInternal(addInterval ? _interval : -_interval);
         }
 
         private void ChangeValueInternal(double interval)
@@ -337,8 +321,8 @@ namespace SlotMachine.Views.Controls
 
         private void ResetInternal()
         {
-            _internalLargeChange = 100 * Interval;
-            _internalIntervalMultiplierForCalculation = Interval;
+            _internalLargeChange = 100 * _interval;
+            _internalIntervalMultiplierForCalculation = _interval;
             _intervalValueSinceReset = 0;
         }
 
@@ -445,11 +429,6 @@ namespace SlotMachine.Views.Controls
             return val;
         }
 
-        private static void IntervalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((NumericBox)d).ResetInternal();
-        }
-
         private static void OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             d.CoerceValue(ValueProperty);
@@ -463,7 +442,7 @@ namespace SlotMachine.Views.Controls
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((NumericBox)d).OnValueChanged((double?) e.OldValue, (double?) e.NewValue);
+            ((NumericBox) d).OnValueChanged((double?) e.OldValue, (double?) e.NewValue);
         }
 
         #endregion DEPENDENCY PROPERTY CALLBACK
