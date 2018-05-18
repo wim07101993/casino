@@ -397,6 +397,33 @@ namespace SlotMachine.Views.Controls
             Value = (double) CoerceValue(this, newValue);
         }
 
+        private void ResetInternal()
+        {
+            _internalLargeChange = 100 * Interval;
+            _internalIntervalMultiplierForCalculation = Interval;
+            _intervalValueSinceReset = 0;
+        }
+
+        private bool ValidateText(string text, out double convertedValue)
+        {
+            text = RemoveStringFormatFromText(text);
+
+            return double.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out convertedValue);
+        }
+
+        private string RemoveStringFormatFromText(string text)
+        {
+            if (!string.IsNullOrEmpty(_removeFromText.Item1))
+                text = text.Replace(_removeFromText.Item1, string.Empty);
+
+            if (!string.IsNullOrEmpty(_removeFromText.Item2))
+                text = text.Replace(_removeFromText.Item2, string.Empty);
+
+            return text;
+        }
+
+        #region TEXT BOX EVENT HANDLERS
+
         private void OnTextBoxKeyDown(object sender, KeyEventArgs e)
         {
             _manualChange = true;
@@ -419,7 +446,7 @@ namespace SlotMachine.Views.Controls
 
         private void OnTextBoxLostFocus(object sender, RoutedEventArgs e)
         {
-            var tb = (TextBox) sender;
+            var tb = (TextBox)sender;
             _manualChange = false;
 
             if (ValidateText(tb.Text, out var convertedValue))
@@ -450,18 +477,18 @@ namespace SlotMachine.Views.Controls
 
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrEmpty(((TextBox) sender).Text))
+            if (string.IsNullOrEmpty(((TextBox)sender).Text))
                 Value = null;
-            else if (_manualChange && ValidateText(((TextBox) sender).Text, out var convertedValue))
+            else if (_manualChange && ValidateText(((TextBox)sender).Text, out var convertedValue))
             {
-                Value = (double?) CoerceValue(this, convertedValue);
+                Value = (double?)CoerceValue(this, convertedValue);
                 e.Handled = true;
             }
         }
 
         private void OnValueTextBoxPaste(object sender, DataObjectPastingEventArgs e)
         {
-            var textBox = (TextBox) sender;
+            var textBox = (TextBox)sender;
             var textPresent = textBox.Text;
 
             var isText = e.SourceDataObject.GetDataPresent(DataFormats.Text, true);
@@ -479,30 +506,7 @@ namespace SlotMachine.Views.Controls
                 e.CancelCommand();
         }
 
-        private void ResetInternal()
-        {
-            _internalLargeChange = 100 * Interval;
-            _internalIntervalMultiplierForCalculation = Interval;
-            _intervalValueSinceReset = 0;
-        }
-
-        private bool ValidateText(string text, out double convertedValue)
-        {
-            text = RemoveStringFormatFromText(text);
-
-            return double.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out convertedValue);
-        }
-
-        private string RemoveStringFormatFromText(string text)
-        {
-            if (!string.IsNullOrEmpty(_removeFromText.Item1))
-                text = text.Replace(_removeFromText.Item1, string.Empty);
-
-            if (!string.IsNullOrEmpty(_removeFromText.Item2))
-                text = text.Replace(_removeFromText.Item2, string.Empty);
-
-            return text;
-        }
+        #endregion TEXT BOX EVENT HANDLERS
 
         #region DEPENDENCY PROPERTY CALLBACK
 
