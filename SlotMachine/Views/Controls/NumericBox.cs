@@ -138,8 +138,6 @@ namespace SlotMachine.Views.Controls
             OnValueChanged(Value, Value);
         }
 
-        public void SelectAll() => _valueTextBox?.SelectAll();
-
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
