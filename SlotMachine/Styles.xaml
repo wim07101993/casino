@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Views/Styles/ComboBox.xaml" />
         <ResourceDictionary Source="Views/Styles/TextBlock.xaml" />
+        <ResourceDictionary Source="Views/Styles/NumericBox.xaml" />
         <ResourceDictionary Source="Views/Styles/SlideButton.xaml" />
         <ResourceDictionary Source="Views/Styles/IconCheckBox.xaml" />
         <ResourceDictionary Source="Views/Styles/Drawer.xaml" />

@@ -148,7 +148,11 @@
                         </Style>
                     </Grid.Style>
 
-                    <ComboBox ItemsSource="{Binding SlotPossibilities}" SelectedItem="{Binding NumberOfSlots}" />
+                    <controls:NumericBox
+                        HasDecimals="False"
+                        Maximum="6"
+                        Minimum="2"
+                        Value="{Binding NumberOfSlots}" />
                 </Grid>
             </StackPanel>
         </controls:Drawer>

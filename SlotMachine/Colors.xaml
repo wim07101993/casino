@@ -25,4 +25,10 @@
 
     <Color x:Key="ForegroundColor">#707070</Color>
     <SolidColorBrush x:Key="ForegroundBrush" Color="{DynamicResource ForegroundColor}" />
+
+    <Color x:Key="BackgroundColor">#FFFFFF</Color>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}" />
+
+    <Color x:Key="TextBorderColor">#505050</Color>
+    <SolidColorBrush x:Key="TextBorderBrush" Color="{DynamicResource TextBorderColor}" />
 </ResourceDictionary>
