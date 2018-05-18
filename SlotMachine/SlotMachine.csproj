@@ -250,10 +250,10 @@
     <Page Include="Views\Styles\SlideButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Styles\TextBox.xaml">
+    <Page Include="Views\Styles\TextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Styles\TextBlock.xaml">
+    <Page Include="Views\Styles\TextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

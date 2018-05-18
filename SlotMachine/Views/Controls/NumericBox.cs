@@ -30,6 +30,12 @@ namespace SlotMachine.Views.Controls
             typeof(NumericBox),
             new FrameworkPropertyMetadata(double.MaxValue, OnBoundryChanged, CoerceMaximum));
 
+        public static readonly DependencyProperty HintProperty = DependencyProperty.Register(
+            nameof(Hint), 
+            typeof(string),
+            typeof(NumericBox),
+            new PropertyMetadata(default(string)));
+
         #endregion DEPENDENCY PROPERTIES
 
 
@@ -86,6 +92,12 @@ namespace SlotMachine.Views.Controls
         {
             get => (double) GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
+        }
+
+        public string Hint
+        {
+            get => (string)GetValue(HintProperty);
+            set => SetValue(HintProperty, value);
         }
 
         #endregion PROPERTIES

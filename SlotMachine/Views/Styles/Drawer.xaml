@@ -36,9 +36,9 @@
 
                             <controls:IconCheckBox
                                 x:Name="Opener"
-                                Width="30"
-                                Height="30"
-                                Margin="10"
+                                Width="35"
+                                Height="35"
+                                Margin="5"
                                 HorizontalAlignment="Right"
                                 Foreground="{DynamicResource PrimaryDarkBrush}"
                                 IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsOpen, Mode=TwoWay}">

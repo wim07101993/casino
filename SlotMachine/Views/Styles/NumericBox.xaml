@@ -3,9 +3,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:SlotMachine.Views.Controls">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/SlotMachine;component/Views/Styles/TextBlock.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/SlotMachine;component/Views/Styles/TextBox.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <Style TargetType="{x:Type controls:NumericBox}">
         <Setter Property="BorderBrush" Value="{DynamicResource TextBorderBrush}" />
-        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="BorderThickness" Value="0,0,0,0.5" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Right" />
         <Setter Property="Template">
@@ -18,18 +23,26 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                        <TextBox
-                            x:Name="TextBoxPart"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                            Background="{TemplateBinding Background}"
-                            BorderThickness="0"
-                            FontFamily="{TemplateBinding FontFamily}"
-                            FontSize="{TemplateBinding FontSize}"
-                            Foreground="{TemplateBinding Foreground}"
-                            IsEnabled="{TemplateBinding IsEnabled}"
-                            TabIndex="{TemplateBinding TabIndex}" />
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                x:Name="Hint"
+                                Grid.Row="0"
+                                Style="{StaticResource HintStyle}"
+                                Text="{TemplateBinding Hint}" />
+                            <TextBox
+                                x:Name="TextBoxPart"
+                                Grid.Row="1"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                BorderThickness="0"
+                                IsEnabled="{TemplateBinding IsEnabled}"
+                                TabIndex="{TemplateBinding TabIndex}" />
+                        </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
@@ -37,6 +50,8 @@
                         </Trigger>
                         <Trigger SourceName="TextBoxPart" Property="IsFocused" Value="True">
                             <Setter Property="BorderBrush" Value="{DynamicResource PrimaryDarkBrush}" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter TargetName="Hint" Property="Foreground" Value="{DynamicResource PrimaryDarkBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
