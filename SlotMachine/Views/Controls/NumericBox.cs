@@ -26,13 +26,13 @@ namespace SlotMachine.Views.Controls
             nameof(Minimum),
             typeof(double),
             typeof(NumericBox),
-            new FrameworkPropertyMetadata(double.MinValue, OnMinimumChanged));
+            new FrameworkPropertyMetadata(double.MinValue, OnBoundryChanged));
 
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
             nameof(Maximum),
             typeof(double),
             typeof(NumericBox),
-            new FrameworkPropertyMetadata(double.MaxValue, OnMaximumChanged, CoerceMaximum));
+            new FrameworkPropertyMetadata(double.MaxValue, OnBoundryChanged, CoerceMaximum));
 
         #endregion DEPENDENCY PROPERTIES
 
@@ -225,9 +225,10 @@ namespace SlotMachine.Views.Controls
 
         private static object CoerceMaximum(DependencyObject d, object value)
         {
-            var minimum = ((NumericBox) d).Minimum;
-            var val = (double) value;
-            return val < minimum ? minimum : val;
+            var minimum = (double) d.GetValue(MinimumProperty);
+            return (double)value < minimum 
+                ? minimum 
+                : value;
         }
 
         private static object CoerceValue(DependencyObject d, object value)
@@ -235,29 +236,25 @@ namespace SlotMachine.Views.Controls
             if (!(value is double dValue))
                 return 0;
 
-            var numericBox = (NumericBox) d;
             dValue = Math.Truncate(dValue);
 
-            if (dValue < numericBox.Minimum)
-                return numericBox.Minimum;
+            var minimum = (double)d.GetValue(MinimumProperty);
+            if (dValue < minimum)
+                return minimum;
 
-            if (dValue > numericBox.Maximum)
-                return numericBox.Maximum;
+            var maximum = (double)d.GetValue(MaximumProperty);
+            if (dValue > maximum)
+                return maximum;
 
-            return dValue;
+            return value;
         }
 
-        private static void OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            d.CoerceValue(ValueProperty);
-        }
-
-        private static void OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnBoundryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             d.CoerceValue(MaximumProperty);
             d.CoerceValue(ValueProperty);
         }
-
+        
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((NumericBox) d).OnValueChanged((double) e.OldValue, (double) e.NewValue);
