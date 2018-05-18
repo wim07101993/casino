@@ -47,7 +47,7 @@ namespace SlotMachine.Views.Controls
         #region FIELDS
 
         private const string ElementTextBox = "TextBoxPart";
-      
+
         private double _intervalMultiplierForCalculation = 1;
         private double _intervalLargeChange = 100;
         private double _intervalValueSinceReset;
@@ -186,10 +186,7 @@ namespace SlotMachine.Views.Controls
         protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
         {
             base.OnPreviewMouseWheel(e);
-
-            if (!IsFocused && !_valueTextBox.IsFocused)
-                return;
-
+            
             var increment = e.Delta > 0 ? 1 : -1;
             Value = (double) CoerceValue(this, Value + increment);
         }
