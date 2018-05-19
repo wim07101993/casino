@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlotMachine", "SlotMachine\SlotMachine.csproj", "{AD125C9A-A068-4B89-8E04-6F8D9ED68C0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{152E81D5-63E1-422D-B1E2-06ACDB2F9AD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{152E81D5-63E1-422D-B1E2-06ACDB2F9AD2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlotMachine.UWP", "SlotMachine.UWP\SlotMachine.UWP.csproj", "{4A0CFBEB-A788-4DE1-B9EB-58188AB70947}"
 EndProject

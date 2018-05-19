@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-using SlotMachine.Models;
+using Shared.Models;
 
 namespace SlotMachine.ViewModelInerfaces
 {

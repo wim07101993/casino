@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using SlotMachine.Helpers.Extensions;
+using Shared.Helpers;
+using Shared.Models;
 using SlotMachine.Helpers.PubSubEvents;
-using SlotMachine.Models;
 using SlotMachine.ViewModelInerfaces;
 
 namespace SlotMachine.ViewModels
@@ -16,8 +15,6 @@ namespace SlotMachine.ViewModels
     public class MainWindowViewModel : BindableBase, IMainWindowViewModel
     {
         #region FIELDS
-
-        private readonly IEventAggregator _eventAggregator;
 
         private bool _youWon;
         private int _numberOfSlots;
@@ -34,8 +31,7 @@ namespace SlotMachine.ViewModels
         {
             Numbers = new ObservableCollection<Number>();
 
-            _eventAggregator = eventAggregator;
-            _eventAggregator
+            eventAggregator
                 .GetEvent<SymbolsChangedEvent>()
                 .Subscribe(x => RefreshSymbols());
 

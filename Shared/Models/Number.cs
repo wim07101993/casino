@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Prism.Mvvm;
 
-namespace SlotMachine.Models
+namespace Shared.Models
 {
     public class Number : BindableBase
     {

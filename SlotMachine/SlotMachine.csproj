@@ -83,7 +83,6 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Compile Include="Helpers\Extensions\EnumerableExtensions.cs" />
     <Compile Include="Helpers\PubSubEvents\AccentColorsChangedEvent.cs" />
     <Compile Include="Helpers\PubSubEvents\PrimaryColorsChangedEvent.cs" />
     <Compile Include="Helpers\PubSubEvents\SymbolsChangedEvent.cs" />
@@ -234,7 +233,6 @@
     <Compile Include="Helpers\Extensions\ColorExtensions.cs" />
     <Compile Include="Helpers\Extensions\ResourceDictionaryExtensions.cs" />
     <Compile Include="Models\ColorTheme.cs" />
-    <Compile Include="Models\Number.cs" />
     <Compile Include="Models\SymbolTheme.cs" />
     <Compile Include="Services\AResourceService.cs" />
     <Compile Include="Services\IColorProvider.cs" />
@@ -311,10 +309,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon.ico" />
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{152e81d5-63e1-422d-b1e2-06acdb2f9ad2}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon.png" />
+    <Resource Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

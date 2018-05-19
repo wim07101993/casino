@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace SlotMachine.Helpers.Extensions
+namespace Shared.Helpers
 {
     public static class EnumerableExtensions
     {
