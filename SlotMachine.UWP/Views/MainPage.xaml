@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModelInterfaces="using:SlotMachine.UWP.ViewModelInterfaces"
-    d:DataContext="{d:DesignInstance viewModelInterfaces:IMainWindowViewModel}"
+    d:DataContext="{d:DesignInstance viewModelInterfaces:IMainPageViewModel}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
@@ -28,14 +28,21 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock
+                    <StackPanel
                         Width="100"
                         Height="100"
-                        Margin="15"
-                        Text="{Binding Value}" />
+                        Margin="15">
+                        <Viewbox Width="75" Height="75">
+                            <Path
+                                Data="{Binding Value, Converter={StaticResource IntToResourceConverter}}"
+                                Fill="Red"
+                                Stretch="Uniform" />
+                        </Viewbox>
+                    </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+
 
         <Button
             Grid.Column="1"

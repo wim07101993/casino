@@ -5,7 +5,7 @@ using Shared.Models;
 
 namespace SlotMachine.UWP.ViewModelInterfaces
 {
-    public interface IMainWindowViewModel : INotifyPropertyChanged
+    public interface IMainPageViewModel : INotifyPropertyChanged
     {
        int NumberOfSlots { get; set; }
 

@@ -9,12 +9,12 @@ namespace SlotMachine.UWP.Views
         public MainPage()
         {
             Container = new UnityContainer()
-                .RegisterType<IMainWindowViewModel, MainWindowViewModel>();
+                .RegisterType<IMainPageViewModel, MainPageViewModel>();
             
 
             InitializeComponent();
 
-            DataContext = Container.Resolve<IMainWindowViewModel>();
+            DataContext = Container.Resolve<IMainPageViewModel>();
         }
 
         public IUnityContainer Container { get;  }

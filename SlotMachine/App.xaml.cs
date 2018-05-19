@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Prism.Events;
+using Shared.Models;
 using SlotMachine.Models;
 using SlotMachine.Services;
 using SlotMachine.Services.Implementations;

@@ -4,13 +4,12 @@ using System.Linq;
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
-using Shared.Helpers;
 using Shared.Models;
 using SlotMachine.UWP.ViewModelInterfaces;
 
 namespace SlotMachine.UWP.ViewModels
 {
-    public class MainWindowViewModel : BindableBase, IMainWindowViewModel
+    public class MainPageViewModel : BindableBase, IMainPageViewModel
     {
         #region FIELDS
 
@@ -24,7 +23,7 @@ namespace SlotMachine.UWP.ViewModels
 
         #region CONSTRUCTOR
 
-        public MainWindowViewModel()
+        public MainPageViewModel()
         {
             Numbers = new ObservableCollection<Number>();
 
@@ -37,7 +36,7 @@ namespace SlotMachine.UWP.ViewModels
 
 
         #region PROPERTIES
-        
+
         public int NumberOfSlots
         {
             get => _numberOfSlots;
@@ -79,14 +78,14 @@ namespace SlotMachine.UWP.ViewModels
         {
             if (NumberOfSlots == Numbers.Count)
             {
-                Numbers = Numbers.ToObservableCollection();
+                Numbers = new ObservableCollection<Number>(Numbers);
                 return;
             }
 
             Numbers.Clear();
             for (var i = 0; i < _numberOfSlots; i++)
             {
-                var number = new Number { Value = Number.MaxValue };
+                var number = new Number {Value = Number.MaxValue};
                 number.PropertyChanged += OnNumberPropertyChanged;
                 Numbers.Add(number);
             }
