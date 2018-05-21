@@ -8,7 +8,6 @@
                 <ResourceDictionary Source="Icons.xaml" />
                 <ResourceDictionary Source="Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>
