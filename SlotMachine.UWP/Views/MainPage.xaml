@@ -29,10 +29,10 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel
-                        Width="100"
-                        Height="100"
+                        Width="150"
+                        Height="150"
                         Margin="15">
-                        <Viewbox Width="75" Height="75">
+                        <Viewbox Width="125" Height="125">
                             <Path
                                 Data="{Binding Value, Converter={StaticResource IntToResourceConverter}}"
                                 Fill="{ThemeResource SystemControlHighlightAccentBrush}"
@@ -44,6 +44,7 @@
         </ItemsControl>
 
         <Button
+            x:Name="RollButton"
             Grid.Row="1"
             Height="75"
             HorizontalAlignment="Stretch"
