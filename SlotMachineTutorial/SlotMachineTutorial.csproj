@@ -98,8 +98,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helpers\Extensions\ResourceDictionaryExtensions.cs" />
     <Compile Include="Models\Number.cs" />
     <Compile Include="Models\SymbolTheme.cs" />
+    <Compile Include="Services\Implementations\SymbolProvider.cs" />
+    <Compile Include="Services\ISymbolProvider.cs" />
     <Compile Include="ViewModelInterfaces\IMainWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
@@ -134,10 +137,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
