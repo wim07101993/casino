@@ -42,6 +42,14 @@
                             Height="100"
                             Margin="15"
                             Background="Blue">
+                            <Grid.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="14"
+                                    Direction="270"
+                                    Opacity="0.42"
+                                    ShadowDepth="4.5"
+                                    Color="DarkGray" />
+                            </Grid.Effect>
                             <Grid.OpacityMask>
                                 <VisualBrush Visual="{Binding Value, Converter={StaticResource IntToVisualConverter}}" />
                             </Grid.OpacityMask>
