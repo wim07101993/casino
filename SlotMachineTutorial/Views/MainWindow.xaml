@@ -37,12 +37,15 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock
+                        <Grid
                             Width="100"
                             Height="100"
                             Margin="15"
-                            FontSize="56"
-                            Text="{Binding Value}" />
+                            Background="Blue">
+                            <Grid.OpacityMask>
+                                <VisualBrush Visual="{Binding Value, Converter={StaticResource IntToVisualConverter}}" />
+                            </Grid.OpacityMask>
+                        </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

@@ -98,6 +98,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\Converters\IntToVisualConverter.cs" />
     <Compile Include="Helpers\Extensions\ResourceDictionaryExtensions.cs" />
     <Compile Include="Models\Number.cs" />
     <Compile Include="Models\SymbolTheme.cs" />
