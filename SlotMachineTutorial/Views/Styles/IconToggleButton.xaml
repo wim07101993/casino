@@ -1,0 +1,28 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:SlotMachineTutorial.Views.Controls">
+    <Style x:Key="IconToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border Padding="5" Background="Transparent">
+                        <Grid Background="{TemplateBinding Foreground}">
+                            <Grid.OpacityMask>
+                                <VisualBrush Visual="{Binding Path=(controls:IconAssist.Icon), RelativeSource={RelativeSource Mode=TemplatedParent}}"></VisualBrush>
+                            </Grid.OpacityMask>
+                            <Grid.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="4"
+                                    Direction="270"
+                                    Opacity="0.42"
+                                    ShadowDepth="0.5"
+                                    Color="{DynamicResource ShadowColor}" />
+                            </Grid.Effect>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

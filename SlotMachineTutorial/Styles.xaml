@@ -2,5 +2,6 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/SlotMachineTutorial;component/Views/Styles/SlideButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/SlotMachineTutorial;component/Views/Styles/Drawer.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/SlotMachineTutorial;component/Views/Styles/IconToggleButton.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

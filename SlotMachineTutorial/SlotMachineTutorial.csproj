@@ -247,6 +247,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Views\Controls\Drawer.cs" />
+    <Compile Include="Views\Controls\IconAssist.cs" />
     <Compile Include="Views\Converters\IntToVisualConverter.cs" />
     <Compile Include="Helpers\Extensions\ResourceDictionaryExtensions.cs" />
     <Compile Include="Models\Number.cs" />
@@ -261,6 +262,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Styles\Drawer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Styles\IconToggleButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

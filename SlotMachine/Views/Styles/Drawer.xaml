@@ -31,7 +31,7 @@
                             x:Name="BackgroundGrid"
                             Background="Black"
                             IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsOpen, Mode=TwoWay}"
-                            Opacity="0"
+                            Opacity="0" 
                             Style="{StaticResource BackgoundAsAButton}"
                             Visibility="{TemplateBinding IsOpen,
                                                          Converter={StaticResource BooleanToVisibilityConverter}}" />
