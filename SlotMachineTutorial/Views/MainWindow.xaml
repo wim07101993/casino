@@ -38,6 +38,17 @@
                         <StackPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Width="100"
+                            Height="100"
+                            Margin="15"
+                            FontSize="56"
+                            Text="{Binding Value}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
             </ItemsControl>
 
             <TextBlock
