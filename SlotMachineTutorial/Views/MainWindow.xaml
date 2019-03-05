@@ -65,7 +65,16 @@
                 FontSize="100"
                 FontWeight="Bold"
                 Text="YOU WON"
-                Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                <TextBlock.Effect>
+                    <DropShadowEffect
+                        BlurRadius="14"
+                        Direction="270"
+                        Opacity="0.42"
+                        ShadowDepth="4.5"
+                        Color="DarkGray" />
+                </TextBlock.Effect>
+            </TextBlock>
         </Grid>
 
         <Button
