@@ -41,14 +41,14 @@
                             Width="100"
                             Height="100"
                             Margin="15"
-                            Background="Blue">
+                            Background="{DynamicResource PrimaryDarkBrush}">
                             <Grid.Effect>
                                 <DropShadowEffect
                                     BlurRadius="14"
                                     Direction="270"
                                     Opacity="0.42"
                                     ShadowDepth="4.5"
-                                    Color="DarkGray" />
+                                    Color="{DynamicResource ShadowColor}" />
                             </Grid.Effect>
                             <Grid.OpacityMask>
                                 <VisualBrush Visual="{Binding Value, Converter={StaticResource IntToVisualConverter}}" />
@@ -59,21 +59,22 @@
             </ItemsControl>
 
             <TextBlock
-                Grid.Row="1"
-                HorizontalAlignment="Center"
-                x:Name="YouWonTextBlock"
-                VerticalAlignment="Top"
-                FontSize="100"
-                FontWeight="Bold"
-                Text="YOU WON"
-                Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                    x:Name="YouWonTextBlock"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontSize="100"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource AccentDarkBrush}"
+                    Text="YOU WON"
+                    Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <TextBlock.Effect>
                     <DropShadowEffect
-                        BlurRadius="14"
-                        Direction="270"
-                        Opacity="0.42"
-                        ShadowDepth="4.5"
-                        Color="DarkGray" />
+                            BlurRadius="14"
+                            Direction="270"
+                            Opacity="0.42"
+                            ShadowDepth="4.5"
+                            Color="{DynamicResource ShadowColor}" />
                 </TextBlock.Effect>
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
@@ -84,11 +85,11 @@
                                         <BeginStoryboard.Storyboard>
                                             <Storyboard TargetProperty="Opacity">
                                                 <DoubleAnimation
-                                                    AutoReverse="True"
-                                                    RepeatBehavior="Forever"
-                                                    From="1"
-                                                    To="0"
-                                                    Duration="0:0:0.5" />
+                                                        AutoReverse="True"
+                                                        RepeatBehavior="Forever"
+                                                        From="1"
+                                                        To="0"
+                                                        Duration="0:0:0.5" />
                                             </Storyboard>
                                         </BeginStoryboard.Storyboard>
                                     </BeginStoryboard>
@@ -108,6 +109,7 @@
             Grid.Column="1"
             Width="75"
             Margin="0,50,50,50"
+            Background="{DynamicResource PrimaryDarkBrush}"
             Command="{Binding RollCommand}"
             Content="Roll" />
     </Grid>
