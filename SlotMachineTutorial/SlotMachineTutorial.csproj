@@ -254,6 +254,7 @@
     <Compile Include="Services\ISymbolProvider.cs" />
     <Compile Include="ViewModelInterfaces\IMainWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\Converters\MultiplyConverter.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
