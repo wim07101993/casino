@@ -42,7 +42,7 @@ namespace SlotMachineTutorial.ViewModels
         
         public void RandomizeNumbers()
         {
-            // TODO
+            YouWon = !YouWon;
         }
         
         #endregion METHODS
