@@ -10,6 +10,12 @@ namespace SlotMachineTutorial.Models
 
         private static readonly Random Random = new Random();
 
+        public static int MinValue = 1;
+        public static int MaxValue = 7;
+
+        public static int MinSpinTime = 3000;
+        public static int MaxSpinTime = 6000;
+
         private int _value;
         private bool _isRandomizing;
 
@@ -44,7 +50,8 @@ namespace SlotMachineTutorial.Models
 
         private async Task ResetIsRandomizingAsync()
         {
-            await Task.Delay(TimeSpan.FromSeconds(5));
+            var spinTime = Random.Next(MinSpinTime, MaxSpinTime);
+            await Task.Delay(spinTime);
             IsRandomizing = false;
         }
 
@@ -52,7 +59,7 @@ namespace SlotMachineTutorial.Models
         {
             while (IsRandomizing)
             {
-                Value = Random.Next(1, 8);
+                Value = Random.Next(MinValue, MaxValue + 1);
                 await Task.Delay(10);
             }
         }

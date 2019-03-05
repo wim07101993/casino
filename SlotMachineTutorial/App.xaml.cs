@@ -1,5 +1,6 @@
 ﻿using Prism.Events;
 using SlotMachine.ViewModelInerfaces;
+using SlotMachineTutorial.Models;
 using SlotMachineTutorial.ViewModels;
 using SlotMachineTutorial.Views;
 using System.Windows;
@@ -14,6 +15,9 @@ namespace SlotMachineTutorial
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            Number.MinSpinTime = 100;
+            Number.MaxSpinTime = 2000;
+
             base.OnStartup(e);
 
             RegisterTypes();
