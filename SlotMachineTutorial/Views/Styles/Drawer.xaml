@@ -6,6 +6,8 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/SlotMachineTutorial;component/Converters.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/SlotMachineTutorial;component/Icons.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/SlotMachineTutorial;component/Views/Styles/IconToggleButton.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="BackgroundAsAButton" TargetType="{x:Type ToggleButton}">
@@ -60,8 +62,10 @@
                                 Height="40"
                                 Margin="5"
                                 HorizontalAlignment="Right"
+                                controls:IconAssist.Icon="{StaticResource ArrowLeftIcon}"
                                 Foreground="{DynamicResource PrimaryDarkBrush}"
-                                IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsOpen, Mode=TwoWay}" />
+                                IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsOpen, Mode=TwoWay}"
+                                Style="{StaticResource IconToggleButtonStyle}" />
 
                             <ContentPresenter
                                 Grid.Row="1"
