@@ -5,7 +5,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid Background="Transparent">
+                        <Grid x:Name="Container" Background="Transparent">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition x:Name="FirstColumn" Width="*" />
                                 <ColumnDefinition Width="2*" />
@@ -20,14 +20,16 @@
                                 RadiusY="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}" />
 
                             <Grid
+                                x:Name="ThumbContainer"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="3"
+                                MinHeight="{Binding ElementName=Thumb, Path=ActualHeight}"
                                 VerticalAlignment="Bottom"
                                 Background="Transparent">
                                 <Ellipse
                                     x:Name="Thumb"
-                                    Width="100"
-                                    Height="100"
+                                    Width="{Binding ElementName=Container, Path=ActualWidth}"
+                                    Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Top"
                                     Fill="{TemplateBinding Background}">
