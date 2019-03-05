@@ -3,6 +3,8 @@ using Prism.Mvvm;
 using SlotMachine.ViewModelInerfaces;
 using SlotMachineTutorial.Models;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace SlotMachineTutorial.ViewModels
@@ -12,7 +14,7 @@ namespace SlotMachineTutorial.ViewModels
         #region FIELDS
 
         private bool _youWon;
-        private int _numberOfSlots = 4;
+        private int _numberOfSlots = 2;
 
         #endregion FIELDS
 
@@ -59,7 +61,26 @@ namespace SlotMachineTutorial.ViewModels
         {
             Numbers.Clear();
             for (var i = 0; i < _numberOfSlots; i++)
-                Numbers.Add(new Number());
+            {
+                var number = new Number { Value = Number.MaxValue };
+                number.PropertyChanged += OnNumberPropertyChanged;
+                Numbers.Add(number);
+            }
+        }
+
+        private void OnNumberPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(Number.IsRandomizing):
+                    if (!Numbers.Any(x => x.IsRandomizing))
+                    {
+                        var firstNumber = Numbers.First().Value;
+                        YouWon = Numbers.All(x => x.Value == firstNumber);
+                    }
+
+                    break;
+            }
         }
 
         #endregion METHODS
