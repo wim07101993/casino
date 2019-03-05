@@ -59,22 +59,22 @@
             </ItemsControl>
 
             <TextBlock
-                    x:Name="YouWonTextBlock"
-                    Grid.Row="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    FontSize="100"
-                    FontWeight="Bold"
-                    Foreground="{DynamicResource AccentDarkBrush}"
-                    Text="YOU WON"
-                    Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}">
+                x:Name="YouWonTextBlock"
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontSize="100"
+                FontWeight="Bold"
+                Foreground="{DynamicResource AccentDarkBrush}"
+                Text="YOU WON"
+                Visibility="{Binding YouWon, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <TextBlock.Effect>
                     <DropShadowEffect
-                            BlurRadius="14"
-                            Direction="270"
-                            Opacity="0.42"
-                            ShadowDepth="4.5"
-                            Color="{DynamicResource ShadowColor}" />
+                        BlurRadius="14"
+                        Direction="270"
+                        Opacity="0.42"
+                        ShadowDepth="4.5"
+                        Color="{DynamicResource ShadowColor}" />
                 </TextBlock.Effect>
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
@@ -85,11 +85,11 @@
                                         <BeginStoryboard.Storyboard>
                                             <Storyboard TargetProperty="Opacity">
                                                 <DoubleAnimation
-                                                        AutoReverse="True"
-                                                        RepeatBehavior="Forever"
-                                                        From="1"
-                                                        To="0"
-                                                        Duration="0:0:0.5" />
+                                                    AutoReverse="True"
+                                                    RepeatBehavior="Forever"
+                                                    From="1"
+                                                    To="0"
+                                                    Duration="0:0:0.5" />
                                             </Storyboard>
                                         </BeginStoryboard.Storyboard>
                                     </BeginStoryboard>
@@ -111,6 +111,7 @@
             Margin="0,50,50,50"
             Background="{DynamicResource PrimaryDarkBrush}"
             Command="{Binding RollCommand}"
-            Content="Roll" />
+            Content="Roll"
+            Style="{StaticResource SlideButtonStyle}" />
     </Grid>
 </Window>

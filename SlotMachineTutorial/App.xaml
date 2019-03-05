@@ -8,6 +8,7 @@
                 <ResourceDictionary Source="pack://application:,,,/SlotMachineTutorial;component/Converters.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/SlotMachineTutorial;component/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/SlotMachineTutorial;component/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SlotMachineTutorial;component/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
