@@ -1,17 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Prism.Events;
 using System.Windows;
+using Unity;
 
 namespace SlotMachineTutorial
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        public IUnityContainer UnityContainer { get; private set; }
+
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            RegisterTypes();
+
+            MainWindow = UnityContainer.Resolve<MainWindow>();
+            if (MainWindow != null)
+                MainWindow.Show();
+            else
+                MessageBox.Show("No window to show.");
+        }
+
+        private void RegisterTypes()
+        {
+            UnityContainer = new UnityContainer()
+                .RegisterSingleton<IEventAggregator, EventAggregator>();
+        }
     }
 }
