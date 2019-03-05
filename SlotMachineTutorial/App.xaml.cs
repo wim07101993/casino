@@ -1,9 +1,9 @@
 ﻿using Prism.Events;
-using SlotMachine.ViewModelInerfaces;
 using SlotMachineTutorial.Models;
 using SlotMachineTutorial.ViewModels;
 using SlotMachineTutorial.Views;
 using System.Windows;
+using SlotMachineTutorial.ViewModelInterfaces;
 using Unity;
 
 namespace SlotMachineTutorial

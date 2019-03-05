@@ -1,4 +1,4 @@
-﻿using SlotMachine.ViewModelInerfaces;
+﻿using SlotMachineTutorial.ViewModelInterfaces;
 
 namespace SlotMachineTutorial.Views
 {

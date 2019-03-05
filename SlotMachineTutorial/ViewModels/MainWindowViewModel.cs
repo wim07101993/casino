@@ -1,11 +1,11 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
-using SlotMachine.ViewModelInerfaces;
 using SlotMachineTutorial.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using SlotMachineTutorial.ViewModelInterfaces;
 
 namespace SlotMachineTutorial.ViewModels
 {

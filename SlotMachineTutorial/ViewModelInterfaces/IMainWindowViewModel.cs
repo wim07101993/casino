@@ -1,8 +1,8 @@
-﻿using SlotMachineTutorial.Models;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using SlotMachineTutorial.Models;
 
-namespace SlotMachine.ViewModelInerfaces
+namespace SlotMachineTutorial.ViewModelInterfaces
 {
     public interface IMainWindowViewModel
     {
