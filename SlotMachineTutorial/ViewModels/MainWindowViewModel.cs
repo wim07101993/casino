@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using SlotMachine.ViewModelInerfaces;
+using SlotMachineTutorial.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -22,7 +23,7 @@ namespace SlotMachineTutorial.ViewModels
         {
             RollCommand = new DelegateCommand(RandomizeNumbers);
 
-            Numbers = new ObservableCollection<int>();
+            Numbers = new ObservableCollection<Number>();
             RefreshSymbols();
         }
 
@@ -39,7 +40,7 @@ namespace SlotMachineTutorial.ViewModels
             private set => SetProperty(ref _youWon, value);
         }
 
-        public ObservableCollection<int> Numbers { get; }
+        public ObservableCollection<Number> Numbers { get; }
 
         #endregion PROPERTIES
 
@@ -48,14 +49,17 @@ namespace SlotMachineTutorial.ViewModels
 
         public void RandomizeNumbers()
         {
-            YouWon = !YouWon;
+            foreach (var number in Numbers)
+            {
+                var _ = number.RandomizeAsync();
+            }
         }
 
         public void RefreshSymbols()
         {
             Numbers.Clear();
             for (var i = 0; i < _numberOfSlots; i++)
-                Numbers.Add(0);
+                Numbers.Add(new Number());
         }
 
         #endregion METHODS
