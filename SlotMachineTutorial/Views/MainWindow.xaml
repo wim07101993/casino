@@ -61,6 +61,7 @@
             <TextBlock
                 Grid.Row="1"
                 HorizontalAlignment="Center"
+                x:Name="YouWonTextBlock"
                 VerticalAlignment="Top"
                 FontSize="100"
                 FontWeight="Bold"
@@ -74,6 +75,32 @@
                         ShadowDepth="4.5"
                         Color="DarkGray" />
                 </TextBlock.Effect>
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=YouWonTextBlock, Path=Visibility}" Value="Visible">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Name="Flash">
+                                        <BeginStoryboard.Storyboard>
+                                            <Storyboard TargetProperty="Opacity">
+                                                <DoubleAnimation
+                                                    AutoReverse="True"
+                                                    RepeatBehavior="Forever"
+                                                    From="1"
+                                                    To="0"
+                                                    Duration="0:0:0.5" />
+                                            </Storyboard>
+                                        </BeginStoryboard.Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+
+                                <DataTrigger.ExitActions>
+                                    <StopStoryboard BeginStoryboardName="Flash" />
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
             </TextBlock>
         </Grid>
 
