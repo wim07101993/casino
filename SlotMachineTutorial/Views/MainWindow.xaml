@@ -9,5 +9,37 @@
     MinHeight="600"
     WindowState="Maximized"
     mc:Ignorable="d">
-    <Grid />
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="200" />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="Here the numbers come" />
+
+            <TextBlock
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontSize="100"
+                FontWeight="Bold"
+                Text="YOU WON" />
+        </Grid>
+
+        <Button
+            Grid.Column="1"
+            Width="75"
+            Margin="0,50,50,50"
+            Content="Roll" />
+    </Grid>
 </Window>
