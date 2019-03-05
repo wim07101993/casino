@@ -1,4 +1,6 @@
 ﻿using Prism.Events;
+using SlotMachine.ViewModelInerfaces;
+using SlotMachineTutorial.ViewModels;
 using SlotMachineTutorial.Views;
 using System.Windows;
 using Unity;
@@ -26,7 +28,8 @@ namespace SlotMachineTutorial
         private void RegisterTypes()
         {
             UnityContainer = new UnityContainer()
-                .RegisterSingleton<IEventAggregator, EventAggregator>();
+                .RegisterSingleton<IEventAggregator, EventAggregator>()
+                .RegisterType<IMainWindowViewModel, MainWindowViewModel>();
         }
     }
 }

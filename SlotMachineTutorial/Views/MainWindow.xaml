@@ -4,9 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModelInerfaces="clr-namespace:SlotMachine.ViewModelInerfaces"
     Title="Slotmachine"
     MinWidth="1000"
     MinHeight="600"
+    d:DataContext="{d:DesignInstance viewModelInerfaces:IMainWindowViewModel}"
     WindowState="Maximized"
     mc:Ignorable="d">
     <Grid>
@@ -40,6 +42,7 @@
             Grid.Column="1"
             Width="75"
             Margin="0,50,50,50"
+            Command="{Binding RollCommand}"
             Content="Roll" />
     </Grid>
 </Window>
