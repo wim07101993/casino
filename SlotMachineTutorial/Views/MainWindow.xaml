@@ -28,11 +28,11 @@
                 <RowDefinition Height="200" />
             </Grid.RowDefinitions>
 
-            <TextBlock
+            <ItemsControl
                 Grid.Row="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Text="Here the numbers come" />
+                ItemsSource="{Binding Numbers}" />
 
             <TextBlock
                 Grid.Row="1"
