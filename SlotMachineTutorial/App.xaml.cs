@@ -1,4 +1,5 @@
 ﻿using Prism.Events;
+using SlotMachineTutorial.Views;
 using System.Windows;
 using Unity;
 
