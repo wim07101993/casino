@@ -1,0 +1,22 @@
+name: slot_machine
+description: A slot machine
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  get_it: ^6.0.0
+
+dev_dependencies:
+  build_runner:
+  flutter_test:
+    sdk: flutter
+  freezed:
+  lint: 
+
+flutter:
+  uses-material-design: true
