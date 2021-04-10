@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "cloud.google.com/go/errorreporting"
 	"cloud.google.com/go/firestore"
 	"context"
 	"github.com/julienschmidt/httprouter"
