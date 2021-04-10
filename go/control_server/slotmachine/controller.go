@@ -1,6 +1,7 @@
 package slotmachine
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 )
@@ -10,39 +11,59 @@ const idParam = "id"
 const amountParam = "amount"
 
 type Controller struct {
-	repository *Repository
+	machines *Machines
+	key      string
 }
 
-func NewController(r *Repository) *Controller {
+func NewController(ms *Machines, key string) *Controller {
 	return &Controller{
-		r,
+		machines: ms,
+		key:      key,
 	}
+}
+
+func (c *Controller) RegisterOn(r *httprouter.Router) {
+	r.POST("/:"+idParam, c.auth(c.AddSlotMachine))
+	r.GET("/all", c.auth(c.ListSlotMachines))
+	r.GET("/:"+idParam+"/amount", c.auth(c.GetAmount))
+	r.PUT("/:"+idParam+"/add-token", c.auth(c.AddTokens))
+	r.PUT("/:"+idParam+"/remove-tokens", c.auth(c.RemoveTokens))
+}
+
+func (c *Controller) ListSlotMachines(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+	ms := c.machines.Machines()
+	bs, err := json.Marshal(ms)
+	if err != nil {
+		_, err = w.Write(bs)
+	}
+	if writeError(w, err) {
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+}
+
+func (c *Controller) GetAmount(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
+	amount, err := c.machines.Amount(ps.ByName(idParam))
+	if err == nil {
+		_, err = w.Write([]byte(strconv.Itoa(amount)))
+	}
+	writeError(w, err)
 }
 
 func (c *Controller) AddSlotMachine(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
-	err := c.repository.AddSlotMachine(ps.ByName(idParam))
-	if err == nil {
-		w.WriteHeader(http.StatusCreated)
+	err := c.machines.AddSlotMachine(ps.ByName(idParam))
+	if writeError(w, err) {
 		return
 	}
-	errMessage := err.Error()
-	switch errMessage {
-	case AlreadyRegisteredError:
-		w.WriteHeader(http.StatusConflict)
-	}
+	w.WriteHeader(http.StatusCreated)
 }
 
 func (c *Controller) RemoveSlotMachine(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
-	err := c.repository.RemoveSlotMachine(ps.ByName(idParam))
-	if err == nil {
-		w.WriteHeader(http.StatusCreated)
+	err := c.machines.RemoveSlotMachine(ps.ByName(idParam))
+	if writeError(w, err) {
 		return
 	}
-	errMessage := err.Error()
-	switch errMessage {
-	case NotFoundError:
-		w.WriteHeader(http.StatusNotFound)
-	}
+	w.WriteHeader(http.StatusOK)
 }
 
 func (c *Controller) AddTokens(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -50,16 +71,11 @@ func (c *Controller) AddTokens(w http.ResponseWriter, r *http.Request, ps httpro
 	if amount == 0 {
 		amount = 1
 	}
-	err := c.repository.AddTokens(ps.ByName(idParam), amount)
-	if err == nil {
-		w.WriteHeader(http.StatusCreated)
+	err := c.machines.AddTokens(ps.ByName(idParam), amount)
+	if writeError(w, err) {
 		return
 	}
-	errMessage := err.Error()
-	switch errMessage {
-	case NotFoundError:
-		w.WriteHeader(http.StatusNotFound)
-	}
+	w.WriteHeader(http.StatusOK)
 }
 
 func (c *Controller) RemoveTokens(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -67,21 +83,35 @@ func (c *Controller) RemoveTokens(w http.ResponseWriter, r *http.Request, ps htt
 	if amount == 0 {
 		amount = 1
 	}
-	err := c.repository.RemoveTokens(ps.ByName(idParam), amount)
-	if err == nil {
-		w.WriteHeader(http.StatusCreated)
+	err := c.machines.RemoveTokens(ps.ByName(idParam), amount)
+	if writeError(w, err) {
 		return
+	}
+	w.WriteHeader(http.StatusOK)
+}
+
+func (c *Controller) auth(h httprouter.Handle) httprouter.Handle {
+	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+		if r.Header.Get("x-api-key") == c.key {
+			h(w, r, ps)
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+		}
+	}
+}
+
+func writeError(w http.ResponseWriter, err error) bool {
+	if err == nil {
+		return false
 	}
 	errMessage := err.Error()
 	switch errMessage {
 	case NotFoundError:
 		w.WriteHeader(http.StatusNotFound)
+	case AlreadyRegisteredError:
+		w.WriteHeader(http.StatusConflict)
+	default:
+		w.WriteHeader(http.StatusInternalServerError)
 	}
-}
-
-func (c *Controller) RegisterOn(r *httprouter.Router) {
-	r.POST("/:id", c.AddSlotMachine)
-	r.DELETE("/:id", c.RemoveSlotMachine)
-	r.PUT("/:id/add-token", c.AddTokens)
-	r.PUT("/:id/remove-tokens", c.RemoveTokens)
+	return true
 }
