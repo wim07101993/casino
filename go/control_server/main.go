@@ -15,6 +15,14 @@ func main() {
 
 	ms := slotmachine.NewMachines()
 	r := httprouter.New()
+	r.GET("/", func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+		_, err := w.Write([]byte("Welcome on the slot-machine control server"))
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+		} else {
+			w.WriteHeader(http.StatusOK)
+		}
+	})
 
 	ctrl := slotmachine.NewController(ms, key)
 	ctrl.RegisterOn(r)

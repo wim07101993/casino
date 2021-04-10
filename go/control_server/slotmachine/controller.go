@@ -23,12 +23,12 @@ func NewController(ms *Machines, key string) *Controller {
 }
 
 func (c *Controller) RegisterOn(r *httprouter.Router) {
-	r.POST("/", c.auth(c.AddSlotMachine))
-	r.GET("/all", c.auth(c.ListSlotMachines))
-	r.GET("/:"+idParam+"/amount", c.auth(c.GetAmount))
-	r.PUT("/:"+idParam+"/add-token", c.auth(c.AddTokens))
-	r.PUT("/:"+idParam+"/remove-tokens", c.auth(c.RemoveTokens))
-	r.DELETE("/:"+idParam, c.auth(c.RemoveSlotMachine))
+	r.POST("/machines", c.auth(c.AddSlotMachine))
+	r.GET("/machines", c.auth(c.ListSlotMachines))
+	r.GET("/machines/:"+idParam+"/amount", c.auth(c.GetAmount))
+	r.PUT("/machines/:"+idParam+"/add-token", c.auth(c.AddTokens))
+	r.PUT("/machines/:"+idParam+"/remove-tokens", c.auth(c.RemoveTokens))
+	r.DELETE("/machines/:"+idParam, c.auth(c.RemoveSlotMachine))
 }
 
 func (c *Controller) ListSlotMachines(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
