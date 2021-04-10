@@ -2,6 +2,7 @@ package slotmachine
 
 import (
 	"errors"
+	"github.com/google/uuid"
 	"log"
 	"sync"
 )
@@ -26,15 +27,12 @@ func NewMachines() *Machines {
 	}
 }
 
-func (ms *Machines) AddSlotMachine(id string) error {
+func (ms *Machines) AddSlotMachine() string{
 	ms.lock.Lock()
 	defer ms.lock.Unlock()
-	_, ok := ms.db[id]
-	if ok {
-		return errors.New(AlreadyRegisteredError)
-	}
+	id := uuid.New().String()
 	ms.db[id] = &SlotMachine{id: id}
-	return nil
+	return id
 }
 
 func (ms *Machines) RemoveSlotMachine(id string) error {
