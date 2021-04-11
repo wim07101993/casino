@@ -10,17 +10,16 @@ import (
 
 // SlotMachine holds the data of a slot-machine
 type SlotMachine struct {
-	ID     string
-	Name string
-	Tokens int
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Tokens int    `json:"tokens"`
 }
-
 
 // Casino holds the SlotMachineDatabase
 type Casino struct {
 	DB CasinoDb
 
-	logWriter io.Writer
+	logWriter   io.Writer
 	errorClient *errorreporting.Client
 }
 
@@ -34,12 +33,12 @@ func NewCasino(projectID string, db CasinoDb) (*Casino, error) {
 		},
 	})
 	if err != nil {
-		return  nil, fmt.Errorf("errorreporting.NewClient: %v", err)
+		return nil, fmt.Errorf("errorreporting.NewClient: %v", err)
 	}
 	c := &Casino{
 		logWriter:   os.Stderr,
 		errorClient: errorClient,
-		DB: db,
+		DB:          db,
 	}
 	return c, nil
 }
