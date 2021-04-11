@@ -31,7 +31,12 @@ func (c *Controller) RegisterOn(r *httprouter.Router) {
 }
 
 func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	id, err := c.casino.DB.AddSlotMachine(r.Context())
+	m := &SlotMachine{}
+	err := json.NewDecoder(r.Body).Decode(m)
+	if writeError(w, err) {
+		return
+	}
+	id, err := c.casino.DB.AddSlotMachine(r.Context(), m)
 	if writeError(w, err) {
 		return
 	}

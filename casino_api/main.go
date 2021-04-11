@@ -11,9 +11,10 @@ import (
 )
 
 type Env struct {
-	port      string
-	projectID string
-	key       string
+	port         string
+	projectID    string
+	key          string
+	useFireStore bool
 }
 
 func newEnv() Env {
@@ -30,20 +31,8 @@ func newEnv() Env {
 
 func main() {
 	env := newEnv()
-	ctx := context.Background()
 
-	client, err := firestore.NewClient(ctx, env.projectID)
-	if err != nil {
-		log.Fatalf("could not create firestore client: %v", err)
-	}
-	db, err := NewFirestoreDb(client)
-	if err != nil {
-		log.Fatalf("could not create firestore db: %v", err)
-	}
-	casino, err := NewCasino(env.projectID, db)
-	if err != nil {
-		log.Fatalf("could not create casino: %v", err)
-	}
+	casino:=createCasino(env)
 
 	r := httprouter.New()
 	r.GET("/", func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
@@ -60,4 +49,30 @@ func main() {
 
 	log.Println("Listening on :5000")
 	log.Fatal(http.ListenAndServe(":5000", r))
+}
+
+func createCasino(env Env) (c *Casino) {
+	db := createDb(env)
+	c, err := NewCasino(env.projectID, db)
+	if err != nil {
+		log.Fatalf("could not create casino: %v", err)
+	}
+	return
+}
+
+func createDb(env Env) (db CasinoDb) {
+	if env.useFireStore {
+		ctx := context.Background()
+		client, err := firestore.NewClient(ctx, env.projectID)
+		if err != nil {
+			log.Fatalf("could not create firestore client: %v", err)
+		}
+		db, err = NewFirestoreDb(client)
+		if err != nil {
+			log.Fatalf("could not create firestore db: %v", err)
+		}
+	} else {
+		db = newMemoryDb()
+	}
+	return
 }

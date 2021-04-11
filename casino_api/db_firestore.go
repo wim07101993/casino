@@ -32,12 +32,10 @@ func (db *FirestoreDb) Close() error {
 	return db.client.Close()
 }
 
-func (db *FirestoreDb) AddSlotMachine(ctx context.Context) (id string, err error) {
+func (db *FirestoreDb) AddSlotMachine(ctx context.Context, slotMachine *SlotMachine) (id string, err error) {
 	ref := db.client.Collection(slotMachineCollection).NewDoc()
-	m := SlotMachine{
-		ID: ref.ID,
-	}
-	if _, err := ref.Create(ctx, m); err != nil {
+	slotMachine.ID = ref.ID
+	if _, err := ref.Create(ctx, slotMachine); err != nil {
 		return "", fmt.Errorf("AddSlotMachine: %v", err)
 	}
 	return ref.ID, nil
