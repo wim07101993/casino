@@ -8,7 +8,7 @@ import (
 import "github.com/julienschmidt/httprouter"
 
 const idParam = "id"
-const amountParam = "amount"
+const countParam = "count"
 
 type Controller struct {
 	casino *Casino
@@ -25,7 +25,7 @@ func NewController(casino *Casino, key string) *Controller {
 func (c *Controller) RegisterOn(r *httprouter.Router) {
 	r.POST("/casino", c.auth(c.AddSlotMachine))
 	r.GET("/casino", c.auth(c.ListSlotMachines))
-	r.GET("/casino/:"+idParam+"/amount", c.auth(c.GetAmount))
+	r.GET("/casino/:"+idParam+"/tokens", c.auth(c.GetTokenCount))
 	r.PUT("/casino/:"+idParam+"/tokens", c.auth(c.SetTokenCount))
 	r.DELETE("/casino/:"+idParam, c.auth(c.RemoveSlotMachine))
 }
@@ -55,7 +55,7 @@ func (c *Controller) ListSlotMachines(w http.ResponseWriter, r *http.Request, _ 
 	w.WriteHeader(http.StatusOK)
 }
 
-func (c *Controller) GetAmount(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func (c *Controller) GetTokenCount(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	amount, err := c.casino.DB.GetTokenCount(r.Context(), ps.ByName(idParam))
 	if writeError(w, err) {
 		return
@@ -64,7 +64,7 @@ func (c *Controller) GetAmount(w http.ResponseWriter, r *http.Request, ps httpro
 }
 
 func (c *Controller) SetTokenCount(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	amount, _ := strconv.Atoi(r.URL.Query().Get(amountParam))
+	amount, _ := strconv.Atoi(r.URL.Query().Get(countParam))
 	if amount == 0 {
 		_, _ = w.Write([]byte("Please provide an amount to set the token count to."))
 		w.WriteHeader(http.StatusBadRequest)
