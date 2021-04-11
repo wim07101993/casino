@@ -32,7 +32,7 @@ func newEnv() Env {
 func main() {
 	env := newEnv()
 
-	casino:=createCasino(env)
+	casino := createCasino(env)
 
 	r := httprouter.New()
 	r.GET("/", func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
@@ -47,8 +47,8 @@ func main() {
 	ctrl := NewController(casino, env.key)
 	ctrl.RegisterOn(r)
 
-	log.Println("Listening on :5000")
-	log.Fatal(http.ListenAndServe(":5000", r))
+	log.Println("Listening on :" + env.port)
+	log.Fatal(http.ListenAndServe(":"+env.port, r))
 }
 
 func createCasino(env Env) (c *Casino) {
