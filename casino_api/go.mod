@@ -1,4 +1,4 @@
-module control_server
+module github.com/wim07101993/casino/casino_api
 
 go 1.15
 
