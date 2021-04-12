@@ -58,6 +58,7 @@ func (db *FirestoreDb) ListSlotMachines(ctx context.Context) ([]*SlotMachine, er
 		if err != nil {
 			return nil, fmt.Errorf("ListSlotMachines: %v", err)
 		}
+		log.Println(machine)
 		machines = append(machines, machine)
 	}
 	return machines, nil
@@ -65,7 +66,7 @@ func (db *FirestoreDb) ListSlotMachines(ctx context.Context) ([]*SlotMachine, er
 
 func (db *FirestoreDb) GetTokenCount(ctx context.Context, id string) (int, error) {
 	dr, err := db.client.Collection(slotMachineCollection).Doc(id).Get(ctx)
-	if	err != nil {
+	if err != nil {
 		return 0, fmt.Errorf("SetTokenCount: %v", err)
 	}
 	m := &SlotMachine{}
@@ -78,16 +79,13 @@ func (db *FirestoreDb) GetTokenCount(ctx context.Context, id string) (int, error
 func (db *FirestoreDb) SetTokenCount(ctx context.Context, id string, amount int) error {
 	m := &SlotMachine{Tokens: amount}
 	_, err := db.client.Collection(slotMachineCollection).Doc(id).Set(ctx, m, firestore.Merge([]string{"Tokens"}))
-	if	err != nil {
+	if err != nil {
 		return fmt.Errorf("SetTokenCount: %v", err)
 	}
 	return nil
 }
 
 func (db *FirestoreDb) DeleteSlotMachine(ctx context.Context, id string) error {
-	if _, err := db.client.Collection(slotMachineCollection).Doc(id).Delete(ctx); err != nil {
-		log.Printf("ERROR while removing slot-machine %s: %s", id, err)
-		return err
-	}
-	return nil
+	_, err := db.client.Collection(slotMachineCollection).Doc(id).Delete(ctx)
+	return err
 }
