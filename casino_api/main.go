@@ -22,10 +22,7 @@ func newEnv() Env {
 	if port := os.Getenv("PORT"); port != "" {
 		env.port = port
 	}
-	project := os.Getenv("GOOGLE_CLOUD_PROJECT")
-	if project == "" {
-		log.Fatal("GOOGLE_CLOUD_PROJECT must be set")
-	}
+	env.projectID = os.Getenv("GOOGLE_CLOUD_PROJECT")
 	return env
 }
 
@@ -36,12 +33,7 @@ func main() {
 
 	r := httprouter.New()
 	r.GET("/", func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
-		_, err := w.Write([]byte("Welcome on the slot-machine control server"))
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-		} else {
-			w.WriteHeader(http.StatusOK)
-		}
+		_, _ = w.Write([]byte("Welcome on the slot-machine control server"))
 	})
 
 	ctrl := NewController(casino, env.key)
@@ -61,7 +53,7 @@ func createCasino(env Env) (c *Casino) {
 }
 
 func createDb(env Env) (db CasinoDb) {
-	if env.useFireStore {
+	if env.useFireStore && env.projectID != "" {
 		ctx := context.Background()
 		client, err := firestore.NewClient(ctx, env.projectID)
 		if err != nil {

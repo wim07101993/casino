@@ -26,15 +26,20 @@ type Casino struct {
 func NewCasino(projectID string, db CasinoDb) (*Casino, error) {
 	ctx := context.Background()
 
-	errorClient, err := errorreporting.NewClient(ctx, projectID, errorreporting.Config{
-		ServiceName: "Casino-api",
-		OnError: func(err error) {
-			_, _ = fmt.Fprintf(os.Stderr, "Could not log error: %v", err)
-		},
-	})
-	if err != nil {
-		return nil, fmt.Errorf("errorreporting.NewClient: %v", err)
+	var errorClient *errorreporting.Client
+	var err error
+	if projectID != "" {
+		errorClient, err = errorreporting.NewClient(ctx, projectID, errorreporting.Config{
+			ServiceName: "Casino-api",
+			OnError: func(err error) {
+				_, _ = fmt.Fprintf(os.Stderr, "Could not log error: %v", err)
+			},
+		})
+		if err != nil {
+			return nil, fmt.Errorf("errorreporting.NewClient: %v", err)
+		}
 	}
+
 	c := &Casino{
 		logWriter:   os.Stderr,
 		errorClient: errorClient,

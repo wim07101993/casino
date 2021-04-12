@@ -23,11 +23,11 @@ func NewController(casino *Casino, key string) *Controller {
 }
 
 func (c *Controller) RegisterOn(r *httprouter.Router) {
-	r.POST("/casino", c.auth(c.AddSlotMachine))
-	r.GET("/casino", c.auth(c.ListSlotMachines))
-	r.GET("/casino/:"+idParam+"/tokens", c.auth(c.GetTokenCount))
-	r.PUT("/casino/:"+idParam+"/tokens", c.auth(c.SetTokenCount))
-	r.DELETE("/casino/:"+idParam, c.auth(c.RemoveSlotMachine))
+	r.POST("/casino/slot-machines/", c.auth(c.AddSlotMachine))
+	r.GET("/casino/slot-machines/", c.auth(c.ListSlotMachines))
+	r.GET("/casino/slot-machines/:"+idParam+"/tokens", c.auth(c.GetTokenCount))
+	r.PUT("/casino/slot-machines/:"+idParam+"/tokens", c.auth(c.SetTokenCount))
+	r.DELETE("/casino/slot-machines/:"+idParam, c.auth(c.RemoveSlotMachine))
 }
 
 func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -40,11 +40,8 @@ func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request, _ ht
 	if writeError(w, err) {
 		return
 	}
-	_, err = w.Write([]byte(id))
-	if writeError(w, err) {
-		return
-	}
 	w.WriteHeader(http.StatusCreated)
+	_, _ = w.Write([]byte(id))
 }
 
 func (c *Controller) ListSlotMachines(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -56,8 +53,7 @@ func (c *Controller) ListSlotMachines(w http.ResponseWriter, r *http.Request, _ 
 	if writeError(w, err) {
 		return
 	}
-	_, err = w.Write(bs)
-	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(bs)
 }
 
 func (c *Controller) GetTokenCount(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -75,18 +71,12 @@ func (c *Controller) SetTokenCount(w http.ResponseWriter, r *http.Request, ps ht
 		w.WriteHeader(http.StatusBadRequest)
 	}
 	err := c.casino.DB.SetTokenCount(r.Context(), ps.ByName(idParam), amount)
-	if writeError(w, err) {
-		return
-	}
-	w.WriteHeader(http.StatusOK)
+	writeError(w, err)
 }
 
 func (c *Controller) RemoveSlotMachine(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	err := c.casino.DB.DeleteSlotMachine(r.Context(), ps.ByName(idParam))
-	if writeError(w, err) {
-		return
-	}
-	w.WriteHeader(http.StatusOK)
+	writeError(w, err)
 }
 
 func (c *Controller) auth(h httprouter.Handle) httprouter.Handle {

@@ -29,7 +29,8 @@ func (db *memoryDb) Close(context.Context) error {
 func (db *memoryDb) AddSlotMachine(_ context.Context, slotMachine *SlotMachine) (id string, err error) {
 	db.mu.Lock()
 	defer db.mu.Unlock()
-	slotMachine.ID = uuid.New().String()
+	id = uuid.New().String()
+	slotMachine.ID = id
 	db.slotMachines[id] = slotMachine
 	return id, nil
 }
@@ -49,7 +50,7 @@ func (db *memoryDb) ListSlotMachines(context.Context) ([]*SlotMachine, error) {
 }
 
 // GetTokenCount retrieves a number of runs a slot-machine has left.
-func (db *memoryDb) GetTokenCount(ctx context.Context, id string) (int, error) {
+func (db *memoryDb) GetTokenCount(_ context.Context, id string) (int, error) {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 	if m, ok := db.slotMachines[id]; ok {
@@ -59,7 +60,7 @@ func (db *memoryDb) GetTokenCount(ctx context.Context, id string) (int, error) {
 }
 
 // SetTokenCount sets the number of runs a slot-machine has left.
-func (db *memoryDb) SetTokenCount(ctx context.Context, id string, count int) error {
+func (db *memoryDb) SetTokenCount(_ context.Context, id string, count int) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 	if m, ok := db.slotMachines[id]; ok {
