@@ -22,7 +22,7 @@ func NewController(casino *Casino, key string) *Controller {
 	}
 }
 
-func (c *Controller) RegisterOn(r *httprouter.Router) {
+func (c *Controller) RegisterOn(r *Router) {
 	r.POST("/casino/slot-machines/", c.auth(c.AddSlotMachine))
 	r.GET("/casino/slot-machines/", c.auth(c.ListSlotMachines))
 	r.GET("/casino/slot-machines/:"+idParam+"/tokens", c.auth(c.GetTokenCount))

@@ -30,7 +30,7 @@ func main() {
 
 	casino := createCasino(env)
 
-	r := httprouter.New()
+	r := NewRouter()
 	r.GET("/", func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 		_, _ = w.Write([]byte("Welcome on the slot-machine control server"))
 	})
