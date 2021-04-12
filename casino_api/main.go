@@ -11,10 +11,9 @@ import (
 )
 
 type Env struct {
-	port         string
-	projectID    string
-	key          string
-	useFireStore bool
+	port      string
+	projectID string
+	key       string
 }
 
 func newEnv() Env {
@@ -53,7 +52,7 @@ func createCasino(env Env) (c *Casino) {
 }
 
 func createDb(env Env) (db CasinoDb) {
-	if env.useFireStore && env.projectID != "" {
+	if env.projectID != "" {
 		ctx := context.Background()
 		client, err := firestore.NewClient(ctx, env.projectID)
 		if err != nil {
