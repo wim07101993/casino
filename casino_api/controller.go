@@ -1,9 +1,7 @@
 package main
 
 import (
-	"cloud.google.com/go/logging"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -15,14 +13,12 @@ const countParam = "count"
 type Controller struct {
 	casino *Casino
 	key    string
-	logger *logging.Logger
 }
 
-func NewController(casino *Casino, key string, logger *logging.Logger) *Controller {
+func NewController(casino *Casino, key string) *Controller {
 	return &Controller{
 		casino: casino,
 		key:    key,
-		logger: logger,
 	}
 }
 
@@ -49,11 +45,7 @@ func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request, _ ht
 }
 
 func (c *Controller) ListSlotMachines(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	debugLogger := c.logger.StandardLogger(logging.Debug)
-	debugLogger.Println("Listing machines")
 	ms, err := c.casino.DB.ListSlotMachines(r.Context())
-	debugLogger.Println("Got " + fmt.Sprint(ms))
-	debugLogger.Println("Err: " + fmt.Sprint(err))
 	if writeError(w, err) {
 		return
 	}

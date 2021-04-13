@@ -2,7 +2,6 @@ package main
 
 import (
 	"cloud.google.com/go/firestore"
-	"cloud.google.com/go/logging"
 	"context"
 	"fmt"
 	"google.golang.org/api/iterator"
@@ -12,10 +11,9 @@ const slotMachineCollection = "slotMachines"
 
 type FirestoreDb struct {
 	client *firestore.Client
-	logger *logging.Logger
 }
 
-func NewFirestoreDb(client *firestore.Client, logger *logging.Logger) (*FirestoreDb, error) {
+func NewFirestoreDb(client *firestore.Client) (*FirestoreDb, error) {
 	ctx := context.Background()
 	// Verify that we can communicate and authenticate with the Firestore
 	err := client.RunTransaction(ctx, func(ctx context.Context, t *firestore.Transaction) error {
@@ -26,7 +24,6 @@ func NewFirestoreDb(client *firestore.Client, logger *logging.Logger) (*Firestor
 	}
 	return &FirestoreDb{
 		client: client,
-		logger: logger,
 	}, nil
 }
 
@@ -44,17 +41,12 @@ func (db *FirestoreDb) AddSlotMachine(ctx context.Context, slotMachine *SlotMach
 }
 
 func (db *FirestoreDb) ListSlotMachines(ctx context.Context) ([]*SlotMachine, error) {
-	debugLogger := db.logger.StandardLogger(logging.Debug)
-	debugLogger.Println("listing slot machines from firestore")
 	machines := make([]*SlotMachine, 0)
-	iter := db.client.
-		Collection(slotMachineCollection).
-		Query.OrderBy("Name", firestore.Asc).
-		Documents(ctx)
+	iter := db.client.Collection(slotMachineCollection).Documents(ctx)
 	defer iter.Stop()
 	for {
 		doc, err := iter.Next()
-		if err != iterator.Done {
+		if err == iterator.Done {
 			break
 		}
 		if err != nil {
@@ -65,10 +57,8 @@ func (db *FirestoreDb) ListSlotMachines(ctx context.Context) ([]*SlotMachine, er
 		if err != nil {
 			return nil, fmt.Errorf("ListSlotMachines: %v", err)
 		}
-		debugLogger.Println(machine)
 		machines = append(machines, machine)
 	}
-	debugLogger.Println(machines)
 	return machines, nil
 }
 

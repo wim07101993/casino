@@ -33,22 +33,22 @@ func main() {
 
 	logClient := createLogClient(env)
 	appLogger = logClient.Logger("app")
-	casino := createCasino(env, logClient)
+	casino := createCasino(env)
 
 	r := httprouter.New()
 	r.GET("/", func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 		_, _ = w.Write([]byte("Welcome on the slot-machine control server"))
 	})
 
-	ctrl := NewController(casino, env.key, logClient.Logger("controller"))
+	ctrl := NewController(casino, env.key)
 	ctrl.RegisterOn(r)
 
 	appLogger.StandardLogger(logging.Info).Println("Listening on :" + env.port)
 	appLogger.StandardLogger(logging.Critical).Fatal(http.ListenAndServe(":"+env.port, r))
 }
 
-func createCasino(env Env, logClient *logging.Client) (c *Casino) {
-	db := createDb(env, logClient)
+func createCasino(env Env) (c *Casino) {
+	db := createDb(env)
 	c, err := NewCasino(env.projectID, db)
 	if err != nil {
 		appLogger.StandardLogger(logging.Critical).Fatalf("could not create casino: %v", err)
@@ -56,15 +56,14 @@ func createCasino(env Env, logClient *logging.Client) (c *Casino) {
 	return
 }
 
-func createDb(env Env, logClient *logging.Client) (db CasinoDb) {
+func createDb(env Env) (db CasinoDb) {
 	if env.projectID != "" {
 		ctx := context.Background()
 		client, err := firestore.NewClient(ctx, env.projectID)
 		if err != nil {
 			appLogger.StandardLogger(logging.Critical).Fatalf("could not create firestore client: %v", err)
 		}
-		logger := logClient.Logger("firestore")
-		db, err = NewFirestoreDb(client, logger)
+		db, err = NewFirestoreDb(client)
 		if err != nil {
 			appLogger.StandardLogger(logging.Critical).Fatalf("could not create firestore db: %v", err)
 		}
