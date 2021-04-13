@@ -44,8 +44,13 @@ func (db *FirestoreDb) AddSlotMachine(ctx context.Context, slotMachine *SlotMach
 }
 
 func (db *FirestoreDb) ListSlotMachines(ctx context.Context) ([]*SlotMachine, error) {
+	debugLogger := db.logger.StandardLogger(logging.Debug)
+	debugLogger.Println("listing slot machines from firestore")
 	machines := make([]*SlotMachine, 0)
-	iter := db.client.Collection(slotMachineCollection).Query.Documents(ctx)
+	iter := db.client.
+		Collection(slotMachineCollection).
+		Query.OrderBy("Name", firestore.Asc).
+		Documents(ctx)
 	defer iter.Stop()
 	for {
 		doc, err := iter.Next()
@@ -60,9 +65,10 @@ func (db *FirestoreDb) ListSlotMachines(ctx context.Context) ([]*SlotMachine, er
 		if err != nil {
 			return nil, fmt.Errorf("ListSlotMachines: %v", err)
 		}
-		db.logger.StandardLogger(logging.Debug).Println(machine)
+		debugLogger.Println(machine)
 		machines = append(machines, machine)
 	}
+	debugLogger.Println(machines)
 	return machines, nil
 }
 

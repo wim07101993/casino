@@ -35,12 +35,12 @@ func main() {
 	appLogger = logClient.Logger("app")
 	casino := createCasino(env, logClient)
 
-	r := NewRouter(logClient.Logger("router"))
+	r := httprouter.New()
 	r.GET("/", func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 		_, _ = w.Write([]byte("Welcome on the slot-machine control server"))
 	})
 
-	ctrl := NewController(casino, env.key)
+	ctrl := NewController(casino, env.key, logClient.Logger("controller"))
 	ctrl.RegisterOn(r)
 
 	appLogger.StandardLogger(logging.Info).Println("Listening on :" + env.port)
