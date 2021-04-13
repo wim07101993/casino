@@ -1,18 +1,20 @@
 package main
 
 import (
+	"cloud.google.com/go/logging"
 	"github.com/julienschmidt/httprouter"
-	"log"
 	"net/http"
 )
 
 type Router struct {
 	baseRouter *httprouter.Router
+	logger     *logging.Logger
 }
 
-func NewRouter() *Router {
+func NewRouter(logger *logging.Logger) *Router {
 	return &Router{
 		baseRouter: httprouter.New(),
+		logger:     logger,
 	}
 }
 
@@ -37,8 +39,8 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 func (r *Router) log(handle httprouter.Handle) httprouter.Handle {
-	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-		log.Println(r.Method + ":" + r.RequestURI)
-		handle(w, r, ps)
+	return func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+		r.logger.StandardLogger(logging.Info).Println(req.Method + ":" + req.RequestURI)
+		handle(w, req, ps)
 	}
 }

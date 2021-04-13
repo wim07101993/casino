@@ -2,19 +2,20 @@ package main
 
 import (
 	"cloud.google.com/go/firestore"
+	"cloud.google.com/go/logging"
 	"context"
 	"fmt"
 	"google.golang.org/api/iterator"
-	"log"
 )
 
 const slotMachineCollection = "slotMachines"
 
 type FirestoreDb struct {
 	client *firestore.Client
+	logger *logging.Logger
 }
 
-func NewFirestoreDb(client *firestore.Client) (*FirestoreDb, error) {
+func NewFirestoreDb(client *firestore.Client, logger *logging.Logger) (*FirestoreDb, error) {
 	ctx := context.Background()
 	// Verify that we can communicate and authenticate with the Firestore
 	err := client.RunTransaction(ctx, func(ctx context.Context, t *firestore.Transaction) error {
@@ -25,6 +26,7 @@ func NewFirestoreDb(client *firestore.Client) (*FirestoreDb, error) {
 	}
 	return &FirestoreDb{
 		client: client,
+		logger: logger,
 	}, nil
 }
 
@@ -58,7 +60,7 @@ func (db *FirestoreDb) ListSlotMachines(ctx context.Context) ([]*SlotMachine, er
 		if err != nil {
 			return nil, fmt.Errorf("ListSlotMachines: %v", err)
 		}
-		log.Println(machine)
+		db.logger.StandardLogger(logging.Debug).Println(machine)
 		machines = append(machines, machine)
 	}
 	return machines, nil
