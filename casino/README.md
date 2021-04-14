@@ -1,4 +1,4 @@
-# slot_machine_controller
+# casino
 
 A new Flutter project.
 

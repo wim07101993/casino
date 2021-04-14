@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(slot_machine_controller LANGUAGES CXX)
+project(casino LANGUAGES CXX)
 
-set(BINARY_NAME "slot_machine_controller")
+set(BINARY_NAME "casino")
 
 cmake_policy(SET CMP0063 NEW)
 

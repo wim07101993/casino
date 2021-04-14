@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "slot_machine_controller")
-set(APPLICATION_ID "com.example.slot_machine_controller")
+set(BINARY_NAME "casino")
+set(APPLICATION_ID "com.example.casino")
 
 cmake_policy(SET CMP0063 NEW)
 

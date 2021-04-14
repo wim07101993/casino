@@ -1,6 +1,6 @@
 {
-    "name": "slot_machine_controller",
-    "short_name": "slot_machine_controller",
+    "name": "casino",
+    "short_name": "casino",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
