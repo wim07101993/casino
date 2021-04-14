@@ -65,12 +65,18 @@ func (c *Controller) GetTokenCount(w http.ResponseWriter, r *http.Request, ps ht
 }
 
 func (c *Controller) SetTokenCount(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	amount, _ := strconv.Atoi(r.URL.Query().Get(countParam))
-	if amount == 0 {
+	amount, err := strconv.Atoi(r.URL.Query().Get(countParam))
+	if err != nil{
 		_, _ = w.Write([]byte("Please provide an amount to set the token count to."))
 		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
-	err := c.casino.DB.SetTokenCount(r.Context(), ps.ByName(idParam), amount)
+	if amount < 0 {
+		_, _ = w.Write([]byte("Please provide an amount which is greater or equal to 0."))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	err = c.casino.DB.SetTokenCount(r.Context(), ps.ByName(idParam), amount)
 	writeError(w, err)
 }
 
