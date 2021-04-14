@@ -11,17 +11,11 @@ part 'casino_api.g.dart';
 
 @freezed
 class SlotMachine with _$SlotMachine {
-  const factory SlotMachine({
+  const factory SlotMachine.create({
     required String id,
     required String name,
     required int tokens,
   }) = _SlotMachine;
-
-  const factory SlotMachine.toAdd({
-    required String? id,
-    required String name,
-    required int tokens,
-  }) = _ToAdd;
 
   factory SlotMachine.fromJson(Map<String, dynamic> json) =>
       _$SlotMachineFromJson(json);
@@ -38,16 +32,16 @@ class CasinoApi {
 
   Uri get uri => config.apiUri.addPathSegments(['casino']);
 
-  Future<SlotMachine> addSlotMachine(SlotMachine slotMachine) async {
+  Future<SlotMachine> addSlotMachine(String name) async {
     final response = await http.post(
       uri.addPathSegments(['slot-machines']),
-      body: jsonEncode(slotMachine.toJson()),
+      body: jsonEncode({'name': name}),
     );
     validateResponse(response);
-    return SlotMachine(
+    return SlotMachine.create(
       id: response.body,
-      name: slotMachine.name,
-      tokens: slotMachine.tokens,
+      name: name,
+      tokens: 0,
     );
   }
 
@@ -73,7 +67,7 @@ class CasinoApi {
     assert(count >= 0);
     final response = await http.put(uri.replace(
       pathSegments: [...uri.pathSegments, id, 'tokens'],
-      queryParameters: {'count': count},
+      queryParameters: {'count': count.toString()},
     ));
     validateResponse(response);
   }

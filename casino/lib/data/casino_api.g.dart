@@ -20,17 +20,3 @@ Map<String, dynamic> _$_$_SlotMachineToJson(_$_SlotMachine instance) =>
       'name': instance.name,
       'tokens': instance.tokens,
     };
-
-_$_ToAdd _$_$_ToAddFromJson(Map<String, dynamic> json) {
-  return _$_ToAdd(
-    id: json['id'] as String?,
-    name: json['name'] as String,
-    tokens: json['tokens'] as int,
-  );
-}
-
-Map<String, dynamic> _$_$_ToAddToJson(_$_ToAdd instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'tokens': instance.tokens,
-    };
