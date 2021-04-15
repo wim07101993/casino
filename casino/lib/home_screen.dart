@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'add_slot_machine_dialog.dart';
+import 'data/casino_api.dart';
+import 'main.dart';
 import 'slot_machine_list.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -18,6 +21,28 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _onAdd(context),
+        child: const Icon(Icons.add),
+      ),
     );
+  }
+
+  Future<void> _onAdd(BuildContext context) async {
+    final controller = TextEditingController();
+    final isOk = await showDialog<bool>(
+      context: context,
+      builder: (context) => AddSlotMachineDialog(controller: controller),
+    );
+    if (isOk != true) {
+      return;
+    }
+    try {
+      await di<CasinoApi>().addSlotMachine(controller.text);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString().trim()),
+      ));
+    }
   }
 }

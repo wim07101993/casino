@@ -1,10 +1,10 @@
-import 'package:casino/slot_machine_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 
 import 'data/casino_api.dart' show CasinoApi, SlotMachine;
 import 'main.dart';
+import 'slot_machine_controls.dart';
 
 class SlotMachineList extends StatelessWidget {
   SlotMachineList({

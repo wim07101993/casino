@@ -18,11 +18,13 @@ extension GetItExtensions on GetIt {
   void registerApp() {
     registerLazySingleton(() {
       return const AppSettings(
-        apiUrl: 'https://casino-310408.ew.r.appspot.com/',
+        apiUrl: 'https://casino-310408.ew.r.appspot.com',
       );
     });
     registerLazySingleton(() => Client());
     registerLazySingleton(() => Logger());
-    registerLazySingleton(() => CasinoApi(http: call(), config: call()));
+    registerLazySingleton(
+      () => CasinoApi(http: call(), config: call(), logger: call()),
+    );
   }
 }
