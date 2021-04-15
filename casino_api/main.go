@@ -5,7 +5,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"cloud.google.com/go/logging"
 	"context"
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
@@ -35,10 +35,10 @@ func main() {
 	appLogger = logClient.Logger("app")
 	casino := createCasino(env)
 
-	r := httprouter.New()
-	r.GET("/", func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+	r := mux.NewRouter()
+	r.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = w.Write([]byte("Welcome on the slot-machine control server"))
-	})
+	}).Methods("GET")
 
 	ctrl := NewController(casino, env.key)
 	ctrl.RegisterOn(r)

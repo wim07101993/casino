@@ -2,10 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
 )
-import "github.com/julienschmidt/httprouter"
 
 const idParam = "id"
 const countParam = "count"
@@ -22,15 +22,15 @@ func NewController(casino *Casino, key string) *Controller {
 	}
 }
 
-func (c *Controller) RegisterOn(r *httprouter.Router) {
-	r.POST("/casino/slot-machines", c.auth(c.AddSlotMachine))
-	r.GET("/casino/slot-machines", c.auth(c.ListSlotMachines))
-	r.GET("/casino/slot-machines/:"+idParam+"/tokens", c.auth(c.GetTokenCount))
-	r.PUT("/casino/slot-machines/:"+idParam+"/tokens", c.auth(c.SetTokenCount))
-	r.DELETE("/casino/slot-machines/:"+idParam, c.auth(c.RemoveSlotMachine))
+func (c *Controller) RegisterOn(r *mux.Router) {
+	r.HandleFunc("/casino/slot-machines", c.auth(c.AddSlotMachine)).Methods("POST")
+	r.HandleFunc("/casino/slot-machines", c.auth(c.ListSlotMachines)).Methods("GET")
+	r.HandleFunc("/casino/slot-machines/:"+idParam+"/tokens", c.auth(c.GetTokenCount)).Methods("GET")
+	r.HandleFunc("/casino/slot-machines/:"+idParam+"/tokens", c.auth(c.SetTokenCount)).Methods("PUT")
+	r.HandleFunc("/casino/slot-machines/:"+idParam, c.auth(c.RemoveSlotMachine)).Methods("DELETE")
 }
 
-func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request) {
 	m := &SlotMachine{}
 	err := json.NewDecoder(r.Body).Decode(m)
 	if writeError(w, err) {
@@ -44,7 +44,7 @@ func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request, _ ht
 	_, _ = w.Write([]byte(id))
 }
 
-func (c *Controller) ListSlotMachines(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (c *Controller) ListSlotMachines(w http.ResponseWriter, r *http.Request) {
 	ms, err := c.casino.DB.ListSlotMachines(r.Context())
 	if writeError(w, err) {
 		return
@@ -56,17 +56,18 @@ func (c *Controller) ListSlotMachines(w http.ResponseWriter, r *http.Request, _ 
 	_, _ = w.Write(bs)
 }
 
-func (c *Controller) GetTokenCount(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	amount, err := c.casino.DB.GetTokenCount(r.Context(), ps.ByName(idParam))
+func (c *Controller) GetTokenCount(w http.ResponseWriter, r *http.Request) {
+	ps := mux.Vars(r)
+	amount, err := c.casino.DB.GetTokenCount(r.Context(), ps[idParam])
 	if writeError(w, err) {
 		return
 	}
 	_, _ = w.Write([]byte(strconv.Itoa(amount)))
 }
 
-func (c *Controller) SetTokenCount(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func (c *Controller) SetTokenCount(w http.ResponseWriter, r *http.Request) {
 	amount, err := strconv.Atoi(r.URL.Query().Get(countParam))
-	if err != nil{
+	if err != nil {
 		_, _ = w.Write([]byte("Please provide an amount to set the token count to."))
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -76,19 +77,21 @@ func (c *Controller) SetTokenCount(w http.ResponseWriter, r *http.Request, ps ht
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = c.casino.DB.SetTokenCount(r.Context(), ps.ByName(idParam), amount)
+	ps := mux.Vars(r)
+	err = c.casino.DB.SetTokenCount(r.Context(), ps[idParam], amount)
 	writeError(w, err)
 }
 
-func (c *Controller) RemoveSlotMachine(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	err := c.casino.DB.DeleteSlotMachine(r.Context(), ps.ByName(idParam))
+func (c *Controller) RemoveSlotMachine(w http.ResponseWriter, r *http.Request) {
+	ps := mux.Vars(r)
+	err := c.casino.DB.DeleteSlotMachine(r.Context(), ps[idParam])
 	writeError(w, err)
 }
 
-func (c *Controller) auth(h httprouter.Handle) httprouter.Handle {
-	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func (c *Controller) auth(f func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Header.Get("x-api-key") == c.key {
-			h(w, r, ps)
+			f(w, r)
 		} else {
 			w.WriteHeader(http.StatusNotFound)
 		}
