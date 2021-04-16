@@ -10,6 +10,7 @@ import (
 type memoryDb struct {
 	mu           sync.Mutex
 	slotMachines map[string]*SlotMachine
+	listeners    []*func(SlotMachine)
 }
 
 func newMemoryDb() *memoryDb {
@@ -41,7 +42,7 @@ func (db *memoryDb) ListSlotMachines(context.Context) ([]*SlotMachine, error) {
 	db.mu.Unlock()
 	ms := make([]*SlotMachine, 0, len(db.slotMachines))
 	for _, m := range db.slotMachines {
-		ms = append(ms, m)
+		ms = append(ms, &*m)
 	}
 	sort.Slice(ms, func(i, j int) bool {
 		return ms[i].Name < ms[j].Name
@@ -65,6 +66,9 @@ func (db *memoryDb) SetTokenCount(_ context.Context, id string, count int) error
 	defer db.mu.Unlock()
 	if m, ok := db.slotMachines[id]; ok {
 		m.Tokens = count
+		for _, l := range db.listeners {
+			(*l)(*m)
+		}
 		return nil
 	}
 	return NotFoundError{"SlotMachine", id}
@@ -76,4 +80,22 @@ func (db *memoryDb) DeleteSlotMachine(_ context.Context, id string) error {
 	defer db.mu.Unlock()
 	delete(db.slotMachines, id)
 	return nil
+}
+
+func (db *memoryDb) ListenToSlotMachineChanges(_ context.Context, f func(machine SlotMachine)) (cancel func(), err error) {
+	db.listeners = append(db.listeners, &f)
+	cancel = func() {
+		i := -1
+		for i = range db.listeners {
+			if db.listeners[i] == &f {
+				break
+			}
+		}
+		if i == -1 {
+			return
+		}
+		db.listeners[i] = db.listeners[len(db.listeners)]
+		db.listeners = db.listeners[:len(db.listeners) - 1]
+	}
+	return cancel, nil
 }

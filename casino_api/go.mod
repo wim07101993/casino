@@ -8,5 +8,6 @@ require (
 	cloud.google.com/go/logging v1.3.0
 	github.com/google/uuid v1.1.2
 	github.com/gorilla/mux v1.8.0
+	github.com/gorilla/websocket v1.4.2
 	google.golang.org/api v0.43.0
 )
