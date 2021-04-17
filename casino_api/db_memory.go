@@ -7,19 +7,20 @@ import (
 	"sync"
 )
 
-type memoryDb struct {
+type MemoryDb struct {
 	mu           sync.Mutex
 	slotMachines map[string]*SlotMachine
 	listeners    []*func(SlotMachine)
 }
 
-func newMemoryDb() *memoryDb {
-	return &memoryDb{
+func NewMemoryDb() *MemoryDb {
+	return &MemoryDb{
 		slotMachines: map[string]*SlotMachine{},
+		listeners: []*func(SlotMachine){},
 	}
 }
 
-func (db *memoryDb) Close(context.Context) error {
+func (db *MemoryDb) Close(context.Context) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 	db.slotMachines = nil
@@ -27,7 +28,7 @@ func (db *memoryDb) Close(context.Context) error {
 }
 
 // AddSlotMachine adds a slot-machine with a new id.
-func (db *memoryDb) AddSlotMachine(_ context.Context, slotMachine *SlotMachine) (id string, err error) {
+func (db *MemoryDb) AddSlotMachine(_ context.Context, slotMachine *SlotMachine) (id string, err error) {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 	id = uuid.New().String()
@@ -37,7 +38,7 @@ func (db *memoryDb) AddSlotMachine(_ context.Context, slotMachine *SlotMachine) 
 }
 
 // ListSlotMachines returns a list of all the slot-casino.
-func (db *memoryDb) ListSlotMachines(context.Context) ([]*SlotMachine, error) {
+func (db *MemoryDb) ListSlotMachines(context.Context) ([]*SlotMachine, error) {
 	db.mu.Lock()
 	db.mu.Unlock()
 	ms := make([]*SlotMachine, 0, len(db.slotMachines))
@@ -51,7 +52,7 @@ func (db *memoryDb) ListSlotMachines(context.Context) ([]*SlotMachine, error) {
 }
 
 // GetTokenCount retrieves a number of runs a slot-machine has left.
-func (db *memoryDb) GetTokenCount(_ context.Context, id string) (int, error) {
+func (db *MemoryDb) GetTokenCount(_ context.Context, id string) (int, error) {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 	if m, ok := db.slotMachines[id]; ok {
@@ -61,7 +62,7 @@ func (db *memoryDb) GetTokenCount(_ context.Context, id string) (int, error) {
 }
 
 // SetTokenCount sets the number of runs a slot-machine has left.
-func (db *memoryDb) SetTokenCount(_ context.Context, id string, count int) error {
+func (db *MemoryDb) SetTokenCount(_ context.Context, id string, count int) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 	if m, ok := db.slotMachines[id]; ok {
@@ -75,14 +76,14 @@ func (db *memoryDb) SetTokenCount(_ context.Context, id string, count int) error
 }
 
 // DeleteSlotMachine removes a slot-machine from the database.
-func (db *memoryDb) DeleteSlotMachine(_ context.Context, id string) error {
+func (db *MemoryDb) DeleteSlotMachine(_ context.Context, id string) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 	delete(db.slotMachines, id)
 	return nil
 }
 
-func (db *memoryDb) ListenToSlotMachineChanges(_ context.Context, f func(machine SlotMachine)) (cancel func(), err error) {
+func (db *MemoryDb) ListenToSlotMachineChanges(_ context.Context, f func(machine SlotMachine)) (cancel func(), err error) {
 	db.listeners = append(db.listeners, &f)
 	cancel = func() {
 		i := -1

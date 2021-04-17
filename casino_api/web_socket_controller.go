@@ -1,9 +1,9 @@
 package main
 
 import (
-	"cloud.google.com/go/logging"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
+	"log"
 	"net/http"
 )
 
@@ -15,25 +15,32 @@ var (
 )
 
 type WebSocketController struct {
-	logger *logging.Logger
-	casino *Casino
+	errorLogger *log.Logger
+	logger      *log.Logger
+	casino      *Casino
 }
 
-func NewWebSocketController(casino *Casino, logger *logging.Logger) *WebSocketController {
+func NewWebSocketController(casino *Casino, errorLogger *log.Logger, logger *log.Logger) *WebSocketController {
+	upgrader.CheckOrigin = func(r *http.Request) bool {
+		return true
+	}
 	return &WebSocketController{
-		logger: logger,
-		casino: casino,
+		errorLogger: errorLogger,
+		casino:      casino,
+		logger:      logger,
 	}
 }
 
 func (c *WebSocketController) RegisterOn(r *mux.Router) {
 	r.HandleFunc("/casino/slot-machines/changes", func(w http.ResponseWriter, r *http.Request) {
+		c.logger.Println("request: listen to all changes")
 		c.changesOf(w, r, func(machine SlotMachine) bool {
 			return true
 		})
 	})
 	r.HandleFunc("/casino/slot-machines/:"+idParam+"/changes", func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)[idParam]
+		c.logger.Printf("request: listen to changes of %s", id)
 		c.changesOf(w, r, func(machine SlotMachine) bool {
 			return machine.ID == id
 		})
@@ -44,18 +51,20 @@ func (c *WebSocketController) changesOf(w http.ResponseWriter, r *http.Request, 
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		if _, ok := err.(websocket.HandshakeError); !ok {
-			c.logger.StandardLogger(logging.Error).Println(err)
+			c.errorLogger.Println(err)
 		}
 		return
 	}
 	cancel, err := c.casino.DB.ListenToSlotMachineChanges(r.Context(), func(machine SlotMachine) {
 		if predicate(machine) {
 			err := ws.WriteJSON(machine)
-			c.logger.StandardLogger(logging.Error).Println(err)
+			if err != nil {
+				c.errorLogger.Println(err)
+			}
 		}
 	})
 	if err != nil {
-		c.logger.StandardLogger(logging.Error).Println(err)
+		c.errorLogger.Println(err)
 	}
 	ws.SetCloseHandler(func(code int, text string) error {
 		cancel()

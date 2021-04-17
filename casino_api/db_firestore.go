@@ -2,23 +2,23 @@ package main
 
 import (
 	"cloud.google.com/go/firestore"
-	"cloud.google.com/go/logging"
 	"context"
 	"fmt"
 	"google.golang.org/api/iterator"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"log"
 	"time"
 )
 
 const slotMachineCollection = "slotMachines"
 
 type FirestoreDb struct {
-	client *firestore.Client
-	logger *logging.Logger
+	client      *firestore.Client
+	errorLogger *log.Logger
 }
 
-func NewFirestoreDb(client *firestore.Client, logger *logging.Logger) (*FirestoreDb, error) {
+func NewFirestoreDb(client *firestore.Client, errorLogger *log.Logger) (*FirestoreDb, error) {
 	ctx := context.Background()
 	// Verify that we can communicate and authenticate with the Firestore
 	err := client.RunTransaction(ctx, func(ctx context.Context, t *firestore.Transaction) error {
@@ -28,8 +28,8 @@ func NewFirestoreDb(client *firestore.Client, logger *logging.Logger) (*Firestor
 		return nil, err
 	}
 	return &FirestoreDb{
-		client: client,
-		logger: logger,
+		client:      client,
+		errorLogger: errorLogger,
 	}, nil
 }
 
@@ -110,7 +110,7 @@ func (db *FirestoreDb) ListenToSlotMachineChanges(ctx context.Context, f func(ma
 				return
 			}
 			if err != nil {
-				db.logger.StandardLogger(logging.Error).Printf("Snapshot.Next: %v", err)
+				db.errorLogger.Printf("Snapshot.Next: %v", err)
 				return
 			}
 			if snap != nil {
@@ -120,7 +120,7 @@ func (db *FirestoreDb) ListenToSlotMachineChanges(ctx context.Context, f func(ma
 						break
 					}
 					if err != nil {
-						db.logger.StandardLogger(logging.Error).Printf("Documents.Next: %v", err)
+						db.errorLogger.Printf("Documents.Next: %v", err)
 						return
 					}
 					m := SlotMachine{}

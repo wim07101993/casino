@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -12,22 +13,22 @@ const countParam = "count"
 
 type Controller struct {
 	casino *Casino
-	key    string
+	logger *log.Logger
 }
 
-func NewController(casino *Casino, key string) *Controller {
+func NewController(casino *Casino, logger *log.Logger) *Controller {
 	return &Controller{
 		casino: casino,
-		key:    key,
+		logger: logger,
 	}
 }
 
 func (c *Controller) RegisterOn(r *mux.Router) {
-	r.HandleFunc("/casino/slot-machines", c.auth(c.AddSlotMachine)).Methods("POST")
-	r.HandleFunc("/casino/slot-machines", c.auth(c.ListSlotMachines)).Methods("GET")
-	r.HandleFunc("/casino/slot-machines/:"+idParam+"/tokens", c.auth(c.GetTokenCount)).Methods("GET")
-	r.HandleFunc("/casino/slot-machines/:"+idParam+"/tokens", c.auth(c.SetTokenCount)).Methods("PUT")
-	r.HandleFunc("/casino/slot-machines/:"+idParam, c.auth(c.RemoveSlotMachine)).Methods("DELETE")
+	r.HandleFunc("/casino/slot-machines", c.AddSlotMachine).Methods("POST")
+	r.HandleFunc("/casino/slot-machines", c.ListSlotMachines).Methods("GET")
+	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/tokens", c.GetTokenCount).Methods("GET")
+	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/tokens", c.SetTokenCount).Methods("PUT")
+	r.HandleFunc("/casino/slot-machines/{"+idParam+"}", c.RemoveSlotMachine).Methods("DELETE")
 }
 
 func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request) {
@@ -36,6 +37,7 @@ func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request) {
 	if writeError(w, err) {
 		return
 	}
+	c.logger.Printf("Request: add slot-machine with name: %s", m.Name)
 	id, err := c.casino.DB.AddSlotMachine(r.Context(), m)
 	if writeError(w, err) {
 		return
@@ -45,6 +47,7 @@ func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *Controller) ListSlotMachines(w http.ResponseWriter, r *http.Request) {
+	c.logger.Println("Request: get all slot-machines")
 	ms, err := c.casino.DB.ListSlotMachines(r.Context())
 	if writeError(w, err) {
 		return
@@ -57,8 +60,9 @@ func (c *Controller) ListSlotMachines(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *Controller) GetTokenCount(w http.ResponseWriter, r *http.Request) {
-	ps := mux.Vars(r)
-	amount, err := c.casino.DB.GetTokenCount(r.Context(), ps[idParam])
+	id := mux.Vars(r)[idParam]
+	c.logger.Printf("Request: get token count of %s", id)
+	amount, err := c.casino.DB.GetTokenCount(r.Context(), id)
 	if writeError(w, err) {
 		return
 	}
@@ -66,6 +70,7 @@ func (c *Controller) GetTokenCount(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *Controller) SetTokenCount(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)[idParam]
 	amount, err := strconv.Atoi(r.URL.Query().Get(countParam))
 	if err != nil {
 		_, _ = w.Write([]byte("Please provide an amount to set the token count to."))
@@ -77,25 +82,16 @@ func (c *Controller) SetTokenCount(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	ps := mux.Vars(r)
-	err = c.casino.DB.SetTokenCount(r.Context(), ps[idParam], amount)
+	c.logger.Printf("Request: set token count of %s to %d", id, amount)
+	err = c.casino.DB.SetTokenCount(r.Context(), id, amount)
 	writeError(w, err)
 }
 
 func (c *Controller) RemoveSlotMachine(w http.ResponseWriter, r *http.Request) {
-	ps := mux.Vars(r)
-	err := c.casino.DB.DeleteSlotMachine(r.Context(), ps[idParam])
+	id := mux.Vars(r)[idParam]
+	c.logger.Printf("Request: delete slot-machine with id %s", id)
+	err := c.casino.DB.DeleteSlotMachine(r.Context(), id)
 	writeError(w, err)
-}
-
-func (c *Controller) auth(f func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Header.Get("x-api-key") == c.key {
-			f(w, r)
-		} else {
-			w.WriteHeader(http.StatusNotFound)
-		}
-	}
 }
 
 func writeError(w http.ResponseWriter, err error) bool {
