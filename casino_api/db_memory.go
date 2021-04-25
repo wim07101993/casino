@@ -16,7 +16,7 @@ type MemoryDb struct {
 func NewMemoryDb() *MemoryDb {
 	return &MemoryDb{
 		slotMachines: map[string]*SlotMachine{},
-		listeners: []*func(SlotMachine){},
+		listeners:    []*func(SlotMachine){},
 	}
 }
 
@@ -83,7 +83,7 @@ func (db *MemoryDb) DeleteSlotMachine(_ context.Context, id string) error {
 	return nil
 }
 
-func (db *MemoryDb) ListenToSlotMachineChanges(_ context.Context, f func(machine SlotMachine)) (cancel func(), err error) {
+func (db *MemoryDb) ListenToSlotMachineChanges(f func(SlotMachine)) (cancel func()) {
 	db.listeners = append(db.listeners, &f)
 	cancel = func() {
 		i := -1
@@ -96,7 +96,7 @@ func (db *MemoryDb) ListenToSlotMachineChanges(_ context.Context, f func(machine
 			return
 		}
 		db.listeners[i] = db.listeners[len(db.listeners)]
-		db.listeners = db.listeners[:len(db.listeners) - 1]
+		db.listeners = db.listeners[:len(db.listeners)-1]
 	}
-	return cancel, nil
+	return cancel
 }

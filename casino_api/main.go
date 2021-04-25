@@ -13,7 +13,7 @@ func main() {
 
 	cl, err := di.Logger("casino_api", logging.Critical)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
 	}
 	il, err := di.Logger("casino_api", logging.Info)
 	if err != nil {
@@ -27,13 +27,6 @@ func main() {
 		cl.Fatal(err)
 	}
 	ctrl.RegisterOn(r)
-
-	wsCtrl, err := di.WebSocketController()
-	if err != nil {
-		cl.Fatal(err)
-	}
-	wsCtrl.RegisterOn(r)
-
 	env := di.Env()
 	il.Println("Listening on :" + env.port)
 	cl.Fatal(http.ListenAndServe(":"+env.port, r))

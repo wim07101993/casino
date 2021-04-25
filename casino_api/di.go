@@ -89,8 +89,12 @@ func (di *DI) Controller() (*Controller, error) {
 	if err != nil {
 		return nil, err
 	}
+	el, err := di.Logger("controller", logging.Error)
+	if err != nil {
+		return nil, err
+	}
 
-	di.controller = NewController(c, l)
+	di.controller = NewController(c, l, el)
 	return di.controller, err
 }
 
@@ -128,8 +132,12 @@ func (di *DI) FirestoreDB() (*FirestoreDb, error) {
 	if err != nil {
 		return nil, err
 	}
+	l, err := di.Logger("firebase-db", logging.Info)
+	if err != nil {
+		return nil, err
+	}
 
-	di.firestoreDb, err = NewFirestoreDb(fc, el)
+	di.firestoreDb, err = NewFirestoreDb(fc, el, l)
 	if err != nil {
 		return nil, fmt.Errorf("could not create firestore db: %v", err)
 	}
@@ -138,7 +146,10 @@ func (di *DI) FirestoreDB() (*FirestoreDb, error) {
 
 func (di *DI) Logger(logID string, severity logging.Severity) (*log.Logger, error) {
 	if !di.IsOnline() {
-		return log.Default(), nil
+		if severity == logging.Error || severity == logging.Critical {
+			return log.New(os.Stderr, severity.String()+" "+logID, log.LstdFlags), nil
+		}
+		return log.New(os.Stdout, severity.String()+" "+logID, log.LstdFlags), nil
 	}
 
 	lc, err := di.LogClient()
@@ -170,6 +181,9 @@ func (di *DI) WebSocketController() (*WebSocketController, error) {
 		return nil, err
 	}
 	l, err := di.Logger("web-socket", logging.Info)
+	if err != nil {
+		return nil, err
+	}
 
 	di.webSocketController = NewWebSocketController(c, el, l)
 	return di.webSocketController, nil

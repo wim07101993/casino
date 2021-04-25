@@ -38,7 +38,7 @@ func (c *WebSocketController) RegisterOn(r *mux.Router) {
 			return true
 		})
 	})
-	r.HandleFunc("/casino/slot-machines/:"+idParam+"/changes", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/changes", func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)[idParam]
 		c.logger.Printf("request: listen to changes of %s", id)
 		c.changesOf(w, r, func(machine SlotMachine) bool {
@@ -55,19 +55,19 @@ func (c *WebSocketController) changesOf(w http.ResponseWriter, r *http.Request, 
 		}
 		return
 	}
-	cancel, err := c.casino.DB.ListenToSlotMachineChanges(r.Context(), func(machine SlotMachine) {
+	cancel := c.casino.DB.ListenToSlotMachineChanges(func(machine SlotMachine) {
 		if predicate(machine) {
 			err := ws.WriteJSON(machine)
 			if err != nil {
 				c.errorLogger.Println(err)
+			} else {
+				c.logger.Println("wrote changes")
 			}
 		}
 	})
-	if err != nil {
-		c.errorLogger.Println(err)
-	}
 	ws.SetCloseHandler(func(code int, text string) error {
 		cancel()
+		c.logger.Println("closed socket")
 		return nil
 	})
 }

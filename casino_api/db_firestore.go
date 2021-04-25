@@ -8,17 +8,19 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"log"
-	"time"
 )
 
 const slotMachineCollection = "slotMachines"
 
 type FirestoreDb struct {
-	client      *firestore.Client
-	errorLogger *log.Logger
+	client             *firestore.Client
+	errorLogger        *log.Logger
+	logger             *log.Logger
+	isConnectionClosed bool
+	listeners          []*func(SlotMachine)
 }
 
-func NewFirestoreDb(client *firestore.Client, errorLogger *log.Logger) (*FirestoreDb, error) {
+func NewFirestoreDb(client *firestore.Client, errorLogger *log.Logger, logger *log.Logger) (*FirestoreDb, error) {
 	ctx := context.Background()
 	// Verify that we can communicate and authenticate with the Firestore
 	err := client.RunTransaction(ctx, func(ctx context.Context, t *firestore.Transaction) error {
@@ -30,10 +32,13 @@ func NewFirestoreDb(client *firestore.Client, errorLogger *log.Logger) (*Firesto
 	return &FirestoreDb{
 		client:      client,
 		errorLogger: errorLogger,
+		logger:      logger,
+		listeners:   []*func(SlotMachine){},
 	}, nil
 }
 
 func (db *FirestoreDb) Close() error {
+	db.isConnectionClosed = true
 	return db.client.Close()
 }
 
@@ -49,23 +54,10 @@ func (db *FirestoreDb) AddSlotMachine(ctx context.Context, slotMachine *SlotMach
 func (db *FirestoreDb) ListSlotMachines(ctx context.Context) ([]*SlotMachine, error) {
 	machines := make([]*SlotMachine, 0)
 	iter := db.client.Collection(slotMachineCollection).Documents(ctx)
-	defer iter.Stop()
-	for {
-		doc, err := iter.Next()
-		if err == iterator.Done {
-			break
-		}
-		if err != nil {
-			return nil, fmt.Errorf("ListSlotMachines: %v", err)
-		}
-		machine := &SlotMachine{}
-		err = doc.DataTo(machine)
-		if err != nil {
-			return nil, fmt.Errorf("ListSlotMachines: %v", err)
-		}
-		machines = append(machines, machine)
-	}
-	return machines, nil
+	err := db.EncodeDocuments(iter, func(machine SlotMachine) {
+		machines = append(machines, &machine)
+	})
+	return machines, err
 }
 
 func (db *FirestoreDb) GetTokenCount(ctx context.Context, id string) (int, error) {
@@ -94,44 +86,68 @@ func (db *FirestoreDb) DeleteSlotMachine(ctx context.Context, id string) error {
 	return err
 }
 
-func (db *FirestoreDb) ListenToSlotMachineChanges(ctx context.Context, f func(machine SlotMachine)) (cancel func(), err error) {
-	ctx, c := context.WithTimeout(ctx, 30*time.Second)
-	defer c()
-
-	shouldCancel := false
-	cancel = func() { shouldCancel = true }
-
-	go func() {
-
-		it := db.client.Collection(slotMachineCollection).Snapshots(ctx)
-		for !shouldCancel {
-			snap, err := it.Next()
-			if status.Code(err) == codes.DeadlineExceeded {
-				return
+func (db *FirestoreDb) listenToSlotMachineChanges() {
+	db.logger.Println("Listening to slot-machine changes")
+	ctx := context.Background()
+	it := db.client.Collection(slotMachineCollection).Snapshots(ctx)
+	for !db.isConnectionClosed {
+		snap, err := it.Next()
+		if status.Code(err) == codes.DeadlineExceeded {
+			db.logger.Println("Deadline exceeded")
+			return
+		}
+		if err != nil {
+			db.errorLogger.Printf("Snapshot.Next: %v", err)
+			return
+		}
+		if snap == nil {
+			db.logger.Println("snap is nil")
+			continue
+		}
+		err = db.EncodeDocuments(snap.Documents, func(m SlotMachine) {
+			for _, l := range db.listeners {
+				(*l)(m)
 			}
-			if err != nil {
-				db.errorLogger.Printf("Snapshot.Next: %v", err)
-				return
-			}
-			if snap != nil {
-				for !shouldCancel {
-					doc, err := snap.Documents.Next()
-					if err == iterator.Done {
-						break
-					}
-					if err != nil {
-						db.errorLogger.Printf("Documents.Next: %v", err)
-						return
-					}
-					m := SlotMachine{}
-					err = doc.DataTo(&m)
-					if err == nil {
-						f(m)
-					}
-				}
+		})
+		if err != nil {
+			db.errorLogger.Printf("Error while listening to changes: %v", err)
+		}
+	}
+}
+
+func (db *FirestoreDb) ListenToSlotMachineChanges(f func(machine SlotMachine)) (cancel func()) {
+	db.listeners = append(db.listeners, &f)
+	cancel = func() {
+		i := -1
+		for i = range db.listeners {
+			if db.listeners[i] == &f {
+				break
 			}
 		}
-	}()
+		if i == -1 {
+			return
+		}
+		db.listeners[i] = db.listeners[len(db.listeners)]
+		db.listeners = db.listeners[:len(db.listeners)-1]
+	}
+	return cancel
+}
 
-	return cancel, nil
+func (db *FirestoreDb) EncodeDocuments(i *firestore.DocumentIterator, f func(SlotMachine)) error {
+	defer i.Stop()
+	for {
+		doc, err := i.Next()
+		if err == iterator.Done {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+		m := SlotMachine{}
+		err = doc.DataTo(&m)
+		if err != nil {
+			db.errorLogger.Printf("Error while decoding document: %v", err)
+		}
+		f(m)
+	}
 }

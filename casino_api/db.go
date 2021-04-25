@@ -23,7 +23,7 @@ type CasinoDb interface {
 	DeleteSlotMachine(ctx context.Context, id string) error
 
 	// ListenToSlotMachineChanges listens to the changes of all slot-machines.
-	ListenToSlotMachineChanges(ctx context.Context, f func(machine SlotMachine)) (cancel func(), err error)
+	ListenToSlotMachineChanges(f func(machine SlotMachine)) (cancel func())
 }
 
 type NotFoundError struct {
