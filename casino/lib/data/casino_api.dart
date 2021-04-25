@@ -50,7 +50,6 @@ class CasinoApi {
   }
 
   Future<List<SlotMachine>> listSlotMachines() async {
-    logger.d('listing slot-machines');
     final response = await http.get(
       uri.addPathSegments(['slot-machines']),
     );
@@ -90,7 +89,7 @@ class CasinoApi {
   }
 
   Future<void> validateResponse(Response response) async {
-    if (response.statusCode >= 300) {
+    if (response.statusCode >= 400) {
       final message =
           StringBuffer('Error while sending request to casino api:');
       if (response.request != null) {

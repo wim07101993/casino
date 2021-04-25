@@ -57,7 +57,11 @@ class _SlotMachineControlsState extends State<SlotMachineControls> {
     return IconButton(
       icon: const Icon(Icons.remove),
       onPressed: () {
-        tokenCount--;
+        if (tokenCount <= 0) {
+          tokenCount = 0;
+        } else {
+          tokenCount--;
+        }
         tokenCountController.text = tokenCount.toString();
       },
     );

@@ -17,7 +17,9 @@ class HomeScreen extends StatelessWidget {
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1000),
-            child: SlotMachineList(),
+            child: SlotMachineList(
+              onAddSlotMachine: () => _onAdd(context),
+            ),
           ),
         ),
       ),
