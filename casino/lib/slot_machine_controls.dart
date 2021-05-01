@@ -1,78 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'data/casino_api.dart';
+import 'bloc/slot_machine_bloc.dart';
+import 'bloc/slot_machine_list_bloc.dart';
 import 'main.dart';
 
 class SlotMachineControls extends StatefulWidget {
   const SlotMachineControls({
     Key? key,
-    required this.slotMachine,
+    required this.id,
+    required this.name,
   }) : super(key: key);
 
-  final SlotMachine slotMachine;
+  final String id;
+  final String name;
 
   @override
   _SlotMachineControlsState createState() => _SlotMachineControlsState();
 }
 
 class _SlotMachineControlsState extends State<SlotMachineControls> {
-  final CasinoApi casinoApi = di();
-  late int tokenCount;
   late TextEditingController tokenCountController;
-  String? error;
+  late SlotMachineBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    tokenCountController = TextEditingController(
-      text: widget.slotMachine.tokens.toString(),
-    )..addListener(onTokenCountChange);
-    tokenCount = widget.slotMachine.tokens;
+    tokenCountController = TextEditingController()
+      ..addListener(onTokenCountInputChange);
+    bloc = SlotMachineBloc(
+      setTokenCount: di(),
+      getTokenCount: di(),
+      logger: di(),
+      slotMachinesChanges: di(),
+    )..add(SlotMachineEvent.load(widget.id));
+  }
+
+  @override
+  void didUpdateWidget(covariant SlotMachineControls oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.id != oldWidget.id) {
+      bloc.add(SlotMachineEvent.load(widget.id));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicWidth(
-      child: Row(children: [
-        if (error != null) _errorMessage(),
-        _removeTokenButton(),
-        _amountField(),
-        _addTokenButton(),
-        _removeButton(context),
-      ]),
+    return BlocProvider.value(
+      value: bloc,
+      child: BlocBuilder<SlotMachineBloc, SlotMachineState>(
+        builder: (context, state) {
+          if (state.tokens != null) {
+            tokenCountController.text = state.tokens.toString();
+          }
+          return IntrinsicWidth(
+            child: Row(children: [
+              if (state.error != null) _errorMessage(state.error!),
+              _removeTokenButton(context),
+              _amountField(),
+              _addTokenButton(context),
+              _removeButton(context, state),
+            ]),
+          );
+        },
+      ),
     );
   }
 
-  Widget _errorMessage() {
+  Widget _errorMessage(Object error) {
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: Text(
-        error!,
+        error.toString(),
         style: TextStyle(color: Theme.of(context).errorColor),
       ),
     );
   }
 
-  Widget _removeTokenButton() {
+  Widget _removeTokenButton(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.remove),
       onPressed: () {
-        if (tokenCount <= 0) {
-          tokenCount = 0;
-        } else {
-          tokenCount--;
-        }
-        tokenCountController.text = tokenCount.toString();
-      },
-    );
-  }
-
-  Widget _addTokenButton() {
-    return IconButton(
-      icon: const Icon(Icons.add),
-      onPressed: () {
-        tokenCount++;
-        tokenCountController.text = tokenCount.toString();
+        BlocProvider.of<SlotMachineBloc>(context)
+            .add(const SlotMachineEvent.removeToken());
       },
     );
   }
@@ -92,18 +102,22 @@ class _SlotMachineControlsState extends State<SlotMachineControls> {
     );
   }
 
-  Widget _removeButton(BuildContext context) {
+  Widget _addTokenButton(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.add),
+      onPressed: () {
+        BlocProvider.of<SlotMachineBloc>(context)
+            .add(const SlotMachineEvent.addToken());
+      },
+    );
+  }
+
+  Widget _removeButton(BuildContext context, SlotMachineState state) {
     return IconButton(
       onPressed: () async {
-        try {
-          if (!await _askWhetherUserIsSureToDeleteSlotMachine(context)) {
-            return;
-          }
-          await casinoApi.removeSlotMachine(widget.slotMachine.id);
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(e.toString().trim()),
-          ));
+        if (await _askWhetherUserIsSureToDeleteSlotMachine(context)) {
+          BlocProvider.of<SlotMachineListBloc>(context)
+              .add(SlotMachineListEvent.removeSlotMachine(id: widget.id));
         }
       },
       color: Theme.of(context).errorColor,
@@ -111,18 +125,12 @@ class _SlotMachineControlsState extends State<SlotMachineControls> {
     );
   }
 
-  Future<void> onTokenCountChange() async {
+  Future<void> onTokenCountInputChange() async {
     final value = int.tryParse(tokenCountController.text);
-    if (value == null) {
-      setState(() => error = 'Please enter a number');
-      return;
-    }
-    tokenCount = value;
-    try {
-      await casinoApi.setTokens(widget.slotMachine.id, tokenCount);
-      setState(() => error = null);
-    } catch (e) {
-      setState(() => error = e.toString().trim());
+    if (value != null &&
+        bloc.state.tokens != null &&
+        value != bloc.state.tokens) {
+      bloc.add(SlotMachineEvent.setTokenCount(value));
     }
   }
 

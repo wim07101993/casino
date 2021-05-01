@@ -153,9 +153,8 @@ class __$SlotMachineCopyWithImpl<$Res> extends _$SlotMachineCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_SlotMachine implements _SlotMachine {
   const _$_SlotMachine(
       {required this.id, required this.name, required this.tokens});

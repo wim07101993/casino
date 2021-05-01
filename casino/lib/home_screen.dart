@@ -1,8 +1,8 @@
+import 'package:casino_shared/casino_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'add_slot_machine_dialog.dart';
-import 'data/casino_api.dart';
 import 'main.dart';
 import 'slot_machine_list.dart';
 

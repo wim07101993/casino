@@ -38,10 +38,14 @@ class _GameState extends State<Game> {
       onKey: onKey,
       child: GestureDetector(
         onTap: onTap,
-        child: Container(
-          color: Colors.transparent,
-          alignment: Alignment.center,
-          child: FittedBox(child: _numbers()),
+        child: Stack(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              color: Colors.transparent,
+              child: FittedBox(child: _numbers()),
+            ),
+          ],
         ),
       ),
     );

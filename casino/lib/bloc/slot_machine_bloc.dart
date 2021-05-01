@@ -1,0 +1,115 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
+
+import '../domain/get_token_count.dart';
+import '../domain/set_token_count.dart';
+import '../domain/slot_machine_changes.dart';
+import '../models/models.dart';
+
+part 'slot_machine_bloc.freezed.dart';
+
+@freezed
+class SlotMachineEvent with _$SlotMachineEvent {
+  const factory SlotMachineEvent.load(String id) = _Load;
+  const factory SlotMachineEvent.addToken() = _AddToken;
+  const factory SlotMachineEvent.removeToken() = _RemoveToken;
+  const factory SlotMachineEvent.setTokenCount(int count) = _SetTokenCount;
+}
+
+@freezed
+class SlotMachineState with _$SlotMachineState {
+  const factory SlotMachineState({
+    String? id,
+    int? tokens,
+    Object? error,
+  }) = _SlotMachineState;
+}
+
+class SlotMachineBloc extends Bloc<SlotMachineEvent, SlotMachineState> {
+  SlotMachineBloc({
+    required this.getTokenCount,
+    required this.setTokenCount,
+    required this.logger,
+    required SlotMachineChanges slotMachinesChanges,
+  }) : super(const SlotMachineState()) {
+    streamSubscription = slotMachinesChanges()
+        .map((list) {
+          return list
+              .cast<SlotMachine?>()
+              .firstWhere((e) => e!.id == state.id, orElse: () => null);
+        })
+        .where((e) => e != null)
+        .cast<SlotMachine>()
+        .listen(_onSlotMachineChanged);
+  }
+
+  final GetTokenCount getTokenCount;
+  final SetTokenCount setTokenCount;
+  final Logger logger;
+
+  late StreamSubscription<SlotMachine> streamSubscription;
+
+  @override
+  Future<void> close() {
+    streamSubscription.cancel();
+    return super.close();
+  }
+
+  @override
+  Stream<SlotMachineState> mapEventToState(SlotMachineEvent event) async* {
+    logger.i('Event: $event');
+    yield* event.when(
+      load: _load,
+      addToken: _addToken,
+      removeToken: _removeOne,
+      setTokenCount: _setTokenCount,
+    );
+  }
+
+  Stream<SlotMachineState> _load(String id) async* {
+    try {
+      final tokens = await getTokenCount(id);
+      yield state.copyWith(id: id, tokens: tokens);
+    } catch (e, stackTrace) {
+      logger.e('Error on load slot-machine', e, stackTrace);
+    }
+  }
+
+  Stream<SlotMachineState> _addToken() {
+    if (state.tokens != null && state.tokens! < (1 << 31)) {
+      final tokens = state.tokens! + 1;
+      return _setTokenCount(tokens);
+    }
+    return const Stream.empty();
+  }
+
+  Stream<SlotMachineState> _removeOne() {
+    if (state.tokens != null && state.tokens! > 0) {
+      final tokens = state.tokens! - 1;
+      return _setTokenCount(tokens);
+    }
+    return const Stream.empty();
+  }
+
+  Stream<SlotMachineState> _setTokenCount(int count) async* {
+    try {
+      final id = state.id;
+      if (id == null) {
+        logger.wtf('setting token count without having an id!!');
+        return;
+      }
+      await setTokenCount(id, count);
+      yield state.copyWith(tokens: count);
+    } catch (e, stackTrace) {
+      logger.e('Error on set token count', e, stackTrace);
+    }
+  }
+
+  void _onSlotMachineChanged(SlotMachine event) {
+    logger.i('Slot-machine changed: $event');
+    emit(state.copyWith(tokens: event.tokens));
+  }
+}

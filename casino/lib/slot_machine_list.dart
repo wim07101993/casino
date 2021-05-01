@@ -3,10 +3,11 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:logger/logger.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'data/casino_api.dart' show CasinoApi, SlotMachine;
+import 'bloc/slot_machine_list_bloc.dart';
 import 'main.dart';
+import 'models/models.dart';
 import 'slot_machine_controls.dart';
 
 class SlotMachineList extends StatefulWidget {
@@ -22,37 +23,23 @@ class SlotMachineList extends StatefulWidget {
 }
 
 class _SlotMachineListState extends State<SlotMachineList> {
-  final CasinoApi api = di();
-
-  bool isDisposed = false;
-  List<SlotMachine>? slotMachines;
-  Object? error;
-
-  @override
-  void initState() {
-    super.initState();
-    pollForChanges();
-  }
-
-  @override
-  void dispose() {
-    isDisposed = true;
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (slotMachines == null) {
-      if (error != null) {
-        return _error(error!);
-      } else {
-        return const CircularProgressIndicator();
-      }
-    } else if (slotMachines!.isEmpty) {
-      return _empty();
-    } else {
-      return _list(slotMachines!);
-    }
+    return BlocProvider(
+      create: (_) => di<SlotMachineListBloc>(),
+      child: BlocBuilder<SlotMachineListBloc, SlotMachineListState>(
+        builder: (context, state) {
+          print('SLOT_MACHINE_LIST BUILD $state');
+          if (state.isLoading) {
+            return const CircularProgressIndicator();
+          } else if (state.slotMachines.isEmpty) {
+            return state.error != null ? _error(state.error!) : _empty();
+          } else {
+            return _list(state.slotMachines);
+          }
+        },
+      ),
+    );
   }
 
   Widget _error(Object error) {
@@ -81,7 +68,8 @@ class _SlotMachineListState extends State<SlotMachineList> {
           key: Key(slotMachine.id),
           title: Text(slotMachine.name),
           trailing: SlotMachineControls(
-            slotMachine: slotMachine,
+            id: slotMachine.id,
+            name: slotMachine.name,
           ),
         );
       },
@@ -101,20 +89,5 @@ class _SlotMachineListState extends State<SlotMachineList> {
         ),
       ],
     );
-  }
-
-  Future pollForChanges() async {
-    while (!isDisposed) {
-      try {
-        final items = await api
-            .listSlotMachines()
-            .then((x) => x..sort((a, b) => a.name.compareTo(b.name)));
-        setState(() => slotMachines = items);
-      } catch (e) {
-        di<Logger>().e(e);
-        setState(() => error = e);
-      }
-      await Future.delayed(const Duration(milliseconds: 1000));
-    }
   }
 }

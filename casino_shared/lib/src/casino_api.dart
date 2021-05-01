@@ -4,8 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
-import '../utils/uri_extensions.dart';
-import 'app_settings.dart';
+import 'uri_extensions.dart';
 
 part 'casino_api.freezed.dart';
 part 'casino_api.g.dart';
@@ -22,6 +21,10 @@ class SlotMachine with _$SlotMachine {
       _$SlotMachineFromJson(json);
 }
 
+abstract class CasinoApiSettings {
+  Uri get apiUri;
+}
+
 class CasinoApi {
   const CasinoApi({
     required this.http,
@@ -30,13 +33,12 @@ class CasinoApi {
   });
 
   final Client http;
-  final AppSettings config;
+  final CasinoApiSettings config;
   final Logger logger;
 
   Uri get uri => config.apiUri.addPathSegments(['casino']);
 
   Future<SlotMachine> addSlotMachine(String name) async {
-    logger.i('adding slot-machine with name $name');
     final response = await http.post(
       uri.addPathSegments(['slot-machines']),
       body: jsonEncode({'name': name}),
@@ -62,7 +64,6 @@ class CasinoApi {
   }
 
   Future<int> getTokens(String id) async {
-    logger.d('getting tokens of slot-machine $id');
     final response = await http.get(uri.addPathSegments(
       ['slot-machines', id, 'tokens'],
     ));
@@ -72,7 +73,6 @@ class CasinoApi {
 
   Future<void> setTokens(String id, int count) async {
     assert(count >= 0);
-    logger.i('setting tokens of slot-machine $id to $count');
     final response = await http.put(uri.replace(
       pathSegments: [...uri.pathSegments, 'slot-machines', id, 'tokens'],
       queryParameters: {'count': count.toString()},
@@ -81,7 +81,6 @@ class CasinoApi {
   }
 
   Future<void> removeSlotMachine(String id) async {
-    logger.i('removing slot-machine $id');
     final response = await http.delete(uri.addPathSegments(
       ['slot-machines', id],
     ));
@@ -94,7 +93,8 @@ class CasinoApi {
           StringBuffer('Error while sending request to casino api:');
       if (response.request != null) {
         message.write('\n\tRequest:'
-            '\n\t-uri: ${response.request!.url.toString()}');
+            '\n\t-uri: ${response.request!.url.toString()}'
+            '\n\t-method: ${response.request!.method}');
       }
       message.write('\n\tResponse:'
           '\n\t-statusCode: ${response.statusCode}'
