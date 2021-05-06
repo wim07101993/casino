@@ -1,13 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:casino_shared/casino_shared.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:logger/logger.dart';
-
-import '../domain/add_slot_machine.dart';
-import '../domain/remove_slot_machine.dart';
-import '../domain/slot_machine_changes.dart';
-import '../models/models.dart';
 
 part 'slot_machine_list_bloc.freezed.dart';
 
@@ -39,14 +34,15 @@ class SlotMachineListBloc
     required this.removeSlotMachine,
     required SlotMachineChanges slotMachinesChanges,
   }) : super(const SlotMachineListState()) {
-    streamSubscription = slotMachinesChanges().listen(_onSlotMachinesChanged);
+    streamSubscription =
+        slotMachinesChanges.stream.listen(_onSlotMachinesChanged);
   }
 
   final Logger logger;
   final AddSlotMachine addSlotMachine;
   final RemoveSlotMachine removeSlotMachine;
 
-  late StreamSubscription<Iterable<SlotMachine>> streamSubscription;
+  late StreamSubscription streamSubscription;
 
   @override
   Future<void> close() {
@@ -71,6 +67,7 @@ class SlotMachineListBloc
       yield state.copyWith(isLoading: false);
     } catch (e, stackTrace) {
       logger.e('Error on adding slot-machine $name', e, stackTrace);
+      yield state.copyWith(isLoading: false, error: e);
     }
   }
 
@@ -84,10 +81,11 @@ class SlotMachineListBloc
       );
     } catch (e, stackTrace) {
       logger.e('Error on removing slot-machine $id', e, stackTrace);
+      yield state.copyWith(isLoading: false, error: e);
     }
   }
 
-  void _onSlotMachinesChanged(Iterable<SlotMachine> event) {
+  void _onSlotMachinesChanged(List<SlotMachine> event) {
     logger.i('slot-machines changed $event');
     emit(state.copyWith(slotMachines: event.toList()));
   }

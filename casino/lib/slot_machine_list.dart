@@ -1,13 +1,10 @@
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
+import 'package:casino_shared/casino_shared.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/slot_machine_list_bloc.dart';
 import 'main.dart';
-import 'models/models.dart';
 import 'slot_machine_controls.dart';
 
 class SlotMachineList extends StatefulWidget {
@@ -25,20 +22,18 @@ class SlotMachineList extends StatefulWidget {
 class _SlotMachineListState extends State<SlotMachineList> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocBuilderListener<SlotMachineListBloc, SlotMachineListState>(
       create: (_) => di<SlotMachineListBloc>(),
-      child: BlocBuilder<SlotMachineListBloc, SlotMachineListState>(
-        builder: (context, state) {
-          print('SLOT_MACHINE_LIST BUILD $state');
-          if (state.isLoading) {
-            return const CircularProgressIndicator();
-          } else if (state.slotMachines.isEmpty) {
-            return state.error != null ? _error(state.error!) : _empty();
-          } else {
-            return _list(state.slotMachines);
-          }
-        },
-      ),
+      listener: _onStateChanged,
+      builder: (context, state) {
+        if (state.isLoading) {
+          return const CircularProgressIndicator();
+        } else if (state.slotMachines.isEmpty) {
+          return state.error != null ? _error(state.error!) : _empty();
+        } else {
+          return _list(state.slotMachines);
+        }
+      },
     );
   }
 
@@ -89,5 +84,13 @@ class _SlotMachineListState extends State<SlotMachineList> {
         ),
       ],
     );
+  }
+
+  void _onStateChanged(BuildContext context, SlotMachineListState state) {
+    if (state.error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error: ${state.error}'),
+      ));
+    }
   }
 }

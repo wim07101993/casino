@@ -1,3 +1,4 @@
+import 'package:casino_shared/casino_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,24 +47,23 @@ class _SlotMachineControlsState extends State<SlotMachineControls> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
+    return BlocBuilderListener<SlotMachineBloc, SlotMachineState>.value(
       value: bloc,
-      child: BlocBuilder<SlotMachineBloc, SlotMachineState>(
-        builder: (context, state) {
-          if (state.tokens != null) {
-            tokenCountController.text = state.tokens.toString();
-          }
-          return IntrinsicWidth(
-            child: Row(children: [
-              if (state.error != null) _errorMessage(state.error!),
-              _removeTokenButton(context),
-              _amountField(),
-              _addTokenButton(context),
-              _removeButton(context, state),
-            ]),
-          );
-        },
-      ),
+      listener: _onStateChanged,
+      builder: (context, state) {
+        if (state.tokens != null) {
+          tokenCountController.text = state.tokens.toString();
+        }
+        return IntrinsicWidth(
+          child: Row(children: [
+            if (state.error != null) _errorMessage(state.error!),
+            _removeTokenButton(context),
+            _amountField(),
+            _addTokenButton(context),
+            _removeButton(context, state),
+          ]),
+        );
+      },
     );
   }
 
@@ -155,5 +155,11 @@ class _SlotMachineControlsState extends State<SlotMachineControls> {
       ),
     );
     return result ?? false;
+  }
+
+  void _onStateChanged(BuildContext context, SlotMachineState state) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Error: ${state.error}'),
+    ));
   }
 }

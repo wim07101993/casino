@@ -1,8 +1,8 @@
-import 'package:casino_shared/casino_shared.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'add_slot_machine_dialog.dart';
+import 'bloc/add_slot_machine_dialog_bloc.dart';
 import 'main.dart';
 import 'slot_machine_list.dart';
 
@@ -23,28 +23,20 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _onAdd(context),
-        child: const Icon(Icons.add),
+      floatingActionButton: BlocProvider<AddSlotMachineDialogBloc>(
+        create: (_) => di(),
+        child: FloatingActionButton(
+          onPressed: () => _onAdd(context),
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
 
   Future<void> _onAdd(BuildContext context) async {
-    final controller = TextEditingController();
-    final isOk = await showDialog<bool>(
+    showDialog<bool>(
       context: context,
-      builder: (context) => AddSlotMachineDialog(controller: controller),
+      builder: (_) => AddSlotMachineDialog(),
     );
-    if (isOk != true) {
-      return;
-    }
-    try {
-      await di<CasinoApi>().addSlotMachine(controller.text);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString().trim()),
-      ));
-    }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:casino_shared/casino_shared.dart';
+import '../casino_api/casino_api.dart';
 
 class AddSlotMachine {
   const AddSlotMachine({
@@ -7,7 +7,7 @@ class AddSlotMachine {
 
   final CasinoApi api;
 
-  Future<void> call(String name) {
+  Future<String> call(String name) {
     return api.addSlotMachine(name);
   }
 }

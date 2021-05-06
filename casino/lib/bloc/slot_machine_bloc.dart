@@ -1,13 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:casino_shared/casino_shared.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:logger/logger.dart';
-
-import '../domain/get_token_count.dart';
-import '../domain/set_token_count.dart';
-import '../domain/slot_machine_changes.dart';
-import '../models/models.dart';
 
 part 'slot_machine_bloc.freezed.dart';
 
@@ -35,7 +30,7 @@ class SlotMachineBloc extends Bloc<SlotMachineEvent, SlotMachineState> {
     required this.logger,
     required SlotMachineChanges slotMachinesChanges,
   }) : super(const SlotMachineState()) {
-    streamSubscription = slotMachinesChanges()
+    streamSubscription = slotMachinesChanges.stream
         .map((list) {
           return list
               .cast<SlotMachine?>()
@@ -72,9 +67,10 @@ class SlotMachineBloc extends Bloc<SlotMachineEvent, SlotMachineState> {
   Stream<SlotMachineState> _load(String id) async* {
     try {
       final tokens = await getTokenCount(id);
-      yield state.copyWith(id: id, tokens: tokens);
+      yield state.copyWith(id: id, tokens: tokens, error: null);
     } catch (e, stackTrace) {
       logger.e('Error on load slot-machine', e, stackTrace);
+      yield state.copyWith(error: e);
     }
   }
 
@@ -102,9 +98,10 @@ class SlotMachineBloc extends Bloc<SlotMachineEvent, SlotMachineState> {
         return;
       }
       await setTokenCount(id, count);
-      yield state.copyWith(tokens: count);
+      yield state.copyWith(tokens: count, error: null);
     } catch (e, stackTrace) {
-      logger.e('Error on set token count', e, stackTrace);
+      logger.e('Error on set token count (${state.tokens})', e, stackTrace);
+      yield state.copyWith(error: e);
     }
   }
 

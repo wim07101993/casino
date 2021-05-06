@@ -34,20 +34,20 @@ func NewWebSocketController(casino *Casino, errorLogger *log.Logger, logger *log
 func (c *WebSocketController) RegisterOn(r *mux.Router) {
 	r.HandleFunc("/casino/slot-machines/changes", func(w http.ResponseWriter, r *http.Request) {
 		c.logger.Println("request: listen to all changes")
-		c.changesOf(w, r, func(machine SlotMachine) bool {
+		c.changesOf(w, r, func(machine *SlotMachine) bool {
 			return true
 		})
 	})
 	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/changes", func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)[idParam]
 		c.logger.Printf("request: listen to changes of %s", id)
-		c.changesOf(w, r, func(machine SlotMachine) bool {
+		c.changesOf(w, r, func(machine *SlotMachine) bool {
 			return machine.ID == id
 		})
 	})
 }
 
-func (c *WebSocketController) changesOf(w http.ResponseWriter, r *http.Request, predicate func(SlotMachine) bool) {
+func (c *WebSocketController) changesOf(w http.ResponseWriter, r *http.Request, predicate func(*SlotMachine) bool) {
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		if _, ok := err.(websocket.HandshakeError); !ok {
@@ -55,7 +55,7 @@ func (c *WebSocketController) changesOf(w http.ResponseWriter, r *http.Request, 
 		}
 		return
 	}
-	cancel := c.casino.DB.ListenToSlotMachineChanges(func(machine SlotMachine) {
+	cancel := c.casino.DB.ListenToSlotMachineChanges(func(machine *SlotMachine) {
 		if predicate(machine) {
 			err := ws.WriteJSON(machine)
 			if err != nil {

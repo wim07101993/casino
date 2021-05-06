@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:casino_shared/casino_shared.dart' as shared;
-
+import '../casino_api/casino_api.dart';
 import '../models/models.dart';
 
 class ListSlotMachines {
@@ -10,8 +9,8 @@ class ListSlotMachines {
     required this.converter,
   });
 
-  final shared.CasinoApi api;
-  final Converter<shared.SlotMachine, SlotMachine> converter;
+  final CasinoApi api;
+  final Converter<SlotMachineDTO, SlotMachine> converter;
 
   Future<List<SlotMachine>> call() async {
     final dtos = await api

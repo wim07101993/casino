@@ -10,13 +10,13 @@ import (
 type MemoryDb struct {
 	mu           sync.Mutex
 	slotMachines map[string]*SlotMachine
-	listeners    []*func(SlotMachine)
+	listeners    []*func(*SlotMachine)
 }
 
 func NewMemoryDb() *MemoryDb {
 	return &MemoryDb{
 		slotMachines: map[string]*SlotMachine{},
-		listeners:    []*func(SlotMachine){},
+		listeners:    []*func(*SlotMachine){},
 	}
 }
 
@@ -27,7 +27,6 @@ func (db *MemoryDb) Close(context.Context) error {
 	return nil
 }
 
-// AddSlotMachine adds a slot-machine with a new id.
 func (db *MemoryDb) AddSlotMachine(_ context.Context, slotMachine *SlotMachine) (id string, err error) {
 	db.mu.Lock()
 	defer db.mu.Unlock()
@@ -37,10 +36,9 @@ func (db *MemoryDb) AddSlotMachine(_ context.Context, slotMachine *SlotMachine) 
 	return id, nil
 }
 
-// ListSlotMachines returns a list of all the slot-casino.
-func (db *MemoryDb) ListSlotMachines(context.Context) ([]*SlotMachine, error) {
+func (db *MemoryDb) ListSlotMachines(_ context.Context) ([]*SlotMachine, error) {
 	db.mu.Lock()
-	db.mu.Unlock()
+	defer db.mu.Unlock()
 	ms := make([]*SlotMachine, 0, len(db.slotMachines))
 	for _, m := range db.slotMachines {
 		ms = append(ms, &*m)
@@ -51,31 +49,52 @@ func (db *MemoryDb) ListSlotMachines(context.Context) ([]*SlotMachine, error) {
 	return ms, nil
 }
 
-// GetTokenCount retrieves a number of runs a slot-machine has left.
+func (db *MemoryDb) GetByName(_ context.Context, name string) (*SlotMachine, error) {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+	for _, m := range db.slotMachines {
+		if m.Name == name {
+			return &*m, nil
+		}
+	}
+	return nil, NameNotFound{"SlotMachine", name}
+}
+
 func (db *MemoryDb) GetTokenCount(_ context.Context, id string) (int, error) {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 	if m, ok := db.slotMachines[id]; ok {
 		return m.Tokens, nil
 	}
-	return 0, NotFoundError{"SlotMachine", id}
+	return 0, IdNotFoundError{"SlotMachine", id}
 }
 
-// SetTokenCount sets the number of runs a slot-machine has left.
 func (db *MemoryDb) SetTokenCount(_ context.Context, id string, count int) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 	if m, ok := db.slotMachines[id]; ok {
 		m.Tokens = count
 		for _, l := range db.listeners {
-			(*l)(*m)
+			(*l)(m)
 		}
 		return nil
 	}
-	return NotFoundError{"SlotMachine", id}
+	return IdNotFoundError{"SlotMachine", id}
 }
 
-// DeleteSlotMachine removes a slot-machine from the database.
+func (db *MemoryDb) SetName(_ context.Context, id string, name string) error {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+	if m, ok := db.slotMachines[id]; ok {
+		m.Name = name
+		for _, l := range db.listeners {
+			(*l)(m)
+		}
+		return nil
+	}
+	return IdNotFoundError{"SlotMachine", id}
+}
+
 func (db *MemoryDb) DeleteSlotMachine(_ context.Context, id string) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
@@ -83,7 +102,7 @@ func (db *MemoryDb) DeleteSlotMachine(_ context.Context, id string) error {
 	return nil
 }
 
-func (db *MemoryDb) ListenToSlotMachineChanges(f func(SlotMachine)) (cancel func()) {
+func (db *MemoryDb) ListenToSlotMachineChanges(f func(*SlotMachine)) (cancel func()) {
 	db.listeners = append(db.listeners, &f)
 	cancel = func() {
 		i := -1

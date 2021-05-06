@@ -1,4 +1,4 @@
-import 'package:casino_shared/casino_shared.dart';
+import '../casino_api/casino_api.dart';
 
 class GetTokenCount {
   const GetTokenCount({
