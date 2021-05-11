@@ -56,7 +56,7 @@ extension CasinoSharedGetItExtensions on GetIt {
     registerLazySingleton(
       () => ListSlotMachines(api: call(), converter: call()),
     );
-    registerLazySingleton(() => Logger());
+    registerLazySingleton(() => Logger(printer: PrettyPrinter(methodCount: 4)));
     registerLazySingleton(() => NameGenerator(random: call()));
     registerLazySingleton(() => Random());
     registerLazySingleton(() => RemoveSlotMachine(api: call()));

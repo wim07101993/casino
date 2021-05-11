@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
 
-import '../local_db/general_box.dart';
+import '../domain/casino_api_uri.dart';
+import '../domain/id.dart';
+import '../domain/name.dart';
 
 part 'settings_bloc.freezed.dart';
 
@@ -32,11 +34,15 @@ class SettingsState with _$SettingsState {
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc({
-    required this.generalBox,
+    required this.id,
+    required this.name,
+    required this.casinoApiUri,
     required this.logger,
   }) : super(SettingsState.initial());
 
-  final GeneralBox generalBox;
+  final Id id;
+  final Name name;
+  final CasinoApiUri casinoApiUri;
   final Logger logger;
 
   @override
@@ -49,7 +55,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Stream<SettingsState> _save() async* {
     yield* _saveUrl(state.url.text);
     yield* _saveName(state.name.text);
-    yield* _saveSymbolCount(state.symbolCount.text);
   }
 
   Stream<SettingsState> _saveUrl(String url) async* {
@@ -57,8 +62,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       final newValue = Uri.tryParse(url);
       if (newValue == null) {
         throw 'Please enter a valid url';
-      } else if (newValue != await generalBox.casinoApiUri) {
-        await generalBox.setCasinoApiUri(newValue);
+      } else if (newValue != await casinoApiUri()) {
+        await casinoApiUri.set(newValue);
       }
     } catch (e, stackTrace) {
       logger.e('Error on save url $url', e, stackTrace);
@@ -66,29 +71,15 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     }
   }
 
-  Stream<SettingsState> _saveName(String name) async* {
+  Stream<SettingsState> _saveName(String newName) async* {
     try {
-      if (name.isEmpty) {
+      if (newName.isEmpty) {
         throw 'Please enter a name for this slot-machine';
-      } else if (name == await generalBox.name) {
-        await generalBox.setName(name);
+      } else if (newName == await id()) {
+        await name.set(newName);
       }
     } catch (e, stackTrace) {
-      logger.e('Error on save name $name', e, stackTrace);
-      yield state.copyWith(error: e);
-    }
-  }
-
-  Stream<SettingsState> _saveSymbolCount(String symbolCount) async* {
-    try {
-      final newValue = int.tryParse(symbolCount);
-      if (newValue == null || newValue <= 0) {
-        throw 'Please enter a symbol count greater than 0';
-      } else if (newValue != await generalBox.numberOfSymbols) {
-        await generalBox.setNumberOfSymbols(int.parse(symbolCount));
-      }
-    } catch (e, stackTrace) {
-      logger.e('Error on save name $symbolCount', e, stackTrace);
+      logger.e('Error on save name $newName', e, stackTrace);
       yield state.copyWith(error: e);
     }
   }

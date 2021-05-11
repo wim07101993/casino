@@ -15,9 +15,9 @@ class NameGenerator {
   final List<String> adjectives;
   final String separator;
 
-  String generate() {
+  String call() {
     final randomName = names[_random.nextInt(names.length)];
     final randomAdjective = adjectives[_random.nextInt(adjectives.length)];
-    return '$randomName$separator$randomAdjective';
+    return '$randomAdjective$separator$randomName';
   }
 }

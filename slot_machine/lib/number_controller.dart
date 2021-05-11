@@ -22,7 +22,9 @@ class NumberController extends ValueListenable<int> {
     this.minRollDuration = const Duration(seconds: 1),
     this.maxRollDuration = const Duration(seconds: 5),
     this.rollSpeed = 1,
-  }) : _listeners = [];
+  })  : _value = 0,
+        _isRolling = false,
+        _listeners = [];
 
   final Random random;
   final int minValue;
@@ -32,21 +34,29 @@ class NumberController extends ValueListenable<int> {
   final List<void Function()> _listeners;
   final double rollSpeed;
 
-  int _value = 0;
+  int _value;
+  bool _isRolling;
 
   @override
   int get value => _value;
 
+  bool get isRolling => _isRolling;
+
   Future<int> roll() async {
+    _isRolling = true;
     final start = DateTime.now();
     final rollDuration = _getRandomRollDuration();
     final interval = (1 / rollSpeed).round();
+    // ignore: literal_only_boolean_expressions
     while (true) {
       _value = random.nextInt(maxValue - minValue) + minValue;
       _notifyListeners();
+
       if (DateTime.now().difference(start).inMicroseconds > rollDuration) {
+        _isRolling = false;
         return value;
       }
+
       await Future.delayed(Duration(milliseconds: interval));
     }
   }

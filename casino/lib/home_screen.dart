@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
   Future<void> _onAdd(BuildContext context) async {
     showDialog<bool>(
       context: context,
-      builder: (_) => AddSlotMachineDialog(),
+      builder: (_) => const AddSlotMachineDialog(),
     );
   }
 }

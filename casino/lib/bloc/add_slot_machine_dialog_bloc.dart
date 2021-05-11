@@ -30,7 +30,7 @@ class AddSlotMachineDialogBloc
     required this.logger,
     required NameGenerator nameGenerator,
     required this.addSlotMachine,
-  }) : super(AddSlotMachineDialogState.initial(nameGenerator.generate()));
+  }) : super(AddSlotMachineDialogState.initial(nameGenerator()));
 
   final Logger logger;
   final AddSlotMachine addSlotMachine;

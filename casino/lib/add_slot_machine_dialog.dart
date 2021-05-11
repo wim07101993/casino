@@ -75,10 +75,9 @@ class _AddSlotMachineDialogState extends State<AddSlotMachineDialog> {
   }
 
   void _onStateChange(BuildContext context, AddSlotMachineDialogState state) {
-    if (state.error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Error: ${state.error}'),
-      ));
+    final error = state.error;
+    if (error != null) {
+      showError(context, error);
     }
   }
 }

@@ -21,7 +21,17 @@ class SlotMachineChanges {
 
   Stream<List<SlotMachine>> get stream => _streamController.stream;
 
+  Stream<SlotMachine> of(String id) {
+    return _streamController.stream
+        .map((list) => list
+            .cast<SlotMachine?>()
+            .firstWhere((e) => e?.id == id, orElse: () => null))
+        .where((e) => e != null)
+        .cast<SlotMachine>();
+  }
+
   Future<void> _listenToApi() async {
+    // ignore: literal_only_boolean_expressions
     while (true) {
       try {
         final newList = (await casinoApi.listSlotMachines())

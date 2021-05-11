@@ -68,6 +68,7 @@ class CasinoApi {
   }
 
   Future<String> addSlotMachine(String name) async {
+    logger.v('add slot machine: $name');
     final response = await http.post(
       url.addPathSegments(['slot-machines']),
       body: jsonEncode({'name': name}),
@@ -77,6 +78,8 @@ class CasinoApi {
   }
 
   Future<List<SlotMachineDTO>> listSlotMachines() async {
+    // commented out to keep log clear
+    // logger.v('list slot-machines');
     final response = await http.get(
       url.addPathSegments(['slot-machines']),
     );
@@ -89,6 +92,7 @@ class CasinoApi {
   }
 
   Future<SlotMachineDTO> getSlotMachineByName(String name) async {
+    logger.v('get slot-machine by name: $name');
     final response = await http.get(url.addPathSegments(
       ['slot-machines', 'by-name', name],
     ));
@@ -98,6 +102,7 @@ class CasinoApi {
   }
 
   Future<int> getTokens(String id) async {
+    logger.v('get tokens: $id');
     final response = await http.get(url.addPathSegments(
       ['slot-machines', id, 'tokens'],
     ));
@@ -107,6 +112,7 @@ class CasinoApi {
 
   Future<void> setTokens(String id, int count) async {
     assert(count >= 0);
+    logger.v('set tokens: $id $count');
     final response = await http.put(url.replace(
       pathSegments: [...url.pathSegments, 'slot-machines', id, 'tokens'],
       queryParameters: {'count': count.toString()},
@@ -116,6 +122,7 @@ class CasinoApi {
 
   Future<void> setName(String id, String name) async {
     assert(name.isNotEmpty);
+    logger.v('set name: $id $name');
     final response = await http.put(url.replace(
       pathSegments: [...url.pathSegments, 'slot-machines', id, 'name'],
       queryParameters: {'name': name},
@@ -124,6 +131,7 @@ class CasinoApi {
   }
 
   Future<void> removeSlotMachine(String id) async {
+    logger.v('remove slot-machine: $id');
     final response = await http.delete(url.addPathSegments(
       ['slot-machines', id],
     ));

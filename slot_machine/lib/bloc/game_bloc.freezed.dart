@@ -148,19 +148,9 @@ abstract class _GameEvent implements GameEvent {
 class _$GameStateTearOff {
   const _$GameStateTearOff();
 
-  _GameState call(
-      {required List<NumberController> numbers,
-      String? id,
-      String? name,
-      int tokenCount = 0,
-      bool isLoading = false,
-      Object? error}) {
+  _GameState call({required List<NumberController> numbers, Object? error}) {
     return _GameState(
       numbers: numbers,
-      id: id,
-      name: name,
-      tokenCount: tokenCount,
-      isLoading: isLoading,
       error: error,
     );
   }
@@ -172,10 +162,6 @@ const $GameState = _$GameStateTearOff();
 /// @nodoc
 mixin _$GameState {
   List<NumberController> get numbers => throw _privateConstructorUsedError;
-  String? get id => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
-  int get tokenCount => throw _privateConstructorUsedError;
-  bool get isLoading => throw _privateConstructorUsedError;
   Object? get error => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -187,13 +173,7 @@ mixin _$GameState {
 abstract class $GameStateCopyWith<$Res> {
   factory $GameStateCopyWith(GameState value, $Res Function(GameState) then) =
       _$GameStateCopyWithImpl<$Res>;
-  $Res call(
-      {List<NumberController> numbers,
-      String? id,
-      String? name,
-      int tokenCount,
-      bool isLoading,
-      Object? error});
+  $Res call({List<NumberController> numbers, Object? error});
 }
 
 /// @nodoc
@@ -207,10 +187,6 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
   @override
   $Res call({
     Object? numbers = freezed,
-    Object? id = freezed,
-    Object? name = freezed,
-    Object? tokenCount = freezed,
-    Object? isLoading = freezed,
     Object? error = freezed,
   }) {
     return _then(_value.copyWith(
@@ -218,22 +194,6 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
           ? _value.numbers
           : numbers // ignore: cast_nullable_to_non_nullable
               as List<NumberController>,
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      tokenCount: tokenCount == freezed
-          ? _value.tokenCount
-          : tokenCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      isLoading: isLoading == freezed
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
       error: error == freezed ? _value.error : error,
     ));
   }
@@ -245,13 +205,7 @@ abstract class _$GameStateCopyWith<$Res> implements $GameStateCopyWith<$Res> {
           _GameState value, $Res Function(_GameState) then) =
       __$GameStateCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {List<NumberController> numbers,
-      String? id,
-      String? name,
-      int tokenCount,
-      bool isLoading,
-      Object? error});
+  $Res call({List<NumberController> numbers, Object? error});
 }
 
 /// @nodoc
@@ -266,10 +220,6 @@ class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? numbers = freezed,
-    Object? id = freezed,
-    Object? name = freezed,
-    Object? tokenCount = freezed,
-    Object? isLoading = freezed,
     Object? error = freezed,
   }) {
     return _then(_GameState(
@@ -277,22 +227,6 @@ class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
           ? _value.numbers
           : numbers // ignore: cast_nullable_to_non_nullable
               as List<NumberController>,
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      tokenCount: tokenCount == freezed
-          ? _value.tokenCount
-          : tokenCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      isLoading: isLoading == freezed
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
       error: error == freezed ? _value.error : error,
     ));
   }
@@ -300,32 +234,16 @@ class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_GameState implements _GameState {
-  const _$_GameState(
-      {required this.numbers,
-      this.id,
-      this.name,
-      this.tokenCount = 0,
-      this.isLoading = false,
-      this.error});
+  const _$_GameState({required this.numbers, this.error});
 
   @override
   final List<NumberController> numbers;
-  @override
-  final String? id;
-  @override
-  final String? name;
-  @JsonKey(defaultValue: 0)
-  @override
-  final int tokenCount;
-  @JsonKey(defaultValue: false)
-  @override
-  final bool isLoading;
   @override
   final Object? error;
 
   @override
   String toString() {
-    return 'GameState(numbers: $numbers, id: $id, name: $name, tokenCount: $tokenCount, isLoading: $isLoading, error: $error)';
+    return 'GameState(numbers: $numbers, error: $error)';
   }
 
   @override
@@ -335,16 +253,6 @@ class _$_GameState implements _GameState {
             (identical(other.numbers, numbers) ||
                 const DeepCollectionEquality()
                     .equals(other.numbers, numbers)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.tokenCount, tokenCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.tokenCount, tokenCount)) &&
-            (identical(other.isLoading, isLoading) ||
-                const DeepCollectionEquality()
-                    .equals(other.isLoading, isLoading)) &&
             (identical(other.error, error) ||
                 const DeepCollectionEquality().equals(other.error, error)));
   }
@@ -353,10 +261,6 @@ class _$_GameState implements _GameState {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(numbers) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(tokenCount) ^
-      const DeepCollectionEquality().hash(isLoading) ^
       const DeepCollectionEquality().hash(error);
 
   @JsonKey(ignore: true)
@@ -367,23 +271,10 @@ class _$_GameState implements _GameState {
 
 abstract class _GameState implements GameState {
   const factory _GameState(
-      {required List<NumberController> numbers,
-      String? id,
-      String? name,
-      int tokenCount,
-      bool isLoading,
-      Object? error}) = _$_GameState;
+      {required List<NumberController> numbers, Object? error}) = _$_GameState;
 
   @override
   List<NumberController> get numbers => throw _privateConstructorUsedError;
-  @override
-  String? get id => throw _privateConstructorUsedError;
-  @override
-  String? get name => throw _privateConstructorUsedError;
-  @override
-  int get tokenCount => throw _privateConstructorUsedError;
-  @override
-  bool get isLoading => throw _privateConstructorUsedError;
   @override
   Object? get error => throw _privateConstructorUsedError;
   @override

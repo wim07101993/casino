@@ -158,8 +158,9 @@ class _SlotMachineControlsState extends State<SlotMachineControls> {
   }
 
   void _onStateChanged(BuildContext context, SlotMachineState state) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Error: ${state.error}'),
-    ));
+    final error = state.error;
+    if (error != null) {
+      showError(context, error);
+    }
   }
 }
