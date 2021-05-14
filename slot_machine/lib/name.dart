@@ -37,7 +37,7 @@ class _NameState extends State<Name> {
           builder: (context, snapshot) => Text(
             snapshot.data ?? "",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline3,
+            style: Theme.of(context).textTheme.headline5,
           ),
         );
       },

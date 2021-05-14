@@ -22,7 +22,7 @@ class NumberController extends ValueListenable<int> {
     this.minRollDuration = const Duration(seconds: 1),
     this.maxRollDuration = const Duration(seconds: 5),
     this.rollSpeed = 1,
-  })  : _value = 0,
+  })  : _value = maxValue,
         _isRolling = false,
         _listeners = [];
 

@@ -57,7 +57,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Stream<GameState> _roll() async* {
     if (state.numbers.any((e) => e.isRolling)) {
-      print('clicked while rolling');
       return;
     }
     yield state.copyWith(error: null);
