@@ -3,19 +3,25 @@ import 'package:flutter/material.dart';
 class NameFormField extends StatelessWidget {
   const NameFormField({
     Key? key,
-    this.controller,
+    required this.controller,
   }) : super(key: key);
 
-  final TextEditingController? controller;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      validator: _validate,
-      decoration: const InputDecoration(
-        labelText: 'Name',
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Name'),
+        TextFormField(
+          controller: controller,
+          validator: _validate,
+          decoration: const InputDecoration(
+            hintText: 'e.g.: My first slot-machine',
+          ),
+        ),
+      ],
     );
   }
 

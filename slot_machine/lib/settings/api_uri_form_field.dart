@@ -3,19 +3,25 @@ import 'package:flutter/material.dart';
 class ApiUriFormField extends StatelessWidget {
   const ApiUriFormField({
     Key? key,
-    this.controller,
+    required this.controller,
   }) : super(key: key);
 
-  final TextEditingController? controller;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      validator: _validate,
-      decoration: const InputDecoration(
-        labelText: 'API-url',
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('API-url'),
+        TextFormField(
+          controller: controller,
+          validator: _validate,
+          decoration: const InputDecoration(
+            hintText: 'e.g.: https://google.com',
+          ),
+        ),
+      ],
     );
   }
 

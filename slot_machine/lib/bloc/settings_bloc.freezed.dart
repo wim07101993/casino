@@ -19,6 +19,10 @@ class _$SettingsEventTearOff {
   _Save save() {
     return const _Save();
   }
+
+  _Load load() {
+    return const _Load();
+  }
 }
 
 /// @nodoc
@@ -29,22 +33,26 @@ mixin _$SettingsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() save,
+    required TResult Function() load,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? save,
+    TResult Function()? load,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Save value) save,
+    required TResult Function(_Load value) load,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Save value)? save,
+    TResult Function(_Load value)? load,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -84,6 +92,7 @@ class __$SaveCopyWithImpl<$Res> extends _$SettingsEventCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_Save implements _Save {
   const _$_Save();
 
@@ -104,6 +113,7 @@ class _$_Save implements _Save {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() save,
+    required TResult Function() load,
   }) {
     return save();
   }
@@ -112,6 +122,7 @@ class _$_Save implements _Save {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? save,
+    TResult Function()? load,
     required TResult orElse(),
   }) {
     if (save != null) {
@@ -124,6 +135,7 @@ class _$_Save implements _Save {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Save value) save,
+    required TResult Function(_Load value) load,
   }) {
     return save(this);
   }
@@ -132,6 +144,7 @@ class _$_Save implements _Save {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Save value)? save,
+    TResult Function(_Load value)? load,
     required TResult orElse(),
   }) {
     if (save != null) {
@@ -146,18 +159,107 @@ abstract class _Save implements SettingsEvent {
 }
 
 /// @nodoc
+abstract class _$LoadCopyWith<$Res> {
+  factory _$LoadCopyWith(_Load value, $Res Function(_Load) then) =
+      __$LoadCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$LoadCopyWithImpl<$Res> extends _$SettingsEventCopyWithImpl<$Res>
+    implements _$LoadCopyWith<$Res> {
+  __$LoadCopyWithImpl(_Load _value, $Res Function(_Load) _then)
+      : super(_value, (v) => _then(v as _Load));
+
+  @override
+  _Load get _value => super._value as _Load;
+}
+
+/// @nodoc
+
+class _$_Load implements _Load {
+  const _$_Load();
+
+  @override
+  String toString() {
+    return 'SettingsEvent.load()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _Load);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() save,
+    required TResult Function() load,
+  }) {
+    return load();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? save,
+    TResult Function()? load,
+    required TResult orElse(),
+  }) {
+    if (load != null) {
+      return load();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Save value) save,
+    required TResult Function(_Load value) load,
+  }) {
+    return load(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Save value)? save,
+    TResult Function(_Load value)? load,
+    required TResult orElse(),
+  }) {
+    if (load != null) {
+      return load(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Load implements SettingsEvent {
+  const factory _Load() = _$_Load;
+}
+
+/// @nodoc
 class _$SettingsStateTearOff {
   const _$SettingsStateTearOff();
 
   _SettingsState call(
-      {required TextEditingController url,
+      {required TextEditingController apiUrl,
       required TextEditingController name,
       required TextEditingController symbolCount,
+      required ColorPickerController applicationColor,
+      required SwitchController isDarkModeEnabled,
+      bool hasSaved = false,
       Object? error}) {
     return _SettingsState(
-      url: url,
+      apiUrl: apiUrl,
       name: name,
       symbolCount: symbolCount,
+      applicationColor: applicationColor,
+      isDarkModeEnabled: isDarkModeEnabled,
+      hasSaved: hasSaved,
       error: error,
     );
   }
@@ -168,9 +270,13 @@ const $SettingsState = _$SettingsStateTearOff();
 
 /// @nodoc
 mixin _$SettingsState {
-  TextEditingController get url => throw _privateConstructorUsedError;
+  TextEditingController get apiUrl => throw _privateConstructorUsedError;
   TextEditingController get name => throw _privateConstructorUsedError;
   TextEditingController get symbolCount => throw _privateConstructorUsedError;
+  ColorPickerController get applicationColor =>
+      throw _privateConstructorUsedError;
+  SwitchController get isDarkModeEnabled => throw _privateConstructorUsedError;
+  bool get hasSaved => throw _privateConstructorUsedError;
   Object? get error => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -184,9 +290,12 @@ abstract class $SettingsStateCopyWith<$Res> {
           SettingsState value, $Res Function(SettingsState) then) =
       _$SettingsStateCopyWithImpl<$Res>;
   $Res call(
-      {TextEditingController url,
+      {TextEditingController apiUrl,
       TextEditingController name,
       TextEditingController symbolCount,
+      ColorPickerController applicationColor,
+      SwitchController isDarkModeEnabled,
+      bool hasSaved,
       Object? error});
 }
 
@@ -201,15 +310,18 @@ class _$SettingsStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? url = freezed,
+    Object? apiUrl = freezed,
     Object? name = freezed,
     Object? symbolCount = freezed,
+    Object? applicationColor = freezed,
+    Object? isDarkModeEnabled = freezed,
+    Object? hasSaved = freezed,
     Object? error = freezed,
   }) {
     return _then(_value.copyWith(
-      url: url == freezed
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
+      apiUrl: apiUrl == freezed
+          ? _value.apiUrl
+          : apiUrl // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
       name: name == freezed
           ? _value.name
@@ -219,6 +331,18 @@ class _$SettingsStateCopyWithImpl<$Res>
           ? _value.symbolCount
           : symbolCount // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
+      applicationColor: applicationColor == freezed
+          ? _value.applicationColor
+          : applicationColor // ignore: cast_nullable_to_non_nullable
+              as ColorPickerController,
+      isDarkModeEnabled: isDarkModeEnabled == freezed
+          ? _value.isDarkModeEnabled
+          : isDarkModeEnabled // ignore: cast_nullable_to_non_nullable
+              as SwitchController,
+      hasSaved: hasSaved == freezed
+          ? _value.hasSaved
+          : hasSaved // ignore: cast_nullable_to_non_nullable
+              as bool,
       error: error == freezed ? _value.error : error,
     ));
   }
@@ -232,9 +356,12 @@ abstract class _$SettingsStateCopyWith<$Res>
       __$SettingsStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {TextEditingController url,
+      {TextEditingController apiUrl,
       TextEditingController name,
       TextEditingController symbolCount,
+      ColorPickerController applicationColor,
+      SwitchController isDarkModeEnabled,
+      bool hasSaved,
       Object? error});
 }
 
@@ -251,15 +378,18 @@ class __$SettingsStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? url = freezed,
+    Object? apiUrl = freezed,
     Object? name = freezed,
     Object? symbolCount = freezed,
+    Object? applicationColor = freezed,
+    Object? isDarkModeEnabled = freezed,
+    Object? hasSaved = freezed,
     Object? error = freezed,
   }) {
     return _then(_SettingsState(
-      url: url == freezed
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
+      apiUrl: apiUrl == freezed
+          ? _value.apiUrl
+          : apiUrl // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
       name: name == freezed
           ? _value.name
@@ -269,44 +399,76 @@ class __$SettingsStateCopyWithImpl<$Res>
           ? _value.symbolCount
           : symbolCount // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
+      applicationColor: applicationColor == freezed
+          ? _value.applicationColor
+          : applicationColor // ignore: cast_nullable_to_non_nullable
+              as ColorPickerController,
+      isDarkModeEnabled: isDarkModeEnabled == freezed
+          ? _value.isDarkModeEnabled
+          : isDarkModeEnabled // ignore: cast_nullable_to_non_nullable
+              as SwitchController,
+      hasSaved: hasSaved == freezed
+          ? _value.hasSaved
+          : hasSaved // ignore: cast_nullable_to_non_nullable
+              as bool,
       error: error == freezed ? _value.error : error,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_SettingsState implements _SettingsState {
   const _$_SettingsState(
-      {required this.url,
+      {required this.apiUrl,
       required this.name,
       required this.symbolCount,
+      required this.applicationColor,
+      required this.isDarkModeEnabled,
+      this.hasSaved = false,
       this.error});
 
   @override
-  final TextEditingController url;
+  final TextEditingController apiUrl;
   @override
   final TextEditingController name;
   @override
   final TextEditingController symbolCount;
   @override
+  final ColorPickerController applicationColor;
+  @override
+  final SwitchController isDarkModeEnabled;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool hasSaved;
+  @override
   final Object? error;
 
   @override
   String toString() {
-    return 'SettingsState(url: $url, name: $name, symbolCount: $symbolCount, error: $error)';
+    return 'SettingsState(apiUrl: $apiUrl, name: $name, symbolCount: $symbolCount, applicationColor: $applicationColor, isDarkModeEnabled: $isDarkModeEnabled, hasSaved: $hasSaved, error: $error)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _SettingsState &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+            (identical(other.apiUrl, apiUrl) ||
+                const DeepCollectionEquality().equals(other.apiUrl, apiUrl)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.symbolCount, symbolCount) ||
                 const DeepCollectionEquality()
                     .equals(other.symbolCount, symbolCount)) &&
+            (identical(other.applicationColor, applicationColor) ||
+                const DeepCollectionEquality()
+                    .equals(other.applicationColor, applicationColor)) &&
+            (identical(other.isDarkModeEnabled, isDarkModeEnabled) ||
+                const DeepCollectionEquality()
+                    .equals(other.isDarkModeEnabled, isDarkModeEnabled)) &&
+            (identical(other.hasSaved, hasSaved) ||
+                const DeepCollectionEquality()
+                    .equals(other.hasSaved, hasSaved)) &&
             (identical(other.error, error) ||
                 const DeepCollectionEquality().equals(other.error, error)));
   }
@@ -314,9 +476,12 @@ class _$_SettingsState implements _SettingsState {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(url) ^
+      const DeepCollectionEquality().hash(apiUrl) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(symbolCount) ^
+      const DeepCollectionEquality().hash(applicationColor) ^
+      const DeepCollectionEquality().hash(isDarkModeEnabled) ^
+      const DeepCollectionEquality().hash(hasSaved) ^
       const DeepCollectionEquality().hash(error);
 
   @JsonKey(ignore: true)
@@ -327,17 +492,27 @@ class _$_SettingsState implements _SettingsState {
 
 abstract class _SettingsState implements SettingsState {
   const factory _SettingsState(
-      {required TextEditingController url,
+      {required TextEditingController apiUrl,
       required TextEditingController name,
       required TextEditingController symbolCount,
+      required ColorPickerController applicationColor,
+      required SwitchController isDarkModeEnabled,
+      bool hasSaved,
       Object? error}) = _$_SettingsState;
 
   @override
-  TextEditingController get url => throw _privateConstructorUsedError;
+  TextEditingController get apiUrl => throw _privateConstructorUsedError;
   @override
   TextEditingController get name => throw _privateConstructorUsedError;
   @override
   TextEditingController get symbolCount => throw _privateConstructorUsedError;
+  @override
+  ColorPickerController get applicationColor =>
+      throw _privateConstructorUsedError;
+  @override
+  SwitchController get isDarkModeEnabled => throw _privateConstructorUsedError;
+  @override
+  bool get hasSaved => throw _privateConstructorUsedError;
   @override
   Object? get error => throw _privateConstructorUsedError;
   @override

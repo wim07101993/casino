@@ -23,12 +23,7 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             const Expanded(
-              child: FractionallySizedBox(
-                heightFactor: 1 / 2,
-                child: FittedBox(
-                  child: Game(),
-                ),
-              ),
+              child: FittedBox(child: Game()),
             ),
             const Name(),
           ],

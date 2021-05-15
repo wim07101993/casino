@@ -83,6 +83,7 @@ class __$GameEventCopyWithImpl<$Res> extends _$GameEventCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_GameEvent implements _GameEvent {
   const _$_GameEvent();
 
@@ -233,6 +234,7 @@ class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_GameState implements _GameState {
   const _$_GameState({required this.numbers, this.error});
 

@@ -25,6 +25,8 @@ class AppLoader extends StatefulWidget {
 
 class _AppLoaderState extends State<AppLoader> {
   late AppLoadingBloc _appLoadingBloc;
+  Color _primaryColor = Colors.blue;
+  bool _isDarkModeEnabled = false;
 
   @override
   void initState() {
@@ -42,21 +44,19 @@ class _AppLoaderState extends State<AppLoader> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Slot-machine',
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      theme: _isDarkModeEnabled == true ? ThemeData.dark() : ThemeData.light(),
       home: Material(
         child: BlocBuilderListener<AppLoadingBloc, AppLoadingState>.value(
           value: _appLoadingBloc,
+          listener: _onStateChange,
           builder: (context, state) {
-            final isLoading = state.maybeWhen(
-              orElse: () => true,
-              loaded: () => false,
-            );
             return Stack(children: [
-              if (isLoading) _loading(state) else const HomeScreen(),
+              if (state.loadingStage == const LoadingStage.loaded())
+                const HomeScreen()
+              else
+                _loading(state),
             ]);
           },
-          listener: _onStateChange,
         ),
       ),
     );
@@ -72,15 +72,14 @@ class _AppLoaderState extends State<AppLoader> {
         children: [
           const CircularProgressIndicator(),
           const SizedBox(height: 32),
-          state.when(
-            initial: () => Container(),
-            registeringCore: () => const Text("Searching for parts..."),
-            loadingHive: () => const Text("Assembling slot-machine..."),
-            initializingDI: () => const Text("Securing coin-vault..."),
-            gettingId: () => const Text("Searching for play-mate..."),
-            gettingTokenCount: () => const Text("Fetching money..."),
-            loaded: () => const Text("All done."),
-            error: (e) => const Text("Failed loading the app..."),
+          state.loadingStage.when(
+            notLoaded: () => Container(),
+            registeringCore: () => const Text('Searching for parts...'),
+            loadingHive: () => const Text('Assembling slot-machine...'),
+            initializingDI: () => const Text('Securing coin-vault...'),
+            gettingId: () => const Text('Searching for play-mate...'),
+            gettingTokenCount: () => const Text('Fetching money...'),
+            loaded: () => const Text('All done.'),
           ),
         ],
       ),
@@ -88,9 +87,40 @@ class _AppLoaderState extends State<AppLoader> {
   }
 
   void _onStateChange(BuildContext context, AppLoadingState state) {
-    state.maybeWhen(
-      orElse: () {},
-      error: (e) => showError(context, e),
+    final error = state.error;
+    if (error != null) {
+      showError(context, error);
+    }
+    if (state.color != _primaryColor) {
+      setState(() => _primaryColor = state.color);
+    }
+    if (state.isDarkModeEnabled != _isDarkModeEnabled) {
+      setState(() => _isDarkModeEnabled = state.isDarkModeEnabled);
+    }
+  }
+
+  ThemeData _theme(ThemeData baseTheme) {
+    final textTheme = baseTheme.textTheme;
+    final buttonTheme = baseTheme.buttonTheme;
+    return baseTheme.copyWith(
+      primaryColor: _primaryColor,
+      textTheme: baseTheme.textTheme.copyWith(
+        headline1: textTheme.headline1?.copyWith(color: _primaryColor),
+        headline2: textTheme.headline2?.copyWith(color: _primaryColor),
+        headline3: textTheme.headline3?.copyWith(color: _primaryColor),
+        headline4: textTheme.headline4?.copyWith(color: _primaryColor),
+        headline5: textTheme.headline5?.copyWith(color: _primaryColor),
+        headline6: textTheme.headline6?.copyWith(color: _primaryColor),
+        subtitle1: textTheme.subtitle1?.copyWith(color: _primaryColor),
+        subtitle2: textTheme.subtitle2?.copyWith(color: _primaryColor),
+        bodyText1: textTheme.bodyText1?.copyWith(color: _primaryColor),
+        bodyText2: textTheme.bodyText2?.copyWith(color: _primaryColor),
+        caption: textTheme.caption?.copyWith(color: _primaryColor),
+        button: textTheme.button?.copyWith(color: _primaryColor),
+      ),
+      buttonTheme: buttonTheme.copyWith(
+        textTheme: ButtonTextTheme.primary,
+      ),
     );
   }
 }

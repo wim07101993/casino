@@ -7,7 +7,7 @@ class CasinoApiUri {
 
   final GeneralBox _generalBox;
 
-  Future<Uri> call() => _generalBox.casinoApiUri().then(Uri.parse);
+  Future<Uri> call() => _generalBox.casinoApiUri();
 
-  Future<void> set(Uri value) => _generalBox.casinoApiUri.set(value.toString());
+  Future<void> set(Uri value) => _generalBox.casinoApiUri.set(value);
 }

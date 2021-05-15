@@ -87,6 +87,7 @@ class __$AppLoadingEventCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_AppLoadingEvent implements _AppLoadingEvent {
   const _$_AppLoadingEvent();
 
@@ -152,8 +153,226 @@ abstract class _AppLoadingEvent implements AppLoadingEvent {
 class _$AppLoadingStateTearOff {
   const _$AppLoadingStateTearOff();
 
-  _Initial initial() {
-    return const _Initial();
+  _AppLoadingState call(
+      {LoadingStage loadingStage = const LoadingStage.notLoaded(),
+      Color color = Colors.blue,
+      bool isDarkModeEnabled = false,
+      Object? error}) {
+    return _AppLoadingState(
+      loadingStage: loadingStage,
+      color: color,
+      isDarkModeEnabled: isDarkModeEnabled,
+      error: error,
+    );
+  }
+}
+
+/// @nodoc
+const $AppLoadingState = _$AppLoadingStateTearOff();
+
+/// @nodoc
+mixin _$AppLoadingState {
+  LoadingStage get loadingStage => throw _privateConstructorUsedError;
+  Color get color => throw _privateConstructorUsedError;
+  bool get isDarkModeEnabled => throw _privateConstructorUsedError;
+  Object? get error => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $AppLoadingStateCopyWith<AppLoadingState> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AppLoadingStateCopyWith<$Res> {
+  factory $AppLoadingStateCopyWith(
+          AppLoadingState value, $Res Function(AppLoadingState) then) =
+      _$AppLoadingStateCopyWithImpl<$Res>;
+  $Res call(
+      {LoadingStage loadingStage,
+      Color color,
+      bool isDarkModeEnabled,
+      Object? error});
+
+  $LoadingStageCopyWith<$Res> get loadingStage;
+}
+
+/// @nodoc
+class _$AppLoadingStateCopyWithImpl<$Res>
+    implements $AppLoadingStateCopyWith<$Res> {
+  _$AppLoadingStateCopyWithImpl(this._value, this._then);
+
+  final AppLoadingState _value;
+  // ignore: unused_field
+  final $Res Function(AppLoadingState) _then;
+
+  @override
+  $Res call({
+    Object? loadingStage = freezed,
+    Object? color = freezed,
+    Object? isDarkModeEnabled = freezed,
+    Object? error = freezed,
+  }) {
+    return _then(_value.copyWith(
+      loadingStage: loadingStage == freezed
+          ? _value.loadingStage
+          : loadingStage // ignore: cast_nullable_to_non_nullable
+              as LoadingStage,
+      color: color == freezed
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as Color,
+      isDarkModeEnabled: isDarkModeEnabled == freezed
+          ? _value.isDarkModeEnabled
+          : isDarkModeEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      error: error == freezed ? _value.error : error,
+    ));
+  }
+
+  @override
+  $LoadingStageCopyWith<$Res> get loadingStage {
+    return $LoadingStageCopyWith<$Res>(_value.loadingStage, (value) {
+      return _then(_value.copyWith(loadingStage: value));
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$AppLoadingStateCopyWith<$Res>
+    implements $AppLoadingStateCopyWith<$Res> {
+  factory _$AppLoadingStateCopyWith(
+          _AppLoadingState value, $Res Function(_AppLoadingState) then) =
+      __$AppLoadingStateCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {LoadingStage loadingStage,
+      Color color,
+      bool isDarkModeEnabled,
+      Object? error});
+
+  @override
+  $LoadingStageCopyWith<$Res> get loadingStage;
+}
+
+/// @nodoc
+class __$AppLoadingStateCopyWithImpl<$Res>
+    extends _$AppLoadingStateCopyWithImpl<$Res>
+    implements _$AppLoadingStateCopyWith<$Res> {
+  __$AppLoadingStateCopyWithImpl(
+      _AppLoadingState _value, $Res Function(_AppLoadingState) _then)
+      : super(_value, (v) => _then(v as _AppLoadingState));
+
+  @override
+  _AppLoadingState get _value => super._value as _AppLoadingState;
+
+  @override
+  $Res call({
+    Object? loadingStage = freezed,
+    Object? color = freezed,
+    Object? isDarkModeEnabled = freezed,
+    Object? error = freezed,
+  }) {
+    return _then(_AppLoadingState(
+      loadingStage: loadingStage == freezed
+          ? _value.loadingStage
+          : loadingStage // ignore: cast_nullable_to_non_nullable
+              as LoadingStage,
+      color: color == freezed
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as Color,
+      isDarkModeEnabled: isDarkModeEnabled == freezed
+          ? _value.isDarkModeEnabled
+          : isDarkModeEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      error: error == freezed ? _value.error : error,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_AppLoadingState implements _AppLoadingState {
+  const _$_AppLoadingState(
+      {this.loadingStage = const LoadingStage.notLoaded(),
+      this.color = Colors.blue,
+      this.isDarkModeEnabled = false,
+      this.error});
+
+  @JsonKey(defaultValue: const LoadingStage.notLoaded())
+  @override
+  final LoadingStage loadingStage;
+  @JsonKey(defaultValue: Colors.blue)
+  @override
+  final Color color;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool isDarkModeEnabled;
+  @override
+  final Object? error;
+
+  @override
+  String toString() {
+    return 'AppLoadingState(loadingStage: $loadingStage, color: $color, isDarkModeEnabled: $isDarkModeEnabled, error: $error)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _AppLoadingState &&
+            (identical(other.loadingStage, loadingStage) ||
+                const DeepCollectionEquality()
+                    .equals(other.loadingStage, loadingStage)) &&
+            (identical(other.color, color) ||
+                const DeepCollectionEquality().equals(other.color, color)) &&
+            (identical(other.isDarkModeEnabled, isDarkModeEnabled) ||
+                const DeepCollectionEquality()
+                    .equals(other.isDarkModeEnabled, isDarkModeEnabled)) &&
+            (identical(other.error, error) ||
+                const DeepCollectionEquality().equals(other.error, error)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(loadingStage) ^
+      const DeepCollectionEquality().hash(color) ^
+      const DeepCollectionEquality().hash(isDarkModeEnabled) ^
+      const DeepCollectionEquality().hash(error);
+
+  @JsonKey(ignore: true)
+  @override
+  _$AppLoadingStateCopyWith<_AppLoadingState> get copyWith =>
+      __$AppLoadingStateCopyWithImpl<_AppLoadingState>(this, _$identity);
+}
+
+abstract class _AppLoadingState implements AppLoadingState {
+  const factory _AppLoadingState(
+      {LoadingStage loadingStage,
+      Color color,
+      bool isDarkModeEnabled,
+      Object? error}) = _$_AppLoadingState;
+
+  @override
+  LoadingStage get loadingStage => throw _privateConstructorUsedError;
+  @override
+  Color get color => throw _privateConstructorUsedError;
+  @override
+  bool get isDarkModeEnabled => throw _privateConstructorUsedError;
+  @override
+  Object? get error => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$AppLoadingStateCopyWith<_AppLoadingState> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+class _$LoadingStageTearOff {
+  const _$LoadingStageTearOff();
+
+  _NotLoaded notLoaded() {
+    return const _NotLoaded();
   }
 
   _RegisteringCore registeringCore() {
@@ -179,116 +398,107 @@ class _$AppLoadingStateTearOff {
   _Loaded loaded() {
     return const _Loaded();
   }
-
-  _Error error(Object error) {
-    return _Error(
-      error,
-    );
-  }
 }
 
 /// @nodoc
-const $AppLoadingState = _$AppLoadingStateTearOff();
+const $LoadingStage = _$LoadingStageTearOff();
 
 /// @nodoc
-mixin _$AppLoadingState {
+mixin _$LoadingStage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function() notLoaded,
     required TResult Function() registeringCore,
     required TResult Function() loadingHive,
     required TResult Function() initializingDI,
     required TResult Function() gettingId,
     required TResult Function() gettingTokenCount,
     required TResult Function() loaded,
-    required TResult Function(Object error) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function()? notLoaded,
     TResult Function()? registeringCore,
     TResult Function()? loadingHive,
     TResult Function()? initializingDI,
     TResult Function()? gettingId,
     TResult Function()? gettingTokenCount,
     TResult Function()? loaded,
-    TResult Function(Object error)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
+    required TResult Function(_NotLoaded value) notLoaded,
     required TResult Function(_RegisteringCore value) registeringCore,
     required TResult Function(_LoadingHive value) loadingHive,
     required TResult Function(_InitializingDI value) initializingDI,
     required TResult Function(_GettingId value) gettingId,
     required TResult Function(_GettingTokenCount value) gettingTokenCount,
     required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
+    TResult Function(_NotLoaded value)? notLoaded,
     TResult Function(_RegisteringCore value)? registeringCore,
     TResult Function(_LoadingHive value)? loadingHive,
     TResult Function(_InitializingDI value)? initializingDI,
     TResult Function(_GettingId value)? gettingId,
     TResult Function(_GettingTokenCount value)? gettingTokenCount,
     TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AppLoadingStateCopyWith<$Res> {
-  factory $AppLoadingStateCopyWith(
-          AppLoadingState value, $Res Function(AppLoadingState) then) =
-      _$AppLoadingStateCopyWithImpl<$Res>;
+abstract class $LoadingStageCopyWith<$Res> {
+  factory $LoadingStageCopyWith(
+          LoadingStage value, $Res Function(LoadingStage) then) =
+      _$LoadingStageCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$AppLoadingStateCopyWithImpl<$Res>
-    implements $AppLoadingStateCopyWith<$Res> {
-  _$AppLoadingStateCopyWithImpl(this._value, this._then);
+class _$LoadingStageCopyWithImpl<$Res> implements $LoadingStageCopyWith<$Res> {
+  _$LoadingStageCopyWithImpl(this._value, this._then);
 
-  final AppLoadingState _value;
+  final LoadingStage _value;
   // ignore: unused_field
-  final $Res Function(AppLoadingState) _then;
+  final $Res Function(LoadingStage) _then;
 }
 
 /// @nodoc
-abstract class _$InitialCopyWith<$Res> {
-  factory _$InitialCopyWith(_Initial value, $Res Function(_Initial) then) =
-      __$InitialCopyWithImpl<$Res>;
+abstract class _$NotLoadedCopyWith<$Res> {
+  factory _$NotLoadedCopyWith(
+          _NotLoaded value, $Res Function(_NotLoaded) then) =
+      __$NotLoadedCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$InitialCopyWithImpl<$Res> extends _$AppLoadingStateCopyWithImpl<$Res>
-    implements _$InitialCopyWith<$Res> {
-  __$InitialCopyWithImpl(_Initial _value, $Res Function(_Initial) _then)
-      : super(_value, (v) => _then(v as _Initial));
+class __$NotLoadedCopyWithImpl<$Res> extends _$LoadingStageCopyWithImpl<$Res>
+    implements _$NotLoadedCopyWith<$Res> {
+  __$NotLoadedCopyWithImpl(_NotLoaded _value, $Res Function(_NotLoaded) _then)
+      : super(_value, (v) => _then(v as _NotLoaded));
 
   @override
-  _Initial get _value => super._value as _Initial;
+  _NotLoaded get _value => super._value as _NotLoaded;
 }
 
 /// @nodoc
-class _$_Initial implements _Initial {
-  const _$_Initial();
+
+class _$_NotLoaded implements _NotLoaded {
+  const _$_NotLoaded();
 
   @override
   String toString() {
-    return 'AppLoadingState.initial()';
+    return 'LoadingStage.notLoaded()';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _Initial);
+    return identical(this, other) || (other is _NotLoaded);
   }
 
   @override
@@ -297,33 +507,31 @@ class _$_Initial implements _Initial {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function() notLoaded,
     required TResult Function() registeringCore,
     required TResult Function() loadingHive,
     required TResult Function() initializingDI,
     required TResult Function() gettingId,
     required TResult Function() gettingTokenCount,
     required TResult Function() loaded,
-    required TResult Function(Object error) error,
   }) {
-    return initial();
+    return notLoaded();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function()? notLoaded,
     TResult Function()? registeringCore,
     TResult Function()? loadingHive,
     TResult Function()? initializingDI,
     TResult Function()? gettingId,
     TResult Function()? gettingTokenCount,
     TResult Function()? loaded,
-    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
-    if (initial != null) {
-      return initial();
+    if (notLoaded != null) {
+      return notLoaded();
     }
     return orElse();
   }
@@ -331,40 +539,38 @@ class _$_Initial implements _Initial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
+    required TResult Function(_NotLoaded value) notLoaded,
     required TResult Function(_RegisteringCore value) registeringCore,
     required TResult Function(_LoadingHive value) loadingHive,
     required TResult Function(_InitializingDI value) initializingDI,
     required TResult Function(_GettingId value) gettingId,
     required TResult Function(_GettingTokenCount value) gettingTokenCount,
     required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
   }) {
-    return initial(this);
+    return notLoaded(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
+    TResult Function(_NotLoaded value)? notLoaded,
     TResult Function(_RegisteringCore value)? registeringCore,
     TResult Function(_LoadingHive value)? loadingHive,
     TResult Function(_InitializingDI value)? initializingDI,
     TResult Function(_GettingId value)? gettingId,
     TResult Function(_GettingTokenCount value)? gettingTokenCount,
     TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
-    if (initial != null) {
-      return initial(this);
+    if (notLoaded != null) {
+      return notLoaded(this);
     }
     return orElse();
   }
 }
 
-abstract class _Initial implements AppLoadingState {
-  const factory _Initial() = _$_Initial;
+abstract class _NotLoaded implements LoadingStage {
+  const factory _NotLoaded() = _$_NotLoaded;
 }
 
 /// @nodoc
@@ -376,7 +582,7 @@ abstract class _$RegisteringCoreCopyWith<$Res> {
 
 /// @nodoc
 class __$RegisteringCoreCopyWithImpl<$Res>
-    extends _$AppLoadingStateCopyWithImpl<$Res>
+    extends _$LoadingStageCopyWithImpl<$Res>
     implements _$RegisteringCoreCopyWith<$Res> {
   __$RegisteringCoreCopyWithImpl(
       _RegisteringCore _value, $Res Function(_RegisteringCore) _then)
@@ -387,12 +593,13 @@ class __$RegisteringCoreCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_RegisteringCore implements _RegisteringCore {
   const _$_RegisteringCore();
 
   @override
   String toString() {
-    return 'AppLoadingState.registeringCore()';
+    return 'LoadingStage.registeringCore()';
   }
 
   @override
@@ -406,14 +613,13 @@ class _$_RegisteringCore implements _RegisteringCore {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function() notLoaded,
     required TResult Function() registeringCore,
     required TResult Function() loadingHive,
     required TResult Function() initializingDI,
     required TResult Function() gettingId,
     required TResult Function() gettingTokenCount,
     required TResult Function() loaded,
-    required TResult Function(Object error) error,
   }) {
     return registeringCore();
   }
@@ -421,14 +627,13 @@ class _$_RegisteringCore implements _RegisteringCore {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function()? notLoaded,
     TResult Function()? registeringCore,
     TResult Function()? loadingHive,
     TResult Function()? initializingDI,
     TResult Function()? gettingId,
     TResult Function()? gettingTokenCount,
     TResult Function()? loaded,
-    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (registeringCore != null) {
@@ -440,14 +645,13 @@ class _$_RegisteringCore implements _RegisteringCore {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
+    required TResult Function(_NotLoaded value) notLoaded,
     required TResult Function(_RegisteringCore value) registeringCore,
     required TResult Function(_LoadingHive value) loadingHive,
     required TResult Function(_InitializingDI value) initializingDI,
     required TResult Function(_GettingId value) gettingId,
     required TResult Function(_GettingTokenCount value) gettingTokenCount,
     required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
   }) {
     return registeringCore(this);
   }
@@ -455,14 +659,13 @@ class _$_RegisteringCore implements _RegisteringCore {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
+    TResult Function(_NotLoaded value)? notLoaded,
     TResult Function(_RegisteringCore value)? registeringCore,
     TResult Function(_LoadingHive value)? loadingHive,
     TResult Function(_InitializingDI value)? initializingDI,
     TResult Function(_GettingId value)? gettingId,
     TResult Function(_GettingTokenCount value)? gettingTokenCount,
     TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (registeringCore != null) {
@@ -472,7 +675,7 @@ class _$_RegisteringCore implements _RegisteringCore {
   }
 }
 
-abstract class _RegisteringCore implements AppLoadingState {
+abstract class _RegisteringCore implements LoadingStage {
   const factory _RegisteringCore() = _$_RegisteringCore;
 }
 
@@ -484,8 +687,7 @@ abstract class _$LoadingHiveCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$LoadingHiveCopyWithImpl<$Res>
-    extends _$AppLoadingStateCopyWithImpl<$Res>
+class __$LoadingHiveCopyWithImpl<$Res> extends _$LoadingStageCopyWithImpl<$Res>
     implements _$LoadingHiveCopyWith<$Res> {
   __$LoadingHiveCopyWithImpl(
       _LoadingHive _value, $Res Function(_LoadingHive) _then)
@@ -496,12 +698,13 @@ class __$LoadingHiveCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_LoadingHive implements _LoadingHive {
   const _$_LoadingHive();
 
   @override
   String toString() {
-    return 'AppLoadingState.loadingHive()';
+    return 'LoadingStage.loadingHive()';
   }
 
   @override
@@ -515,14 +718,13 @@ class _$_LoadingHive implements _LoadingHive {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function() notLoaded,
     required TResult Function() registeringCore,
     required TResult Function() loadingHive,
     required TResult Function() initializingDI,
     required TResult Function() gettingId,
     required TResult Function() gettingTokenCount,
     required TResult Function() loaded,
-    required TResult Function(Object error) error,
   }) {
     return loadingHive();
   }
@@ -530,14 +732,13 @@ class _$_LoadingHive implements _LoadingHive {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function()? notLoaded,
     TResult Function()? registeringCore,
     TResult Function()? loadingHive,
     TResult Function()? initializingDI,
     TResult Function()? gettingId,
     TResult Function()? gettingTokenCount,
     TResult Function()? loaded,
-    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (loadingHive != null) {
@@ -549,14 +750,13 @@ class _$_LoadingHive implements _LoadingHive {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
+    required TResult Function(_NotLoaded value) notLoaded,
     required TResult Function(_RegisteringCore value) registeringCore,
     required TResult Function(_LoadingHive value) loadingHive,
     required TResult Function(_InitializingDI value) initializingDI,
     required TResult Function(_GettingId value) gettingId,
     required TResult Function(_GettingTokenCount value) gettingTokenCount,
     required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
   }) {
     return loadingHive(this);
   }
@@ -564,14 +764,13 @@ class _$_LoadingHive implements _LoadingHive {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
+    TResult Function(_NotLoaded value)? notLoaded,
     TResult Function(_RegisteringCore value)? registeringCore,
     TResult Function(_LoadingHive value)? loadingHive,
     TResult Function(_InitializingDI value)? initializingDI,
     TResult Function(_GettingId value)? gettingId,
     TResult Function(_GettingTokenCount value)? gettingTokenCount,
     TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (loadingHive != null) {
@@ -581,7 +780,7 @@ class _$_LoadingHive implements _LoadingHive {
   }
 }
 
-abstract class _LoadingHive implements AppLoadingState {
+abstract class _LoadingHive implements LoadingStage {
   const factory _LoadingHive() = _$_LoadingHive;
 }
 
@@ -594,7 +793,7 @@ abstract class _$InitializingDICopyWith<$Res> {
 
 /// @nodoc
 class __$InitializingDICopyWithImpl<$Res>
-    extends _$AppLoadingStateCopyWithImpl<$Res>
+    extends _$LoadingStageCopyWithImpl<$Res>
     implements _$InitializingDICopyWith<$Res> {
   __$InitializingDICopyWithImpl(
       _InitializingDI _value, $Res Function(_InitializingDI) _then)
@@ -605,12 +804,13 @@ class __$InitializingDICopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_InitializingDI implements _InitializingDI {
   const _$_InitializingDI();
 
   @override
   String toString() {
-    return 'AppLoadingState.initializingDI()';
+    return 'LoadingStage.initializingDI()';
   }
 
   @override
@@ -624,14 +824,13 @@ class _$_InitializingDI implements _InitializingDI {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function() notLoaded,
     required TResult Function() registeringCore,
     required TResult Function() loadingHive,
     required TResult Function() initializingDI,
     required TResult Function() gettingId,
     required TResult Function() gettingTokenCount,
     required TResult Function() loaded,
-    required TResult Function(Object error) error,
   }) {
     return initializingDI();
   }
@@ -639,14 +838,13 @@ class _$_InitializingDI implements _InitializingDI {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function()? notLoaded,
     TResult Function()? registeringCore,
     TResult Function()? loadingHive,
     TResult Function()? initializingDI,
     TResult Function()? gettingId,
     TResult Function()? gettingTokenCount,
     TResult Function()? loaded,
-    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (initializingDI != null) {
@@ -658,14 +856,13 @@ class _$_InitializingDI implements _InitializingDI {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
+    required TResult Function(_NotLoaded value) notLoaded,
     required TResult Function(_RegisteringCore value) registeringCore,
     required TResult Function(_LoadingHive value) loadingHive,
     required TResult Function(_InitializingDI value) initializingDI,
     required TResult Function(_GettingId value) gettingId,
     required TResult Function(_GettingTokenCount value) gettingTokenCount,
     required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
   }) {
     return initializingDI(this);
   }
@@ -673,14 +870,13 @@ class _$_InitializingDI implements _InitializingDI {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
+    TResult Function(_NotLoaded value)? notLoaded,
     TResult Function(_RegisteringCore value)? registeringCore,
     TResult Function(_LoadingHive value)? loadingHive,
     TResult Function(_InitializingDI value)? initializingDI,
     TResult Function(_GettingId value)? gettingId,
     TResult Function(_GettingTokenCount value)? gettingTokenCount,
     TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (initializingDI != null) {
@@ -690,7 +886,7 @@ class _$_InitializingDI implements _InitializingDI {
   }
 }
 
-abstract class _InitializingDI implements AppLoadingState {
+abstract class _InitializingDI implements LoadingStage {
   const factory _InitializingDI() = _$_InitializingDI;
 }
 
@@ -702,7 +898,7 @@ abstract class _$GettingIdCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$GettingIdCopyWithImpl<$Res> extends _$AppLoadingStateCopyWithImpl<$Res>
+class __$GettingIdCopyWithImpl<$Res> extends _$LoadingStageCopyWithImpl<$Res>
     implements _$GettingIdCopyWith<$Res> {
   __$GettingIdCopyWithImpl(_GettingId _value, $Res Function(_GettingId) _then)
       : super(_value, (v) => _then(v as _GettingId));
@@ -712,12 +908,13 @@ class __$GettingIdCopyWithImpl<$Res> extends _$AppLoadingStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_GettingId implements _GettingId {
   const _$_GettingId();
 
   @override
   String toString() {
-    return 'AppLoadingState.gettingId()';
+    return 'LoadingStage.gettingId()';
   }
 
   @override
@@ -731,14 +928,13 @@ class _$_GettingId implements _GettingId {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function() notLoaded,
     required TResult Function() registeringCore,
     required TResult Function() loadingHive,
     required TResult Function() initializingDI,
     required TResult Function() gettingId,
     required TResult Function() gettingTokenCount,
     required TResult Function() loaded,
-    required TResult Function(Object error) error,
   }) {
     return gettingId();
   }
@@ -746,14 +942,13 @@ class _$_GettingId implements _GettingId {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function()? notLoaded,
     TResult Function()? registeringCore,
     TResult Function()? loadingHive,
     TResult Function()? initializingDI,
     TResult Function()? gettingId,
     TResult Function()? gettingTokenCount,
     TResult Function()? loaded,
-    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (gettingId != null) {
@@ -765,14 +960,13 @@ class _$_GettingId implements _GettingId {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
+    required TResult Function(_NotLoaded value) notLoaded,
     required TResult Function(_RegisteringCore value) registeringCore,
     required TResult Function(_LoadingHive value) loadingHive,
     required TResult Function(_InitializingDI value) initializingDI,
     required TResult Function(_GettingId value) gettingId,
     required TResult Function(_GettingTokenCount value) gettingTokenCount,
     required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
   }) {
     return gettingId(this);
   }
@@ -780,14 +974,13 @@ class _$_GettingId implements _GettingId {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
+    TResult Function(_NotLoaded value)? notLoaded,
     TResult Function(_RegisteringCore value)? registeringCore,
     TResult Function(_LoadingHive value)? loadingHive,
     TResult Function(_InitializingDI value)? initializingDI,
     TResult Function(_GettingId value)? gettingId,
     TResult Function(_GettingTokenCount value)? gettingTokenCount,
     TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (gettingId != null) {
@@ -797,7 +990,7 @@ class _$_GettingId implements _GettingId {
   }
 }
 
-abstract class _GettingId implements AppLoadingState {
+abstract class _GettingId implements LoadingStage {
   const factory _GettingId() = _$_GettingId;
 }
 
@@ -810,7 +1003,7 @@ abstract class _$GettingTokenCountCopyWith<$Res> {
 
 /// @nodoc
 class __$GettingTokenCountCopyWithImpl<$Res>
-    extends _$AppLoadingStateCopyWithImpl<$Res>
+    extends _$LoadingStageCopyWithImpl<$Res>
     implements _$GettingTokenCountCopyWith<$Res> {
   __$GettingTokenCountCopyWithImpl(
       _GettingTokenCount _value, $Res Function(_GettingTokenCount) _then)
@@ -821,12 +1014,13 @@ class __$GettingTokenCountCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_GettingTokenCount implements _GettingTokenCount {
   const _$_GettingTokenCount();
 
   @override
   String toString() {
-    return 'AppLoadingState.gettingTokenCount()';
+    return 'LoadingStage.gettingTokenCount()';
   }
 
   @override
@@ -840,14 +1034,13 @@ class _$_GettingTokenCount implements _GettingTokenCount {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function() notLoaded,
     required TResult Function() registeringCore,
     required TResult Function() loadingHive,
     required TResult Function() initializingDI,
     required TResult Function() gettingId,
     required TResult Function() gettingTokenCount,
     required TResult Function() loaded,
-    required TResult Function(Object error) error,
   }) {
     return gettingTokenCount();
   }
@@ -855,14 +1048,13 @@ class _$_GettingTokenCount implements _GettingTokenCount {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function()? notLoaded,
     TResult Function()? registeringCore,
     TResult Function()? loadingHive,
     TResult Function()? initializingDI,
     TResult Function()? gettingId,
     TResult Function()? gettingTokenCount,
     TResult Function()? loaded,
-    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (gettingTokenCount != null) {
@@ -874,14 +1066,13 @@ class _$_GettingTokenCount implements _GettingTokenCount {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
+    required TResult Function(_NotLoaded value) notLoaded,
     required TResult Function(_RegisteringCore value) registeringCore,
     required TResult Function(_LoadingHive value) loadingHive,
     required TResult Function(_InitializingDI value) initializingDI,
     required TResult Function(_GettingId value) gettingId,
     required TResult Function(_GettingTokenCount value) gettingTokenCount,
     required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
   }) {
     return gettingTokenCount(this);
   }
@@ -889,14 +1080,13 @@ class _$_GettingTokenCount implements _GettingTokenCount {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
+    TResult Function(_NotLoaded value)? notLoaded,
     TResult Function(_RegisteringCore value)? registeringCore,
     TResult Function(_LoadingHive value)? loadingHive,
     TResult Function(_InitializingDI value)? initializingDI,
     TResult Function(_GettingId value)? gettingId,
     TResult Function(_GettingTokenCount value)? gettingTokenCount,
     TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (gettingTokenCount != null) {
@@ -906,7 +1096,7 @@ class _$_GettingTokenCount implements _GettingTokenCount {
   }
 }
 
-abstract class _GettingTokenCount implements AppLoadingState {
+abstract class _GettingTokenCount implements LoadingStage {
   const factory _GettingTokenCount() = _$_GettingTokenCount;
 }
 
@@ -917,7 +1107,7 @@ abstract class _$LoadedCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$LoadedCopyWithImpl<$Res> extends _$AppLoadingStateCopyWithImpl<$Res>
+class __$LoadedCopyWithImpl<$Res> extends _$LoadingStageCopyWithImpl<$Res>
     implements _$LoadedCopyWith<$Res> {
   __$LoadedCopyWithImpl(_Loaded _value, $Res Function(_Loaded) _then)
       : super(_value, (v) => _then(v as _Loaded));
@@ -927,12 +1117,13 @@ class __$LoadedCopyWithImpl<$Res> extends _$AppLoadingStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_Loaded implements _Loaded {
   const _$_Loaded();
 
   @override
   String toString() {
-    return 'AppLoadingState.loaded()';
+    return 'LoadingStage.loaded()';
   }
 
   @override
@@ -946,14 +1137,13 @@ class _$_Loaded implements _Loaded {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function() notLoaded,
     required TResult Function() registeringCore,
     required TResult Function() loadingHive,
     required TResult Function() initializingDI,
     required TResult Function() gettingId,
     required TResult Function() gettingTokenCount,
     required TResult Function() loaded,
-    required TResult Function(Object error) error,
   }) {
     return loaded();
   }
@@ -961,14 +1151,13 @@ class _$_Loaded implements _Loaded {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function()? notLoaded,
     TResult Function()? registeringCore,
     TResult Function()? loadingHive,
     TResult Function()? initializingDI,
     TResult Function()? gettingId,
     TResult Function()? gettingTokenCount,
     TResult Function()? loaded,
-    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -980,14 +1169,13 @@ class _$_Loaded implements _Loaded {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
+    required TResult Function(_NotLoaded value) notLoaded,
     required TResult Function(_RegisteringCore value) registeringCore,
     required TResult Function(_LoadingHive value) loadingHive,
     required TResult Function(_InitializingDI value) initializingDI,
     required TResult Function(_GettingId value) gettingId,
     required TResult Function(_GettingTokenCount value) gettingTokenCount,
     required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
   }) {
     return loaded(this);
   }
@@ -995,14 +1183,13 @@ class _$_Loaded implements _Loaded {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
+    TResult Function(_NotLoaded value)? notLoaded,
     TResult Function(_RegisteringCore value)? registeringCore,
     TResult Function(_LoadingHive value)? loadingHive,
     TResult Function(_InitializingDI value)? initializingDI,
     TResult Function(_GettingId value)? gettingId,
     TResult Function(_GettingTokenCount value)? gettingTokenCount,
     TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -1012,141 +1199,6 @@ class _$_Loaded implements _Loaded {
   }
 }
 
-abstract class _Loaded implements AppLoadingState {
+abstract class _Loaded implements LoadingStage {
   const factory _Loaded() = _$_Loaded;
-}
-
-/// @nodoc
-abstract class _$ErrorCopyWith<$Res> {
-  factory _$ErrorCopyWith(_Error value, $Res Function(_Error) then) =
-      __$ErrorCopyWithImpl<$Res>;
-  $Res call({Object error});
-}
-
-/// @nodoc
-class __$ErrorCopyWithImpl<$Res> extends _$AppLoadingStateCopyWithImpl<$Res>
-    implements _$ErrorCopyWith<$Res> {
-  __$ErrorCopyWithImpl(_Error _value, $Res Function(_Error) _then)
-      : super(_value, (v) => _then(v as _Error));
-
-  @override
-  _Error get _value => super._value as _Error;
-
-  @override
-  $Res call({
-    Object? error = freezed,
-  }) {
-    return _then(_Error(
-      error == freezed
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as Object,
-    ));
-  }
-}
-
-/// @nodoc
-class _$_Error implements _Error {
-  const _$_Error(this.error);
-
-  @override
-  final Object error;
-
-  @override
-  String toString() {
-    return 'AppLoadingState.error(error: $error)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is _Error &&
-            (identical(other.error, error) ||
-                const DeepCollectionEquality().equals(other.error, error)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(error);
-
-  @JsonKey(ignore: true)
-  @override
-  _$ErrorCopyWith<_Error> get copyWith =>
-      __$ErrorCopyWithImpl<_Error>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() registeringCore,
-    required TResult Function() loadingHive,
-    required TResult Function() initializingDI,
-    required TResult Function() gettingId,
-    required TResult Function() gettingTokenCount,
-    required TResult Function() loaded,
-    required TResult Function(Object error) error,
-  }) {
-    return error(this.error);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? registeringCore,
-    TResult Function()? loadingHive,
-    TResult Function()? initializingDI,
-    TResult Function()? gettingId,
-    TResult Function()? gettingTokenCount,
-    TResult Function()? loaded,
-    TResult Function(Object error)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this.error);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_RegisteringCore value) registeringCore,
-    required TResult Function(_LoadingHive value) loadingHive,
-    required TResult Function(_InitializingDI value) initializingDI,
-    required TResult Function(_GettingId value) gettingId,
-    required TResult Function(_GettingTokenCount value) gettingTokenCount,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_RegisteringCore value)? registeringCore,
-    TResult Function(_LoadingHive value)? loadingHive,
-    TResult Function(_InitializingDI value)? initializingDI,
-    TResult Function(_GettingId value)? gettingId,
-    TResult Function(_GettingTokenCount value)? gettingTokenCount,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Error implements AppLoadingState {
-  const factory _Error(Object error) = _$_Error;
-
-  Object get error => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  _$ErrorCopyWith<_Error> get copyWith => throw _privateConstructorUsedError;
 }

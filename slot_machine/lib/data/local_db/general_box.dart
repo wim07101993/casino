@@ -1,4 +1,5 @@
 import 'package:casino_shared/casino_shared.dart';
+import 'package:flutter/painting.dart';
 import 'package:hive/hive.dart' hide BoxEvent;
 
 import 'box_event.dart';
@@ -15,23 +16,41 @@ class GeneralBox {
 
   final HiveInterface _hive;
   final NameGenerator _nameGenerator;
-  late BoxEntry<String> _casinoApiUri;
+  late BoxEntry<Uri> _casinoApiUri;
   late BoxEntry<String> _name;
+  late BoxEntry<Color> _applicationColor;
+  late BoxEntry<bool> _isDarkModeEnabled;
 
-  BoxEntry<String> get casinoApiUri => _casinoApiUri;
+  BoxEntry<Uri> get casinoApiUri => _casinoApiUri;
   BoxEntry<String> get name => _name;
+  BoxEntry<Color> get applicationColor => _applicationColor;
+  BoxEntry<bool> get isDarkModeEnabled => _isDarkModeEnabled;
 
   Future<void> init() async {
     final box = await _hive.openBox('general');
-    _casinoApiUri = BoxEntry(
+    _casinoApiUri = ConvertingBoxEntry(
       box: box,
       key: 'api-url',
-      defaultValue: 'https://casino-310408.ew.r.appspot.com',
+      defaultValue: Uri.parse('https://casino-310408.ew.r.appspot.com'),
+      tinToTout: (String s) => Uri.parse(s),
+      toutToTin: (Uri u) => u.toString(),
     );
     _name = BoxEntry(
       box: box,
       key: 'name',
       defaultValue: _nameGenerator(),
+    );
+    _applicationColor = ConvertingBoxEntry(
+      box: box,
+      key: 'application-color',
+      defaultValue: const Color(0xFF000000),
+      toutToTin: (Color c) => c.value,
+      tinToTout: (int i) => Color(i),
+    );
+    _isDarkModeEnabled = BoxEntry(
+      box: box,
+      key: 'is-dark-mode-enabled',
+      defaultValue: false,
     );
   }
 }
@@ -67,37 +86,41 @@ class BoxEntry<T> {
   }
 }
 
-class UriBoxEntry implements BoxEntry<Uri> {
-  UriBoxEntry({
+class ConvertingBoxEntry<TIn, TOut> implements BoxEntry<TOut> {
+  ConvertingBoxEntry({
     required Box box,
     required String key,
-    required Uri defaultValue,
+    required TOut defaultValue,
+    required this.toutToTin,
+    required this.tinToTout,
   }) : _baseEntry = BoxEntry(
           box: box,
           key: key,
-          defaultValue: defaultValue.toString(),
+          defaultValue: toutToTin(defaultValue),
         );
 
-  final BoxEntry<String> _baseEntry;
+  final BoxEntry<TIn> _baseEntry;
+  final TOut Function(TIn) tinToTout;
+  final TIn Function(TOut) toutToTin;
 
   @override
   Box get _box => _baseEntry._box;
 
   @override
-  Uri get _defaultValue => Uri.parse(_baseEntry._defaultValue);
+  TOut get _defaultValue => tinToTout(_baseEntry._defaultValue);
 
   @override
   String get _key => _baseEntry._key;
 
   @override
-  Future<Uri> call() => _baseEntry().then(Uri.parse);
+  Future<TOut> call() => _baseEntry().then(tinToTout);
 
   @override
-  Future<void> set(Uri value) => _baseEntry.set(value.toString());
+  Future<void> set(TOut value) => _baseEntry.set(toutToTin(value));
 
   @override
-  Stream<BoxEvent<Uri>> get changes {
+  Stream<BoxEvent<TOut>> get changes {
     return _baseEntry.changes
-        .map((e) => BoxEvent(e.key, Uri.parse(e.value), e.deleted));
+        .map((e) => BoxEvent(e.key, tinToTout(e.value), e.deleted));
   }
 }
