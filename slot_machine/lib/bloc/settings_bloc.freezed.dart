@@ -16,8 +16,12 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$SettingsEventTearOff {
   const _$SettingsEventTearOff();
 
-  _Save save() {
-    return const _Save();
+  _SaveApplicationSettings saveApplicationSettings() {
+    return const _SaveApplicationSettings();
+  }
+
+  _SaveThemeSettings saveThemeSettings() {
+    return const _SaveThemeSettings();
   }
 
   _Load load() {
@@ -32,26 +36,31 @@ const $SettingsEvent = _$SettingsEventTearOff();
 mixin _$SettingsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() save,
+    required TResult Function() saveApplicationSettings,
+    required TResult Function() saveThemeSettings,
     required TResult Function() load,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? save,
+    TResult Function()? saveApplicationSettings,
+    TResult Function()? saveThemeSettings,
     TResult Function()? load,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Save value) save,
+    required TResult Function(_SaveApplicationSettings value)
+        saveApplicationSettings,
+    required TResult Function(_SaveThemeSettings value) saveThemeSettings,
     required TResult Function(_Load value) load,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Save value)? save,
+    TResult Function(_SaveApplicationSettings value)? saveApplicationSettings,
+    TResult Function(_SaveThemeSettings value)? saveThemeSettings,
     TResult Function(_Load value)? load,
     required TResult orElse(),
   }) =>
@@ -76,34 +85,38 @@ class _$SettingsEventCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$SaveCopyWith<$Res> {
-  factory _$SaveCopyWith(_Save value, $Res Function(_Save) then) =
-      __$SaveCopyWithImpl<$Res>;
+abstract class _$SaveApplicationSettingsCopyWith<$Res> {
+  factory _$SaveApplicationSettingsCopyWith(_SaveApplicationSettings value,
+          $Res Function(_SaveApplicationSettings) then) =
+      __$SaveApplicationSettingsCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$SaveCopyWithImpl<$Res> extends _$SettingsEventCopyWithImpl<$Res>
-    implements _$SaveCopyWith<$Res> {
-  __$SaveCopyWithImpl(_Save _value, $Res Function(_Save) _then)
-      : super(_value, (v) => _then(v as _Save));
+class __$SaveApplicationSettingsCopyWithImpl<$Res>
+    extends _$SettingsEventCopyWithImpl<$Res>
+    implements _$SaveApplicationSettingsCopyWith<$Res> {
+  __$SaveApplicationSettingsCopyWithImpl(_SaveApplicationSettings _value,
+      $Res Function(_SaveApplicationSettings) _then)
+      : super(_value, (v) => _then(v as _SaveApplicationSettings));
 
   @override
-  _Save get _value => super._value as _Save;
+  _SaveApplicationSettings get _value =>
+      super._value as _SaveApplicationSettings;
 }
 
 /// @nodoc
 
-class _$_Save implements _Save {
-  const _$_Save();
+class _$_SaveApplicationSettings implements _SaveApplicationSettings {
+  const _$_SaveApplicationSettings();
 
   @override
   String toString() {
-    return 'SettingsEvent.save()';
+    return 'SettingsEvent.saveApplicationSettings()';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _Save);
+    return identical(this, other) || (other is _SaveApplicationSettings);
   }
 
   @override
@@ -112,21 +125,23 @@ class _$_Save implements _Save {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() save,
+    required TResult Function() saveApplicationSettings,
+    required TResult Function() saveThemeSettings,
     required TResult Function() load,
   }) {
-    return save();
+    return saveApplicationSettings();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? save,
+    TResult Function()? saveApplicationSettings,
+    TResult Function()? saveThemeSettings,
     TResult Function()? load,
     required TResult orElse(),
   }) {
-    if (save != null) {
-      return save();
+    if (saveApplicationSettings != null) {
+      return saveApplicationSettings();
     }
     return orElse();
   }
@@ -134,28 +149,122 @@ class _$_Save implements _Save {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Save value) save,
+    required TResult Function(_SaveApplicationSettings value)
+        saveApplicationSettings,
+    required TResult Function(_SaveThemeSettings value) saveThemeSettings,
     required TResult Function(_Load value) load,
   }) {
-    return save(this);
+    return saveApplicationSettings(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Save value)? save,
+    TResult Function(_SaveApplicationSettings value)? saveApplicationSettings,
+    TResult Function(_SaveThemeSettings value)? saveThemeSettings,
     TResult Function(_Load value)? load,
     required TResult orElse(),
   }) {
-    if (save != null) {
-      return save(this);
+    if (saveApplicationSettings != null) {
+      return saveApplicationSettings(this);
     }
     return orElse();
   }
 }
 
-abstract class _Save implements SettingsEvent {
-  const factory _Save() = _$_Save;
+abstract class _SaveApplicationSettings implements SettingsEvent {
+  const factory _SaveApplicationSettings() = _$_SaveApplicationSettings;
+}
+
+/// @nodoc
+abstract class _$SaveThemeSettingsCopyWith<$Res> {
+  factory _$SaveThemeSettingsCopyWith(
+          _SaveThemeSettings value, $Res Function(_SaveThemeSettings) then) =
+      __$SaveThemeSettingsCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$SaveThemeSettingsCopyWithImpl<$Res>
+    extends _$SettingsEventCopyWithImpl<$Res>
+    implements _$SaveThemeSettingsCopyWith<$Res> {
+  __$SaveThemeSettingsCopyWithImpl(
+      _SaveThemeSettings _value, $Res Function(_SaveThemeSettings) _then)
+      : super(_value, (v) => _then(v as _SaveThemeSettings));
+
+  @override
+  _SaveThemeSettings get _value => super._value as _SaveThemeSettings;
+}
+
+/// @nodoc
+
+class _$_SaveThemeSettings implements _SaveThemeSettings {
+  const _$_SaveThemeSettings();
+
+  @override
+  String toString() {
+    return 'SettingsEvent.saveThemeSettings()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _SaveThemeSettings);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() saveApplicationSettings,
+    required TResult Function() saveThemeSettings,
+    required TResult Function() load,
+  }) {
+    return saveThemeSettings();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? saveApplicationSettings,
+    TResult Function()? saveThemeSettings,
+    TResult Function()? load,
+    required TResult orElse(),
+  }) {
+    if (saveThemeSettings != null) {
+      return saveThemeSettings();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_SaveApplicationSettings value)
+        saveApplicationSettings,
+    required TResult Function(_SaveThemeSettings value) saveThemeSettings,
+    required TResult Function(_Load value) load,
+  }) {
+    return saveThemeSettings(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_SaveApplicationSettings value)? saveApplicationSettings,
+    TResult Function(_SaveThemeSettings value)? saveThemeSettings,
+    TResult Function(_Load value)? load,
+    required TResult orElse(),
+  }) {
+    if (saveThemeSettings != null) {
+      return saveThemeSettings(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _SaveThemeSettings implements SettingsEvent {
+  const factory _SaveThemeSettings() = _$_SaveThemeSettings;
 }
 
 /// @nodoc
@@ -195,7 +304,8 @@ class _$_Load implements _Load {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() save,
+    required TResult Function() saveApplicationSettings,
+    required TResult Function() saveThemeSettings,
     required TResult Function() load,
   }) {
     return load();
@@ -204,7 +314,8 @@ class _$_Load implements _Load {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? save,
+    TResult Function()? saveApplicationSettings,
+    TResult Function()? saveThemeSettings,
     TResult Function()? load,
     required TResult orElse(),
   }) {
@@ -217,7 +328,9 @@ class _$_Load implements _Load {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Save value) save,
+    required TResult Function(_SaveApplicationSettings value)
+        saveApplicationSettings,
+    required TResult Function(_SaveThemeSettings value) saveThemeSettings,
     required TResult Function(_Load value) load,
   }) {
     return load(this);
@@ -226,7 +339,8 @@ class _$_Load implements _Load {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Save value)? save,
+    TResult Function(_SaveApplicationSettings value)? saveApplicationSettings,
+    TResult Function(_SaveThemeSettings value)? saveThemeSettings,
     TResult Function(_Load value)? load,
     required TResult orElse(),
   }) {
@@ -249,7 +363,7 @@ class _$SettingsStateTearOff {
       {required TextEditingController apiUrl,
       required TextEditingController name,
       required TextEditingController symbolCount,
-      required ColorPickerController applicationColor,
+      required ColorPickerController primaryColor,
       required SwitchController isDarkModeEnabled,
       bool hasSaved = false,
       Object? error}) {
@@ -257,7 +371,7 @@ class _$SettingsStateTearOff {
       apiUrl: apiUrl,
       name: name,
       symbolCount: symbolCount,
-      applicationColor: applicationColor,
+      primaryColor: primaryColor,
       isDarkModeEnabled: isDarkModeEnabled,
       hasSaved: hasSaved,
       error: error,
@@ -273,8 +387,7 @@ mixin _$SettingsState {
   TextEditingController get apiUrl => throw _privateConstructorUsedError;
   TextEditingController get name => throw _privateConstructorUsedError;
   TextEditingController get symbolCount => throw _privateConstructorUsedError;
-  ColorPickerController get applicationColor =>
-      throw _privateConstructorUsedError;
+  ColorPickerController get primaryColor => throw _privateConstructorUsedError;
   SwitchController get isDarkModeEnabled => throw _privateConstructorUsedError;
   bool get hasSaved => throw _privateConstructorUsedError;
   Object? get error => throw _privateConstructorUsedError;
@@ -293,7 +406,7 @@ abstract class $SettingsStateCopyWith<$Res> {
       {TextEditingController apiUrl,
       TextEditingController name,
       TextEditingController symbolCount,
-      ColorPickerController applicationColor,
+      ColorPickerController primaryColor,
       SwitchController isDarkModeEnabled,
       bool hasSaved,
       Object? error});
@@ -313,7 +426,7 @@ class _$SettingsStateCopyWithImpl<$Res>
     Object? apiUrl = freezed,
     Object? name = freezed,
     Object? symbolCount = freezed,
-    Object? applicationColor = freezed,
+    Object? primaryColor = freezed,
     Object? isDarkModeEnabled = freezed,
     Object? hasSaved = freezed,
     Object? error = freezed,
@@ -331,9 +444,9 @@ class _$SettingsStateCopyWithImpl<$Res>
           ? _value.symbolCount
           : symbolCount // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
-      applicationColor: applicationColor == freezed
-          ? _value.applicationColor
-          : applicationColor // ignore: cast_nullable_to_non_nullable
+      primaryColor: primaryColor == freezed
+          ? _value.primaryColor
+          : primaryColor // ignore: cast_nullable_to_non_nullable
               as ColorPickerController,
       isDarkModeEnabled: isDarkModeEnabled == freezed
           ? _value.isDarkModeEnabled
@@ -359,7 +472,7 @@ abstract class _$SettingsStateCopyWith<$Res>
       {TextEditingController apiUrl,
       TextEditingController name,
       TextEditingController symbolCount,
-      ColorPickerController applicationColor,
+      ColorPickerController primaryColor,
       SwitchController isDarkModeEnabled,
       bool hasSaved,
       Object? error});
@@ -381,7 +494,7 @@ class __$SettingsStateCopyWithImpl<$Res>
     Object? apiUrl = freezed,
     Object? name = freezed,
     Object? symbolCount = freezed,
-    Object? applicationColor = freezed,
+    Object? primaryColor = freezed,
     Object? isDarkModeEnabled = freezed,
     Object? hasSaved = freezed,
     Object? error = freezed,
@@ -399,9 +512,9 @@ class __$SettingsStateCopyWithImpl<$Res>
           ? _value.symbolCount
           : symbolCount // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
-      applicationColor: applicationColor == freezed
-          ? _value.applicationColor
-          : applicationColor // ignore: cast_nullable_to_non_nullable
+      primaryColor: primaryColor == freezed
+          ? _value.primaryColor
+          : primaryColor // ignore: cast_nullable_to_non_nullable
               as ColorPickerController,
       isDarkModeEnabled: isDarkModeEnabled == freezed
           ? _value.isDarkModeEnabled
@@ -423,7 +536,7 @@ class _$_SettingsState implements _SettingsState {
       {required this.apiUrl,
       required this.name,
       required this.symbolCount,
-      required this.applicationColor,
+      required this.primaryColor,
       required this.isDarkModeEnabled,
       this.hasSaved = false,
       this.error});
@@ -435,7 +548,7 @@ class _$_SettingsState implements _SettingsState {
   @override
   final TextEditingController symbolCount;
   @override
-  final ColorPickerController applicationColor;
+  final ColorPickerController primaryColor;
   @override
   final SwitchController isDarkModeEnabled;
   @JsonKey(defaultValue: false)
@@ -446,7 +559,7 @@ class _$_SettingsState implements _SettingsState {
 
   @override
   String toString() {
-    return 'SettingsState(apiUrl: $apiUrl, name: $name, symbolCount: $symbolCount, applicationColor: $applicationColor, isDarkModeEnabled: $isDarkModeEnabled, hasSaved: $hasSaved, error: $error)';
+    return 'SettingsState(apiUrl: $apiUrl, name: $name, symbolCount: $symbolCount, primaryColor: $primaryColor, isDarkModeEnabled: $isDarkModeEnabled, hasSaved: $hasSaved, error: $error)';
   }
 
   @override
@@ -460,9 +573,9 @@ class _$_SettingsState implements _SettingsState {
             (identical(other.symbolCount, symbolCount) ||
                 const DeepCollectionEquality()
                     .equals(other.symbolCount, symbolCount)) &&
-            (identical(other.applicationColor, applicationColor) ||
+            (identical(other.primaryColor, primaryColor) ||
                 const DeepCollectionEquality()
-                    .equals(other.applicationColor, applicationColor)) &&
+                    .equals(other.primaryColor, primaryColor)) &&
             (identical(other.isDarkModeEnabled, isDarkModeEnabled) ||
                 const DeepCollectionEquality()
                     .equals(other.isDarkModeEnabled, isDarkModeEnabled)) &&
@@ -479,7 +592,7 @@ class _$_SettingsState implements _SettingsState {
       const DeepCollectionEquality().hash(apiUrl) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(symbolCount) ^
-      const DeepCollectionEquality().hash(applicationColor) ^
+      const DeepCollectionEquality().hash(primaryColor) ^
       const DeepCollectionEquality().hash(isDarkModeEnabled) ^
       const DeepCollectionEquality().hash(hasSaved) ^
       const DeepCollectionEquality().hash(error);
@@ -495,7 +608,7 @@ abstract class _SettingsState implements SettingsState {
       {required TextEditingController apiUrl,
       required TextEditingController name,
       required TextEditingController symbolCount,
-      required ColorPickerController applicationColor,
+      required ColorPickerController primaryColor,
       required SwitchController isDarkModeEnabled,
       bool hasSaved,
       Object? error}) = _$_SettingsState;
@@ -507,8 +620,7 @@ abstract class _SettingsState implements SettingsState {
   @override
   TextEditingController get symbolCount => throw _privateConstructorUsedError;
   @override
-  ColorPickerController get applicationColor =>
-      throw _privateConstructorUsedError;
+  ColorPickerController get primaryColor => throw _privateConstructorUsedError;
   @override
   SwitchController get isDarkModeEnabled => throw _privateConstructorUsedError;
   @override

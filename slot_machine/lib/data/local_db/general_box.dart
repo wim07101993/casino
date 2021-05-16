@@ -18,12 +18,12 @@ class GeneralBox {
   final NameGenerator _nameGenerator;
   late BoxEntry<Uri> _casinoApiUri;
   late BoxEntry<String> _name;
-  late BoxEntry<Color> _applicationColor;
+  late BoxEntry<Color> _primaryColor;
   late BoxEntry<bool> _isDarkModeEnabled;
 
   BoxEntry<Uri> get casinoApiUri => _casinoApiUri;
   BoxEntry<String> get name => _name;
-  BoxEntry<Color> get applicationColor => _applicationColor;
+  BoxEntry<Color> get primaryColor => _primaryColor;
   BoxEntry<bool> get isDarkModeEnabled => _isDarkModeEnabled;
 
   Future<void> init() async {
@@ -40,10 +40,10 @@ class GeneralBox {
       key: 'name',
       defaultValue: _nameGenerator(),
     );
-    _applicationColor = ConvertingBoxEntry(
+    _primaryColor = ConvertingBoxEntry(
       box: box,
-      key: 'application-color',
-      defaultValue: const Color(0xFF000000),
+      key: 'primary-color',
+      defaultValue: const Color(0xFF0000FF),
       toutToTin: (Color c) => c.value,
       tinToTout: (int i) => Color(i),
     );

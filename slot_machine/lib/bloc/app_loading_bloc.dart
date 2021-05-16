@@ -11,11 +11,11 @@ import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 
 import '../data/local_db/general_box.dart';
-import '../domain/application_color.dart';
 import '../domain/casino_api_uri.dart';
 import '../domain/id.dart';
 import '../domain/is_dark_mode_enabled.dart';
 import '../domain/name.dart';
+import '../domain/primary_color.dart';
 import '../domain/token_count.dart';
 import '../main.dart';
 import 'game_bloc.dart';
@@ -75,13 +75,14 @@ class AppLoadingBloc extends Bloc<AppLoadingEvent, AppLoadingState> {
       log('initialized di');
 
       final isDarkModeEnabled = di<IsDarkModeEnabled>();
-      isDarkModeEnabled()
+      await isDarkModeEnabled()
           .then((e) => emit(state.copyWith(isDarkModeEnabled: e)));
       isDarkModeEnabled.changes
           .forEach((e) => emit(state.copyWith(isDarkModeEnabled: e)));
-      final applicationColor = di<ApplicationColor>();
-      applicationColor().then((e) => emit(state.copyWith(color: e)));
-      applicationColor.changes.forEach((e) => emit(state.copyWith(color: e)));
+
+      final primaryColor = di<PrimaryColor>();
+      await primaryColor().then((e) => emit(state.copyWith(color: e)));
+      primaryColor.changes.forEach((e) => emit(state.copyWith(color: e)));
 
       yield state.copyWith(loadingStage: const _GettingId());
       final id = await di<Id>()();
@@ -111,7 +112,7 @@ extension _GetItExtensions on GetIt {
   }
 
   Future<void> registerDomain() async {
-    registerLazySingleton(() => ApplicationColor(generalBox: call()));
+    registerLazySingleton(() => PrimaryColor(generalBox: call()));
     registerLazySingleton(() => IsDarkModeEnabled(generalBox: call()));
     registerLazySingleton(
       () => Name(
@@ -155,7 +156,8 @@ extension _GetItExtensions on GetIt {
         casinoApiUri: call(),
         name: call(),
         logger: call(),
-        applicationColor: call(),
+        primaryColor: call(),
+        isDarkModeEnabled: call(),
       ),
     );
   }

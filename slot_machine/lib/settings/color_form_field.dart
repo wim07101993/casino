@@ -2,20 +2,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-class ApplicationColorFormField extends StatefulWidget {
-  const ApplicationColorFormField({
+class ColorFormField extends StatefulWidget {
+  const ColorFormField({
     Key? key,
+    this.label,
     required this.controller,
   }) : super(key: key);
 
+  final Widget? label;
   final ColorPickerController controller;
 
   @override
-  _ApplicationColorFormFieldState createState() =>
-      _ApplicationColorFormFieldState();
+  _ColorFormFieldState createState() => _ColorFormFieldState();
 }
 
-class _ApplicationColorFormFieldState extends State<ApplicationColorFormField> {
+class _ColorFormFieldState extends State<ColorFormField> {
   @override
   void initState() {
     super.initState();
@@ -23,7 +24,7 @@ class _ApplicationColorFormFieldState extends State<ApplicationColorFormField> {
   }
 
   @override
-  void didUpdateWidget(covariant ApplicationColorFormField oldWidget) {
+  void didUpdateWidget(covariant ColorFormField oldWidget) {
     super.didUpdateWidget(oldWidget);
     oldWidget.controller.removeListener(_onColorChanged);
     widget.controller.addListener(_onColorChanged);
@@ -40,11 +41,12 @@ class _ApplicationColorFormFieldState extends State<ApplicationColorFormField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Application color'),
+        if (widget.label != null) widget.label!,
         const SizedBox(height: 16),
         ColorPicker(
           pickerColor: widget.controller.value,
-          onColorChanged: widget.controller.setValue,
+          onColorChanged: (c) => widget.controller.value = c.withAlpha(0xFF),
+          enableAlpha: false,
         ),
       ],
     );
@@ -65,9 +67,8 @@ class ColorPickerController extends ValueListenable<Color> {
 
   @override
   Color get value => _color;
-
-  void setValue(Color color) {
-    _color = color;
+  set value(Color value) {
+    _color = value;
     _invokeListeners();
   }
 

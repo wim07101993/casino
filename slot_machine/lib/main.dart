@@ -44,7 +44,9 @@ class _AppLoaderState extends State<AppLoader> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Slot-machine',
-      theme: _isDarkModeEnabled == true ? ThemeData.dark() : ThemeData.light(),
+      theme: _theme(
+        _isDarkModeEnabled == true ? ThemeData.dark() : ThemeData.light(),
+      ),
       home: Material(
         child: BlocBuilderListener<AppLoadingBloc, AppLoadingState>.value(
           value: _appLoadingBloc,
@@ -87,6 +89,7 @@ class _AppLoaderState extends State<AppLoader> {
   }
 
   void _onStateChange(BuildContext context, AppLoadingState state) {
+    print('state changed: $state');
     final error = state.error;
     if (error != null) {
       showError(context, error);
@@ -101,7 +104,6 @@ class _AppLoaderState extends State<AppLoader> {
 
   ThemeData _theme(ThemeData baseTheme) {
     final textTheme = baseTheme.textTheme;
-    final buttonTheme = baseTheme.buttonTheme;
     return baseTheme.copyWith(
       primaryColor: _primaryColor,
       textTheme: baseTheme.textTheme.copyWith(
@@ -118,9 +120,7 @@ class _AppLoaderState extends State<AppLoader> {
         caption: textTheme.caption?.copyWith(color: _primaryColor),
         button: textTheme.button?.copyWith(color: _primaryColor),
       ),
-      buttonTheme: buttonTheme.copyWith(
-        textTheme: ButtonTextTheme.primary,
-      ),
+      buttonColor: _primaryColor,
     );
   }
 }

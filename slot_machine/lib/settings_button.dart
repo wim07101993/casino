@@ -17,9 +17,18 @@ class SettingsButton extends StatelessWidget {
     await showDialog(
       context: context,
       builder: (context) {
-        return const SimpleDialog(
-          title: Text('Settings'),
-          children: [Settings()],
+        return SimpleDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Settings'),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.of(context).maybePop(false),
+              ),
+            ],
+          ),
+          children: const [Settings()],
         );
       },
     );

@@ -34,9 +34,9 @@ class SlotMachineChanges {
     // ignore: literal_only_boolean_expressions
     while (true) {
       try {
-        final newList = (await casinoApi.listSlotMachines())
-            .map(converter.convert)
-            .toList();
+        final newList = await casinoApi
+            .listSlotMachines()
+            .then((items) => items.map(converter.convert).toList());
 
         if (_slotMachines == null ||
             newList.length != _slotMachines!.length ||

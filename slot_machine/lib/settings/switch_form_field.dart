@@ -33,12 +33,13 @@ class _SwitchFormFieldState extends State<SwitchFormField> {
   @override
   Widget build(BuildContext context) {
     return Switch(
-      onChanged: widget.controller.setValue,
+      activeColor: Theme.of(context).primaryColor,
+      onChanged: (b) => widget.controller.value = b,
       value: widget.controller.value,
     );
   }
 
-  void _onValueChanged() {}
+  void _onValueChanged() => setState(() {});
 }
 
 class SwitchController extends ValueListenable<bool> {
@@ -51,9 +52,7 @@ class SwitchController extends ValueListenable<bool> {
 
   @override
   bool get value => _value;
-
-  // ignore: avoid_positional_boolean_parameters
-  void setValue(bool value) {
+  set value(bool value) {
     _value = value;
     _invokeListeners();
   }
