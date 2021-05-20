@@ -2,11 +2,14 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:casino_shared/casino_shared.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
 
+import '../domain/app_theme.dart';
 import '../domain/token_count.dart';
-import '../number_controller.dart';
+import '../symbol_controller.dart';
 
 part 'game_bloc.freezed.dart';
 
@@ -20,7 +23,8 @@ class GameEvent with _$GameEvent {
 @freezed
 class GameState with _$GameState {
   const factory GameState({
-    required List<NumberController> numbers,
+    required List<SymbolController> symbolControllers,
+    required List<Widget> symbols,
     Object? error,
   }) = _GameState;
 
@@ -28,10 +32,12 @@ class GameState with _$GameState {
     required Random random,
     int numberOfSymbols = numberOfSymbols,
   }) {
+    final symbols = AppTheme.defaultTheme.symbols;
     return GameState(
-      numbers: Iterable.generate(numberOfSymbols, (_) {
-        return NumberController(random: random);
+      symbolControllers: Iterable.generate(numberOfSymbols, (_) {
+        return SymbolController(random: random);
       }).toList(),
+      symbols: symbols,
     );
   }
 }
@@ -41,9 +47,14 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     required Logger logger,
     required TokenCount tokenCount,
     required Random random,
-  })   : _logger = logger,
+    required AppTheme theme,
+  })  : _logger = logger,
         _tokenCount = tokenCount,
-        super(GameState.initial(random: random));
+        super(GameState.initial(random: random)) {
+    theme.changes.forEach((e) {
+      emit(state.copyWith(error: null, symbols: e.symbols));
+    });
+  }
 
   final Logger _logger;
   final TokenCount _tokenCount;
@@ -56,7 +67,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   Stream<GameState> _roll() async* {
-    if (state.numbers.any((e) => e.isRolling)) {
+    if (state.symbolControllers.any((e) => e.isRolling)) {
       return;
     }
     yield state.copyWith(error: null);
@@ -69,7 +80,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       _logger.i('Rolling');
       final newTokenCount = tokenCount - 1;
       await _tokenCount.set(newTokenCount);
-      for (final number in state.numbers) {
+      for (final number in state.symbolControllers) {
         number.roll();
       }
     } catch (e, stackTrace) {

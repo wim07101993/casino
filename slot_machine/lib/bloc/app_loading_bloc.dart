@@ -1,21 +1,23 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:casino_shared/casino_shared.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 
-import '../data/local_db/general_box.dart';
+import '../domain/app_theme.dart';
 import '../domain/casino_api_uri.dart';
 import '../domain/id.dart';
 import '../domain/is_dark_mode_enabled.dart';
+import '../domain/local_db/api_settings_box.dart';
+import '../domain/local_db/theme_box.dart';
 import '../domain/name.dart';
 import '../domain/primary_color.dart';
+import '../domain/themes/app_theme_data.dart';
 import '../domain/token_count.dart';
 import '../main.dart';
 import 'game_bloc.dart';
@@ -32,8 +34,7 @@ class AppLoadingEvent with _$AppLoadingEvent {
 class AppLoadingState with _$AppLoadingState {
   const factory AppLoadingState({
     @Default(LoadingStage.notLoaded()) LoadingStage loadingStage,
-    @Default(Colors.blue) Color color,
-    @Default(false) bool isDarkModeEnabled,
+    AppThemeData? appTheme,
     Object? error,
   }) = _AppLoadingState;
 }
@@ -74,15 +75,9 @@ class AppLoadingBloc extends Bloc<AppLoadingEvent, AppLoadingState> {
       await di.registerBloc();
       log('initialized di');
 
-      final isDarkModeEnabled = di<IsDarkModeEnabled>();
-      await isDarkModeEnabled()
-          .then((e) => emit(state.copyWith(isDarkModeEnabled: e)));
-      isDarkModeEnabled.changes
-          .forEach((e) => emit(state.copyWith(isDarkModeEnabled: e)));
-
-      final primaryColor = di<PrimaryColor>();
-      await primaryColor().then((e) => emit(state.copyWith(color: e)));
-      primaryColor.changes.forEach((e) => emit(state.copyWith(color: e)));
+      final appTheme = di<AppTheme>();
+      yield state.copyWith(appTheme: await appTheme());
+      appTheme.changes.forEach((e) => emit(state.copyWith(appTheme: e)));
 
       yield state.copyWith(loadingStage: const _GettingId());
       final id = await di<Id>()();
@@ -104,36 +99,36 @@ class AppLoadingBloc extends Bloc<AppLoadingEvent, AppLoadingState> {
 
 extension _GetItExtensions on GetIt {
   Future<void> registerDb() async {
-    Hive.init(Directory.current.path);
+    Hive.init(await getApplicationDocumentsDirectory().then((e) => e.path));
     di.registerSingleton<HiveInterface>(Hive);
-    di.registerLazySingleton(() => GeneralBox(hive: di(), nameGenerator: di()));
-    final generalBox = di<GeneralBox>();
-    await generalBox.init();
+    di.registerLazySingleton(
+      () => ApiSettingsBox(hive: di(), nameGenerator: di()),
+    );
+    di.registerLazySingleton(() => ThemeBox(hive: di()));
   }
 
   Future<void> registerDomain() async {
-    registerLazySingleton(() => PrimaryColor(generalBox: call()));
-    registerLazySingleton(() => IsDarkModeEnabled(generalBox: call()));
+    registerLazySingleton(() => AppTheme(db: call()));
+    registerLazySingleton(() => PrimaryColor(db: call()));
+    registerLazySingleton(() => IsDarkModeEnabled(db: call()));
     registerLazySingleton(
       () => Name(
-        setName: call(),
-        generalBox: call(),
+        api: call(),
+        db: call(),
         slotMachineChanges: call(),
         id: call(),
       ),
     );
     registerLazySingleton(
       () => Id(
-        getSlotMachineByName: call(),
-        addSlotMachine: call(),
-        generalBox: call(),
+        api: call(),
+        db: call(),
       ),
     );
-    registerLazySingleton(() => CasinoApiUri(generalBox: call()));
+    registerLazySingleton(() => CasinoApiUri(db: call()));
     registerLazySingleton(
       () => TokenCount(
-        getTokenCount: call(),
-        setTokenCount: call(),
+        api: call(),
         id: call(),
         slotMachineChanges: call(),
       ),
@@ -149,6 +144,7 @@ extension _GetItExtensions on GetIt {
         logger: call(),
         random: call(),
         tokenCount: call(),
+        theme: call(),
       ),
     );
     registerFactory(

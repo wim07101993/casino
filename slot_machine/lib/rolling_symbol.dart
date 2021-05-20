@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
-import 'number_controller.dart';
+import 'symbol_controller.dart';
 
-class Number extends StatefulWidget {
-  const Number({
+class RollingSymbol extends StatefulWidget {
+  const RollingSymbol({
     Key? key,
     required this.controller,
+    required this.symbols,
   }) : super(key: key);
 
-  final NumberController controller;
+  final SymbolController controller;
+  final List<Widget> symbols;
 
   @override
-  _NumberState createState() => _NumberState();
+  _RollingSymbolState createState() => _RollingSymbolState();
 }
 
-class _NumberState extends State<Number> {
+class _RollingSymbolState extends State<RollingSymbol> {
   @override
   void initState() {
     super.initState();
@@ -22,7 +24,7 @@ class _NumberState extends State<Number> {
   }
 
   @override
-  void didUpdateWidget(covariant Number oldWidget) {
+  void didUpdateWidget(covariant RollingSymbol oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
       oldWidget.controller.removeListener(onValueChanged);
@@ -32,17 +34,12 @@ class _NumberState extends State<Number> {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.headline1;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
         width: 100,
-        child: Center(
-          child: Text(
-            widget.controller.value.toString(),
-            style: textStyle,
-          ),
-        ),
+        height: 100,
+        child: widget.symbols[widget.controller.value],
       ),
     );
   }

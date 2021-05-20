@@ -29,11 +29,11 @@ class AddSlotMachineDialogBloc
   AddSlotMachineDialogBloc({
     required this.logger,
     required NameGenerator nameGenerator,
-    required this.addSlotMachine,
+    required this.api,
   }) : super(AddSlotMachineDialogState.initial(nameGenerator()));
 
   final Logger logger;
-  final AddSlotMachine addSlotMachine;
+  final CasinoApi api;
 
   @override
   Stream<AddSlotMachineDialogState> mapEventToState(
@@ -47,7 +47,7 @@ class AddSlotMachineDialogBloc
   Stream<AddSlotMachineDialogState> _add() async* {
     try {
       yield state.copyWith(isAdding: true, hasAdded: false, error: null);
-      await addSlotMachine(state.name.text);
+      await api.addSlotMachine(state.name.text);
       yield state.copyWith(isAdding: false, hasAdded: true);
     } catch (e, stackTrace) {
       logger.e('Error on add slot-machine (${state.name})', e, stackTrace);

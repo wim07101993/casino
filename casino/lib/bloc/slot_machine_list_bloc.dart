@@ -30,8 +30,7 @@ class SlotMachineListBloc
     extends Bloc<SlotMachineListEvent, SlotMachineListState> {
   SlotMachineListBloc({
     required this.logger,
-    required this.addSlotMachine,
-    required this.removeSlotMachine,
+    required this.api,
     required SlotMachineChanges slotMachinesChanges,
   }) : super(const SlotMachineListState()) {
     streamSubscription =
@@ -39,8 +38,7 @@ class SlotMachineListBloc
   }
 
   final Logger logger;
-  final AddSlotMachine addSlotMachine;
-  final RemoveSlotMachine removeSlotMachine;
+  final CasinoApi api;
 
   late StreamSubscription streamSubscription;
 
@@ -63,7 +61,7 @@ class SlotMachineListBloc
   Stream<SlotMachineListState> _addSlotMachine(String name) async* {
     try {
       yield state.copyWith(isLoading: true, error: null);
-      await addSlotMachine(name);
+      await api.addSlotMachine(name);
       yield state.copyWith(isLoading: false);
     } catch (e, stackTrace) {
       logger.e('Error on adding slot-machine $name', e, stackTrace);
@@ -74,7 +72,7 @@ class SlotMachineListBloc
   Stream<SlotMachineListState> _removeSlotMachine(String id) async* {
     try {
       yield state.copyWith(isLoading: true, error: null);
-      await removeSlotMachine(id);
+      await api.removeSlotMachine(id);
       yield state.copyWith(
         isLoading: false,
         slotMachines: state.slotMachines..removeWhere((e) => e.id == id),

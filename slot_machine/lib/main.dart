@@ -1,5 +1,6 @@
 import 'package:casino_shared/casino_shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import 'bloc/app_loading_bloc.dart';
@@ -25,8 +26,6 @@ class AppLoader extends StatefulWidget {
 
 class _AppLoaderState extends State<AppLoader> {
   late AppLoadingBloc _appLoadingBloc;
-  Color _primaryColor = Colors.blue;
-  bool _isDarkModeEnabled = false;
 
   @override
   void initState() {
@@ -42,25 +41,26 @@ class _AppLoaderState extends State<AppLoader> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Slot-machine',
-      theme: _theme(
-        _isDarkModeEnabled == true ? ThemeData.dark() : ThemeData.light(),
-      ),
-      home: Material(
-        child: BlocBuilderListener<AppLoadingBloc, AppLoadingState>.value(
-          value: _appLoadingBloc,
-          listener: _onStateChange,
-          builder: (context, state) {
-            return Stack(children: [
-              if (state.loadingStage == const LoadingStage.loaded())
-                const HomeScreen()
-              else
-                _loading(state),
-            ]);
-          },
-        ),
-      ),
+    return BlocBuilder<AppLoadingBloc, AppLoadingState>(
+      bloc: _appLoadingBloc,
+      builder: (context, state) {
+        return MaterialApp(
+          title: 'Slot-machine',
+          theme: state.appTheme?.themeData ?? ThemeData.light(),
+          home: Material(
+            child: BlocListener(
+              bloc: _appLoadingBloc,
+              listener: _onStateChange,
+              child: Stack(children: [
+                if (state.loadingStage == const LoadingStage.loaded())
+                  const HomeScreen()
+                else
+                  _loading(state),
+              ]),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -89,38 +89,9 @@ class _AppLoaderState extends State<AppLoader> {
   }
 
   void _onStateChange(BuildContext context, AppLoadingState state) {
-    print('state changed: $state');
     final error = state.error;
     if (error != null) {
       showError(context, error);
     }
-    if (state.color != _primaryColor) {
-      setState(() => _primaryColor = state.color);
-    }
-    if (state.isDarkModeEnabled != _isDarkModeEnabled) {
-      setState(() => _isDarkModeEnabled = state.isDarkModeEnabled);
-    }
-  }
-
-  ThemeData _theme(ThemeData baseTheme) {
-    final textTheme = baseTheme.textTheme;
-    return baseTheme.copyWith(
-      primaryColor: _primaryColor,
-      textTheme: baseTheme.textTheme.copyWith(
-        headline1: textTheme.headline1?.copyWith(color: _primaryColor),
-        headline2: textTheme.headline2?.copyWith(color: _primaryColor),
-        headline3: textTheme.headline3?.copyWith(color: _primaryColor),
-        headline4: textTheme.headline4?.copyWith(color: _primaryColor),
-        headline5: textTheme.headline5?.copyWith(color: _primaryColor),
-        headline6: textTheme.headline6?.copyWith(color: _primaryColor),
-        subtitle1: textTheme.subtitle1?.copyWith(color: _primaryColor),
-        subtitle2: textTheme.subtitle2?.copyWith(color: _primaryColor),
-        bodyText1: textTheme.bodyText1?.copyWith(color: _primaryColor),
-        bodyText2: textTheme.bodyText2?.copyWith(color: _primaryColor),
-        caption: textTheme.caption?.copyWith(color: _primaryColor),
-        button: textTheme.button?.copyWith(color: _primaryColor),
-      ),
-      buttonColor: _primaryColor,
-    );
   }
 }

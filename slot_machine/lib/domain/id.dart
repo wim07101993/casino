@@ -1,28 +1,25 @@
 import 'package:casino_shared/casino_shared.dart';
 
-import '../data/local_db/general_box.dart';
+import 'local_db/api_settings_box.dart';
 
 class Id {
   Id({
-    required GetSlotMachineByName getSlotMachineByName,
-    required AddSlotMachine addSlotMachine,
-    required GeneralBox generalBox,
-  })   : _getSlotMachineByName = getSlotMachineByName,
-        _generalBox = generalBox,
-        _addSlotMachine = addSlotMachine;
+    required CasinoApi api,
+    required ApiSettingsBox db,
+  })   : _api = api,
+        _db = db;
 
   String? _id;
 
-  final GeneralBox _generalBox;
-  final GetSlotMachineByName _getSlotMachineByName;
-  final AddSlotMachine _addSlotMachine;
+  final ApiSettingsBox _db;
+  final CasinoApi _api;
 
   Future<String> call() => _id != null ? Future.value(_id) : _fetchId();
 
   Future<String> _fetchId() async {
-    final name = await _generalBox.name();
+    final name = await _db.name();
     try {
-      final slotMachine = await _getSlotMachineByName(name);
+      final slotMachine = await _api.getSlotMachineByName(name);
       return _id = slotMachine.id;
     } on CasinoApiException catch (e) {
       final isNotFound = e.maybeWhen(
@@ -30,7 +27,7 @@ class Id {
         notFound: (_) => true,
       );
       if (isNotFound) {
-        return _addSlotMachine(name);
+        return _api.addSlotMachine(name);
       }
       rethrow;
     }

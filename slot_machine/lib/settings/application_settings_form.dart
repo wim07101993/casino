@@ -34,6 +34,7 @@ class _ApplicationSettingsFormState extends State<ApplicationSettingsForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Application Settings', style: theme.textTheme.headline6),
+              const SizedBox(height: 16),
               ApiUriFormField(controller: widget.apiUrl),
               const SizedBox(height: 16),
               NameFormField(controller: widget.name),

@@ -17,7 +17,6 @@ part 'settings_bloc.freezed.dart';
 class SettingsEvent with _$SettingsEvent {
   const factory SettingsEvent.saveApplicationSettings() =
       _SaveApplicationSettings;
-  const factory SettingsEvent.saveThemeSettings() = _SaveThemeSettings;
   const factory SettingsEvent.load() = _Load;
 }
 
@@ -67,7 +66,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Stream<SettingsState> mapEventToState(SettingsEvent event) {
     return event.when(
       saveApplicationSettings: _saveApplicationSettings,
-      saveThemeSettings: _saveThemeSettings,
       load: _load,
     );
   }
@@ -77,12 +75,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     yield state.copyWith(error: null);
     yield* _saveApiUrl(state.apiUrl.text);
     yield* _saveName(state.name.text);
-  }
-
-  Stream<SettingsState> _saveThemeSettings() async* {
-    logger.i('saving new settings');
-    yield state.copyWith(error: null);
-    yield* _saveApplicationColor(state.primaryColor.value);
   }
 
   Stream<SettingsState> _load() async* {

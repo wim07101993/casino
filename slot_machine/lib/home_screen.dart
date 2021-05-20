@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:slot_machine/base_widgets/top_safe_area.dart';
 
 import 'game.dart';
 import 'name.dart';
@@ -15,6 +16,7 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.all(32),
         child: Column(
           children: [
+            const TopSafeArea(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [

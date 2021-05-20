@@ -32,6 +32,7 @@ func (c *Controller) RegisterOn(r *mux.Router) {
 	r.HandleFunc("/casino/slot-machines/by-name/{"+nameParam+"}", c.GetByName).Methods("GET")
 	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/tokens", c.GetTokenCount).Methods("GET")
 	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/tokens", c.SetTokenCount).Methods("PUT")
+	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/name", c.SetName).Methods("PUT")
 	r.HandleFunc("/casino/slot-machines/{"+idParam+"}", c.RemoveSlotMachine).Methods("DELETE")
 }
 

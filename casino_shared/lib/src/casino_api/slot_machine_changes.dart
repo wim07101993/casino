@@ -1,19 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
 
-import '../casino_api/casino_api.dart';
-import '../models/models.dart';
+import 'casino_api.dart';
 
 class SlotMachineChanges {
   SlotMachineChanges({
     required this.casinoApi,
-    required this.converter,
   }) {
     _listenToApi();
   }
 
   final CasinoApi casinoApi;
-  final Converter<SlotMachineDTO, SlotMachine> converter;
   final StreamController<List<SlotMachine>> _streamController =
       StreamController.broadcast();
 
@@ -31,12 +27,13 @@ class SlotMachineChanges {
   }
 
   Future<void> _listenToApi() async {
+    final newList = await casinoApi.listSlotMachines();
     // ignore: literal_only_boolean_expressions
     while (true) {
       try {
-        final newList = await casinoApi
-            .listSlotMachines()
-            .then((items) => items.map(converter.convert).toList());
+        // final newList = await casinoApi
+        //     .listSlotMachines()
+        //     .then((items) => items.map(converter.convert).toList());
 
         if (_slotMachines == null ||
             newList.length != _slotMachines!.length ||

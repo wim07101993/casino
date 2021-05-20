@@ -1,18 +1,14 @@
-import '../data/local_db/general_box.dart';
+import 'local_db/theme_box.dart';
 
 class IsDarkModeEnabled {
   const IsDarkModeEnabled({
-    required GeneralBox generalBox,
-  }) : _generalBox = generalBox;
+    required ThemeBox db,
+  }) : _db = db;
 
-  final GeneralBox _generalBox;
+  final ThemeBox _db;
 
-  Future<bool> call() => _generalBox.isDarkModeEnabled();
-
+  Future<bool> call() => _db.isDarkModeEnabled();
   // ignore: avoid_positional_boolean_parameters
-  Future<void> set(bool value) => _generalBox.isDarkModeEnabled.set(value);
-
-  Stream<bool> get changes {
-    return _generalBox.isDarkModeEnabled.changes.map((e) => e.value);
-  }
+  Future<void> set(bool value) => _db.isDarkModeEnabled.set(value);
+  Stream<bool> get changes => _db.isDarkModeEnabled.changes.map((e) => e);
 }

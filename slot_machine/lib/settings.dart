@@ -27,7 +27,6 @@ class Settings extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Application Settings', style: theme.textTheme.headline6),
         ApplicationSettingsForm(
           apiUrl: state.apiUrl,
           name: state.name,

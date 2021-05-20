@@ -20,10 +20,6 @@ class _$SettingsEventTearOff {
     return const _SaveApplicationSettings();
   }
 
-  _SaveThemeSettings saveThemeSettings() {
-    return const _SaveThemeSettings();
-  }
-
   _Load load() {
     return const _Load();
   }
@@ -37,14 +33,12 @@ mixin _$SettingsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() saveApplicationSettings,
-    required TResult Function() saveThemeSettings,
     required TResult Function() load,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? saveApplicationSettings,
-    TResult Function()? saveThemeSettings,
     TResult Function()? load,
     required TResult orElse(),
   }) =>
@@ -53,14 +47,12 @@ mixin _$SettingsEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(_SaveApplicationSettings value)
         saveApplicationSettings,
-    required TResult Function(_SaveThemeSettings value) saveThemeSettings,
     required TResult Function(_Load value) load,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_SaveApplicationSettings value)? saveApplicationSettings,
-    TResult Function(_SaveThemeSettings value)? saveThemeSettings,
     TResult Function(_Load value)? load,
     required TResult orElse(),
   }) =>
@@ -126,7 +118,6 @@ class _$_SaveApplicationSettings implements _SaveApplicationSettings {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() saveApplicationSettings,
-    required TResult Function() saveThemeSettings,
     required TResult Function() load,
   }) {
     return saveApplicationSettings();
@@ -136,7 +127,6 @@ class _$_SaveApplicationSettings implements _SaveApplicationSettings {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? saveApplicationSettings,
-    TResult Function()? saveThemeSettings,
     TResult Function()? load,
     required TResult orElse(),
   }) {
@@ -151,7 +141,6 @@ class _$_SaveApplicationSettings implements _SaveApplicationSettings {
   TResult map<TResult extends Object?>({
     required TResult Function(_SaveApplicationSettings value)
         saveApplicationSettings,
-    required TResult Function(_SaveThemeSettings value) saveThemeSettings,
     required TResult Function(_Load value) load,
   }) {
     return saveApplicationSettings(this);
@@ -161,7 +150,6 @@ class _$_SaveApplicationSettings implements _SaveApplicationSettings {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_SaveApplicationSettings value)? saveApplicationSettings,
-    TResult Function(_SaveThemeSettings value)? saveThemeSettings,
     TResult Function(_Load value)? load,
     required TResult orElse(),
   }) {
@@ -174,97 +162,6 @@ class _$_SaveApplicationSettings implements _SaveApplicationSettings {
 
 abstract class _SaveApplicationSettings implements SettingsEvent {
   const factory _SaveApplicationSettings() = _$_SaveApplicationSettings;
-}
-
-/// @nodoc
-abstract class _$SaveThemeSettingsCopyWith<$Res> {
-  factory _$SaveThemeSettingsCopyWith(
-          _SaveThemeSettings value, $Res Function(_SaveThemeSettings) then) =
-      __$SaveThemeSettingsCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$SaveThemeSettingsCopyWithImpl<$Res>
-    extends _$SettingsEventCopyWithImpl<$Res>
-    implements _$SaveThemeSettingsCopyWith<$Res> {
-  __$SaveThemeSettingsCopyWithImpl(
-      _SaveThemeSettings _value, $Res Function(_SaveThemeSettings) _then)
-      : super(_value, (v) => _then(v as _SaveThemeSettings));
-
-  @override
-  _SaveThemeSettings get _value => super._value as _SaveThemeSettings;
-}
-
-/// @nodoc
-
-class _$_SaveThemeSettings implements _SaveThemeSettings {
-  const _$_SaveThemeSettings();
-
-  @override
-  String toString() {
-    return 'SettingsEvent.saveThemeSettings()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _SaveThemeSettings);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() saveApplicationSettings,
-    required TResult Function() saveThemeSettings,
-    required TResult Function() load,
-  }) {
-    return saveThemeSettings();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? saveApplicationSettings,
-    TResult Function()? saveThemeSettings,
-    TResult Function()? load,
-    required TResult orElse(),
-  }) {
-    if (saveThemeSettings != null) {
-      return saveThemeSettings();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_SaveApplicationSettings value)
-        saveApplicationSettings,
-    required TResult Function(_SaveThemeSettings value) saveThemeSettings,
-    required TResult Function(_Load value) load,
-  }) {
-    return saveThemeSettings(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_SaveApplicationSettings value)? saveApplicationSettings,
-    TResult Function(_SaveThemeSettings value)? saveThemeSettings,
-    TResult Function(_Load value)? load,
-    required TResult orElse(),
-  }) {
-    if (saveThemeSettings != null) {
-      return saveThemeSettings(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _SaveThemeSettings implements SettingsEvent {
-  const factory _SaveThemeSettings() = _$_SaveThemeSettings;
 }
 
 /// @nodoc
@@ -305,7 +202,6 @@ class _$_Load implements _Load {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() saveApplicationSettings,
-    required TResult Function() saveThemeSettings,
     required TResult Function() load,
   }) {
     return load();
@@ -315,7 +211,6 @@ class _$_Load implements _Load {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? saveApplicationSettings,
-    TResult Function()? saveThemeSettings,
     TResult Function()? load,
     required TResult orElse(),
   }) {
@@ -330,7 +225,6 @@ class _$_Load implements _Load {
   TResult map<TResult extends Object?>({
     required TResult Function(_SaveApplicationSettings value)
         saveApplicationSettings,
-    required TResult Function(_SaveThemeSettings value) saveThemeSettings,
     required TResult Function(_Load value) load,
   }) {
     return load(this);
@@ -340,7 +234,6 @@ class _$_Load implements _Load {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_SaveApplicationSettings value)? saveApplicationSettings,
-    TResult Function(_SaveThemeSettings value)? saveThemeSettings,
     TResult Function(_Load value)? load,
     required TResult orElse(),
   }) {

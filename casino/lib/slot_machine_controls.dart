@@ -30,8 +30,7 @@ class _SlotMachineControlsState extends State<SlotMachineControls> {
     tokenCountController = TextEditingController()
       ..addListener(onTokenCountInputChange);
     bloc = SlotMachineBloc(
-      setTokenCount: di(),
-      getTokenCount: di(),
+      api: di(),
       logger: di(),
       slotMachinesChanges: di(),
     )..add(SlotMachineEvent.load(widget.id));

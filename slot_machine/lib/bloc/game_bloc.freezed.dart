@@ -149,9 +149,13 @@ abstract class _GameEvent implements GameEvent {
 class _$GameStateTearOff {
   const _$GameStateTearOff();
 
-  _GameState call({required List<NumberController> numbers, Object? error}) {
+  _GameState call(
+      {required List<SymbolController> symbolControllers,
+      required List<Widget> symbols,
+      Object? error}) {
     return _GameState(
-      numbers: numbers,
+      symbolControllers: symbolControllers,
+      symbols: symbols,
       error: error,
     );
   }
@@ -162,7 +166,9 @@ const $GameState = _$GameStateTearOff();
 
 /// @nodoc
 mixin _$GameState {
-  List<NumberController> get numbers => throw _privateConstructorUsedError;
+  List<SymbolController> get symbolControllers =>
+      throw _privateConstructorUsedError;
+  List<Widget> get symbols => throw _privateConstructorUsedError;
   Object? get error => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -174,7 +180,10 @@ mixin _$GameState {
 abstract class $GameStateCopyWith<$Res> {
   factory $GameStateCopyWith(GameState value, $Res Function(GameState) then) =
       _$GameStateCopyWithImpl<$Res>;
-  $Res call({List<NumberController> numbers, Object? error});
+  $Res call(
+      {List<SymbolController> symbolControllers,
+      List<Widget> symbols,
+      Object? error});
 }
 
 /// @nodoc
@@ -187,14 +196,19 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? numbers = freezed,
+    Object? symbolControllers = freezed,
+    Object? symbols = freezed,
     Object? error = freezed,
   }) {
     return _then(_value.copyWith(
-      numbers: numbers == freezed
-          ? _value.numbers
-          : numbers // ignore: cast_nullable_to_non_nullable
-              as List<NumberController>,
+      symbolControllers: symbolControllers == freezed
+          ? _value.symbolControllers
+          : symbolControllers // ignore: cast_nullable_to_non_nullable
+              as List<SymbolController>,
+      symbols: symbols == freezed
+          ? _value.symbols
+          : symbols // ignore: cast_nullable_to_non_nullable
+              as List<Widget>,
       error: error == freezed ? _value.error : error,
     ));
   }
@@ -206,7 +220,10 @@ abstract class _$GameStateCopyWith<$Res> implements $GameStateCopyWith<$Res> {
           _GameState value, $Res Function(_GameState) then) =
       __$GameStateCopyWithImpl<$Res>;
   @override
-  $Res call({List<NumberController> numbers, Object? error});
+  $Res call(
+      {List<SymbolController> symbolControllers,
+      List<Widget> symbols,
+      Object? error});
 }
 
 /// @nodoc
@@ -220,14 +237,19 @@ class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? numbers = freezed,
+    Object? symbolControllers = freezed,
+    Object? symbols = freezed,
     Object? error = freezed,
   }) {
     return _then(_GameState(
-      numbers: numbers == freezed
-          ? _value.numbers
-          : numbers // ignore: cast_nullable_to_non_nullable
-              as List<NumberController>,
+      symbolControllers: symbolControllers == freezed
+          ? _value.symbolControllers
+          : symbolControllers // ignore: cast_nullable_to_non_nullable
+              as List<SymbolController>,
+      symbols: symbols == freezed
+          ? _value.symbols
+          : symbols // ignore: cast_nullable_to_non_nullable
+              as List<Widget>,
       error: error == freezed ? _value.error : error,
     ));
   }
@@ -236,25 +258,31 @@ class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_GameState implements _GameState {
-  const _$_GameState({required this.numbers, this.error});
+  const _$_GameState(
+      {required this.symbolControllers, required this.symbols, this.error});
 
   @override
-  final List<NumberController> numbers;
+  final List<SymbolController> symbolControllers;
+  @override
+  final List<Widget> symbols;
   @override
   final Object? error;
 
   @override
   String toString() {
-    return 'GameState(numbers: $numbers, error: $error)';
+    return 'GameState(symbolControllers: $symbolControllers, symbols: $symbols, error: $error)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _GameState &&
-            (identical(other.numbers, numbers) ||
+            (identical(other.symbolControllers, symbolControllers) ||
                 const DeepCollectionEquality()
-                    .equals(other.numbers, numbers)) &&
+                    .equals(other.symbolControllers, symbolControllers)) &&
+            (identical(other.symbols, symbols) ||
+                const DeepCollectionEquality()
+                    .equals(other.symbols, symbols)) &&
             (identical(other.error, error) ||
                 const DeepCollectionEquality().equals(other.error, error)));
   }
@@ -262,7 +290,8 @@ class _$_GameState implements _GameState {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(numbers) ^
+      const DeepCollectionEquality().hash(symbolControllers) ^
+      const DeepCollectionEquality().hash(symbols) ^
       const DeepCollectionEquality().hash(error);
 
   @JsonKey(ignore: true)
@@ -273,10 +302,15 @@ class _$_GameState implements _GameState {
 
 abstract class _GameState implements GameState {
   const factory _GameState(
-      {required List<NumberController> numbers, Object? error}) = _$_GameState;
+      {required List<SymbolController> symbolControllers,
+      required List<Widget> symbols,
+      Object? error}) = _$_GameState;
 
   @override
-  List<NumberController> get numbers => throw _privateConstructorUsedError;
+  List<SymbolController> get symbolControllers =>
+      throw _privateConstructorUsedError;
+  @override
+  List<Widget> get symbols => throw _privateConstructorUsedError;
   @override
   Object? get error => throw _privateConstructorUsedError;
   @override

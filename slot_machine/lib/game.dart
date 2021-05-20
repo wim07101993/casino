@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/game_bloc.dart';
 import 'main.dart';
-import 'number.dart';
+import 'rolling_symbol.dart';
 
 class Game extends StatelessWidget {
   const Game({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class Game extends StatelessWidget {
           child: Container(
             alignment: Alignment.center,
             color: Colors.transparent,
-            child: state.numbers.isEmpty
+            child: state.symbolControllers.isEmpty
                 ? null
                 : FittedBox(child: _numbers(state)),
           ),
@@ -36,8 +36,11 @@ class Game extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
-        state.numbers.length,
-        (i) => Number(controller: state.numbers[i]),
+        state.symbolControllers.length,
+        (i) => RollingSymbol(
+          controller: state.symbolControllers[i],
+          symbols: state.symbols,
+        ),
       ),
     );
   }

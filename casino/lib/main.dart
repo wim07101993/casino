@@ -18,8 +18,7 @@ extension GetItExtensions on GetIt {
     registerFactory(
       () => SlotMachineListBloc(
         logger: call(),
-        addSlotMachine: call(),
-        removeSlotMachine: call(),
+        api: call(),
         slotMachinesChanges: call(),
       ),
     );

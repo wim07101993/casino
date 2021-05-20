@@ -22,6 +22,22 @@ class SlotMachineDTO with _$SlotMachineDTO {
 }
 
 @freezed
+abstract class SlotMachine with _$SlotMachine {
+  const factory SlotMachine({
+    required String id,
+    required String name,
+    required int tokens,
+  }) = _SlotMachine;
+
+  @override
+  String get id;
+  @override
+  String get name;
+  @override
+  int get tokens;
+}
+
+@freezed
 class CasinoApiException with _$CasinoApiException {
   const factory CasinoApiException.notFound({
     required String message,
@@ -51,12 +67,17 @@ class CasinoApiSettings {
   int get hashCode => super.hashCode ^ url.hashCode;
 }
 
+SlotMachine _convertDTOTOSlotMachine(SlotMachineDTO input) {
+  return SlotMachine(id: input.id, name: input.name, tokens: input.tokens);
+}
+
 class CasinoApi {
-  const CasinoApi(
-      {required this.http,
-      required this.config,
-      required this.logger,
-      this.debug = false});
+  const CasinoApi({
+    required this.http,
+    required this.config,
+    required this.logger,
+    this.debug = false,
+  });
 
   final Client http;
   final CasinoApiSettings config;
@@ -77,7 +98,7 @@ class CasinoApi {
     return response.body;
   }
 
-  Future<List<SlotMachineDTO>> listSlotMachines() async {
+  Future<List<SlotMachine>> listSlotMachines() async {
     // commented out to keep log clear
     // logger.v('list slot-machines');
     final response = await http.get(
@@ -88,17 +109,18 @@ class CasinoApi {
     return list
         .cast<Map<String, dynamic>>()
         .map((json) => SlotMachineDTO.fromJson(json))
+        .map(_convertDTOTOSlotMachine)
         .toList();
   }
 
-  Future<SlotMachineDTO> getSlotMachineByName(String name) async {
+  Future<SlotMachine> getSlotMachineByName(String name) async {
     logger.v('get slot-machine by name: $name');
     final response = await http.get(url.addPathSegments(
       ['slot-machines', 'by-name', name],
     ));
     await validateResponse(response);
     final json = jsonDecode(response.body) as Map<String, dynamic>;
-    return SlotMachineDTO.fromJson(json);
+    return _convertDTOTOSlotMachine(SlotMachineDTO.fromJson(json));
   }
 
   Future<int> getTokens(String id) async {

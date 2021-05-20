@@ -25,8 +25,7 @@ class SlotMachineState with _$SlotMachineState {
 
 class SlotMachineBloc extends Bloc<SlotMachineEvent, SlotMachineState> {
   SlotMachineBloc({
-    required this.getTokenCount,
-    required this.setTokenCount,
+    required this.api,
     required this.logger,
     required SlotMachineChanges slotMachinesChanges,
   }) : super(const SlotMachineState()) {
@@ -41,8 +40,7 @@ class SlotMachineBloc extends Bloc<SlotMachineEvent, SlotMachineState> {
         .listen(_onSlotMachineChanged);
   }
 
-  final GetTokenCount getTokenCount;
-  final SetTokenCount setTokenCount;
+  final CasinoApi api;
   final Logger logger;
 
   late StreamSubscription<SlotMachine> streamSubscription;
@@ -66,7 +64,7 @@ class SlotMachineBloc extends Bloc<SlotMachineEvent, SlotMachineState> {
 
   Stream<SlotMachineState> _load(String id) async* {
     try {
-      final tokens = await getTokenCount(id);
+      final tokens = await api.getTokens(id);
       yield state.copyWith(id: id, tokens: tokens, error: null);
     } catch (e, stackTrace) {
       logger.e('Error on load slot-machine', e, stackTrace);
@@ -97,7 +95,7 @@ class SlotMachineBloc extends Bloc<SlotMachineEvent, SlotMachineState> {
         logger.wtf('setting token count without having an id!!');
         return;
       }
-      await setTokenCount(id, count);
+      await api.setTokens(id, count);
       yield state.copyWith(tokens: count, error: null);
     } catch (e, stackTrace) {
       logger.e('Error on set token count (${state.tokens})', e, stackTrace);

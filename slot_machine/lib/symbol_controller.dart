@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 
-class NumberController extends ValueListenable<int> {
+class SymbolController extends ValueListenable<int> {
   /// Creates a new controller which controls a [Number].
   ///
   /// [minValue] is the minimum generated value.
@@ -15,10 +15,8 @@ class NumberController extends ValueListenable<int> {
   ///
   /// [rollSpeed] is the speed at which the number should change in numbers per
   /// millisecond.
-  NumberController({
+  SymbolController({
     required this.random,
-    this.minValue = 0,
-    this.maxValue = 7,
     this.minRollDuration = const Duration(seconds: 1),
     this.maxRollDuration = const Duration(seconds: 5),
     this.rollSpeed = 1,
@@ -27,12 +25,12 @@ class NumberController extends ValueListenable<int> {
         _listeners = [];
 
   final Random random;
-  final int minValue;
-  final int maxValue;
   final Duration minRollDuration;
   final Duration maxRollDuration;
   final List<void Function()> _listeners;
   final double rollSpeed;
+
+  static const maxValue = 6;
 
   int _value;
   bool _isRolling;
@@ -49,7 +47,7 @@ class NumberController extends ValueListenable<int> {
     final interval = (1 / rollSpeed).round();
     // ignore: literal_only_boolean_expressions
     while (true) {
-      _value = random.nextInt(maxValue - minValue) + minValue;
+      _value = random.nextInt(maxValue + 1);
       _notifyListeners();
 
       if (DateTime.now().difference(start).inMicroseconds > rollDuration) {

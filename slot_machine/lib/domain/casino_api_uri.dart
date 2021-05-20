@@ -1,13 +1,12 @@
-import '../data/local_db/general_box.dart';
+import 'local_db/api_settings_box.dart';
 
 class CasinoApiUri {
   const CasinoApiUri({
-    required GeneralBox generalBox,
-  }) : _generalBox = generalBox;
+    required ApiSettingsBox db,
+  }) : _db = db;
 
-  final GeneralBox _generalBox;
+  final ApiSettingsBox _db;
 
-  Future<Uri> call() => _generalBox.casinoApiUri();
-
-  Future<void> set(Uri value) => _generalBox.casinoApiUri.set(value);
+  Future<Uri> call() => _db.casinoApiUri();
+  Future<void> set(Uri value) => _db.casinoApiUri.set(value);
 }

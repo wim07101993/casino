@@ -155,13 +155,11 @@ class _$AppLoadingStateTearOff {
 
   _AppLoadingState call(
       {LoadingStage loadingStage = const LoadingStage.notLoaded(),
-      Color color = Colors.blue,
-      bool isDarkModeEnabled = false,
+      AppThemeData? appTheme,
       Object? error}) {
     return _AppLoadingState(
       loadingStage: loadingStage,
-      color: color,
-      isDarkModeEnabled: isDarkModeEnabled,
+      appTheme: appTheme,
       error: error,
     );
   }
@@ -173,8 +171,7 @@ const $AppLoadingState = _$AppLoadingStateTearOff();
 /// @nodoc
 mixin _$AppLoadingState {
   LoadingStage get loadingStage => throw _privateConstructorUsedError;
-  Color get color => throw _privateConstructorUsedError;
-  bool get isDarkModeEnabled => throw _privateConstructorUsedError;
+  AppThemeData? get appTheme => throw _privateConstructorUsedError;
   Object? get error => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -187,11 +184,7 @@ abstract class $AppLoadingStateCopyWith<$Res> {
   factory $AppLoadingStateCopyWith(
           AppLoadingState value, $Res Function(AppLoadingState) then) =
       _$AppLoadingStateCopyWithImpl<$Res>;
-  $Res call(
-      {LoadingStage loadingStage,
-      Color color,
-      bool isDarkModeEnabled,
-      Object? error});
+  $Res call({LoadingStage loadingStage, AppThemeData? appTheme, Object? error});
 
   $LoadingStageCopyWith<$Res> get loadingStage;
 }
@@ -208,8 +201,7 @@ class _$AppLoadingStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? loadingStage = freezed,
-    Object? color = freezed,
-    Object? isDarkModeEnabled = freezed,
+    Object? appTheme = freezed,
     Object? error = freezed,
   }) {
     return _then(_value.copyWith(
@@ -217,14 +209,10 @@ class _$AppLoadingStateCopyWithImpl<$Res>
           ? _value.loadingStage
           : loadingStage // ignore: cast_nullable_to_non_nullable
               as LoadingStage,
-      color: color == freezed
-          ? _value.color
-          : color // ignore: cast_nullable_to_non_nullable
-              as Color,
-      isDarkModeEnabled: isDarkModeEnabled == freezed
-          ? _value.isDarkModeEnabled
-          : isDarkModeEnabled // ignore: cast_nullable_to_non_nullable
-              as bool,
+      appTheme: appTheme == freezed
+          ? _value.appTheme
+          : appTheme // ignore: cast_nullable_to_non_nullable
+              as AppThemeData?,
       error: error == freezed ? _value.error : error,
     ));
   }
@@ -244,11 +232,7 @@ abstract class _$AppLoadingStateCopyWith<$Res>
           _AppLoadingState value, $Res Function(_AppLoadingState) then) =
       __$AppLoadingStateCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {LoadingStage loadingStage,
-      Color color,
-      bool isDarkModeEnabled,
-      Object? error});
+  $Res call({LoadingStage loadingStage, AppThemeData? appTheme, Object? error});
 
   @override
   $LoadingStageCopyWith<$Res> get loadingStage;
@@ -268,8 +252,7 @@ class __$AppLoadingStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? loadingStage = freezed,
-    Object? color = freezed,
-    Object? isDarkModeEnabled = freezed,
+    Object? appTheme = freezed,
     Object? error = freezed,
   }) {
     return _then(_AppLoadingState(
@@ -277,14 +260,10 @@ class __$AppLoadingStateCopyWithImpl<$Res>
           ? _value.loadingStage
           : loadingStage // ignore: cast_nullable_to_non_nullable
               as LoadingStage,
-      color: color == freezed
-          ? _value.color
-          : color // ignore: cast_nullable_to_non_nullable
-              as Color,
-      isDarkModeEnabled: isDarkModeEnabled == freezed
-          ? _value.isDarkModeEnabled
-          : isDarkModeEnabled // ignore: cast_nullable_to_non_nullable
-              as bool,
+      appTheme: appTheme == freezed
+          ? _value.appTheme
+          : appTheme // ignore: cast_nullable_to_non_nullable
+              as AppThemeData?,
       error: error == freezed ? _value.error : error,
     ));
   }
@@ -295,25 +274,20 @@ class __$AppLoadingStateCopyWithImpl<$Res>
 class _$_AppLoadingState implements _AppLoadingState {
   const _$_AppLoadingState(
       {this.loadingStage = const LoadingStage.notLoaded(),
-      this.color = Colors.blue,
-      this.isDarkModeEnabled = false,
+      this.appTheme,
       this.error});
 
   @JsonKey(defaultValue: const LoadingStage.notLoaded())
   @override
   final LoadingStage loadingStage;
-  @JsonKey(defaultValue: Colors.blue)
   @override
-  final Color color;
-  @JsonKey(defaultValue: false)
-  @override
-  final bool isDarkModeEnabled;
+  final AppThemeData? appTheme;
   @override
   final Object? error;
 
   @override
   String toString() {
-    return 'AppLoadingState(loadingStage: $loadingStage, color: $color, isDarkModeEnabled: $isDarkModeEnabled, error: $error)';
+    return 'AppLoadingState(loadingStage: $loadingStage, appTheme: $appTheme, error: $error)';
   }
 
   @override
@@ -323,11 +297,9 @@ class _$_AppLoadingState implements _AppLoadingState {
             (identical(other.loadingStage, loadingStage) ||
                 const DeepCollectionEquality()
                     .equals(other.loadingStage, loadingStage)) &&
-            (identical(other.color, color) ||
-                const DeepCollectionEquality().equals(other.color, color)) &&
-            (identical(other.isDarkModeEnabled, isDarkModeEnabled) ||
+            (identical(other.appTheme, appTheme) ||
                 const DeepCollectionEquality()
-                    .equals(other.isDarkModeEnabled, isDarkModeEnabled)) &&
+                    .equals(other.appTheme, appTheme)) &&
             (identical(other.error, error) ||
                 const DeepCollectionEquality().equals(other.error, error)));
   }
@@ -336,8 +308,7 @@ class _$_AppLoadingState implements _AppLoadingState {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(loadingStage) ^
-      const DeepCollectionEquality().hash(color) ^
-      const DeepCollectionEquality().hash(isDarkModeEnabled) ^
+      const DeepCollectionEquality().hash(appTheme) ^
       const DeepCollectionEquality().hash(error);
 
   @JsonKey(ignore: true)
@@ -349,16 +320,13 @@ class _$_AppLoadingState implements _AppLoadingState {
 abstract class _AppLoadingState implements AppLoadingState {
   const factory _AppLoadingState(
       {LoadingStage loadingStage,
-      Color color,
-      bool isDarkModeEnabled,
+      AppThemeData? appTheme,
       Object? error}) = _$_AppLoadingState;
 
   @override
   LoadingStage get loadingStage => throw _privateConstructorUsedError;
   @override
-  Color get color => throw _privateConstructorUsedError;
-  @override
-  bool get isDarkModeEnabled => throw _privateConstructorUsedError;
+  AppThemeData? get appTheme => throw _privateConstructorUsedError;
   @override
   Object? get error => throw _privateConstructorUsedError;
   @override
