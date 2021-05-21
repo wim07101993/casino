@@ -1,13 +1,14 @@
 import 'package:casino_shared/casino_shared.dart';
 
+import 'global_listenable_property.dart';
 import 'id.dart';
 
-class TokenCount {
+class TokenCount implements GlobalListenableProperty<int> {
   TokenCount({
     required CasinoApi api,
     required Id id,
     required SlotMachineChanges slotMachineChanges,
-  })   : _api = api,
+  })  : _api = api,
         _id = id,
         _slotMachineChanges = slotMachineChanges;
 
@@ -17,6 +18,7 @@ class TokenCount {
 
   int? value;
 
+  @override
   Future<int> call() {
     if (value == null) {
       return _id().then((id) {
@@ -28,9 +30,11 @@ class TokenCount {
     }
   }
 
+  @override
   Future<void> set(int value) => _id().then((id) => _api.setTokens(id, value));
 
-  Stream<int> changes() async* {
+  @override
+  Stream<int> get changes async* {
     final id = await _id();
     yield* _slotMachineChanges.of(id).map((e) => e.tokens);
   }

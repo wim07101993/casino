@@ -8,8 +8,10 @@ import '../domain/casino_api_uri.dart';
 import '../domain/is_dark_mode_enabled.dart';
 import '../domain/name.dart';
 import '../domain/primary_color.dart';
+import '../domain/selected_theme_type.dart';
 import '../settings/color_form_field.dart';
 import '../settings/switch_form_field.dart';
+import '../settings/theme_selector_form_field.dart';
 
 part 'settings_bloc.freezed.dart';
 
@@ -28,6 +30,7 @@ class SettingsState with _$SettingsState {
     required TextEditingController symbolCount,
     required ColorPickerController primaryColor,
     required SwitchController isDarkModeEnabled,
+    required ThemeSelectorController selectedThemeType,
     @Default(false) bool hasSaved,
     Object? error,
   }) = _SettingsState;
@@ -39,6 +42,7 @@ class SettingsState with _$SettingsState {
       symbolCount: TextEditingController(),
       primaryColor: ColorPickerController(),
       isDarkModeEnabled: SwitchController(),
+      selectedThemeType: ThemeSelectorController(),
     );
   }
 }
@@ -50,9 +54,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     required this.logger,
     required this.primaryColor,
     required this.isDarkModeEnabled,
+    required this.selectedThemeType,
   }) : super(SettingsState.initial()) {
     state.primaryColor.addListener(_onPrimaryColorChanged);
     state.isDarkModeEnabled.addListener(_onIsDarkModeEnabledChanged);
+    state.selectedThemeType.addListener(_onSelectedThemeTypeChanged);
     add(const SettingsEvent.load());
   }
 
@@ -61,6 +67,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final Logger logger;
   final PrimaryColor primaryColor;
   final IsDarkModeEnabled isDarkModeEnabled;
+  final SelectedThemeType selectedThemeType;
 
   @override
   Stream<SettingsState> mapEventToState(SettingsEvent event) {
@@ -116,8 +123,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     }
   }
 
-  Stream<SettingsState> _saveApplicationColor(Color newColor) async* {}
-
   Future<void> _onPrimaryColorChanged() async {
     final newColor = state.primaryColor.value;
     try {
@@ -135,6 +140,18 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     try {
       if (newValue != await isDarkModeEnabled()) {
         await isDarkModeEnabled.set(newValue);
+      }
+    } catch (e, stackTrace) {
+      logger.e('Error on save is-dark-mode-enabled $newValue', e, stackTrace);
+      emit(state.copyWith(error: e));
+    }
+  }
+
+  Future<void> _onSelectedThemeTypeChanged() async {
+    final newValue = state.selectedThemeType.value;
+    try {
+      if (newValue != await selectedThemeType()) {
+        await selectedThemeType.set(newValue);
       }
     } catch (e, stackTrace) {
       logger.e('Error on save is-dark-mode-enabled $newValue', e, stackTrace);

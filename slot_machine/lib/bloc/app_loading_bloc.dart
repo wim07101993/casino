@@ -17,6 +17,7 @@ import '../domain/local_db/api_settings_box.dart';
 import '../domain/local_db/theme_box.dart';
 import '../domain/name.dart';
 import '../domain/primary_color.dart';
+import '../domain/selected_theme_type.dart';
 import '../domain/themes/app_theme_data.dart';
 import '../domain/token_count.dart';
 import '../main.dart';
@@ -109,7 +110,13 @@ extension _GetItExtensions on GetIt {
 
   Future<void> registerDomain() async {
     registerLazySingleton(() => AppTheme(db: call()));
-    registerLazySingleton(() => PrimaryColor(db: call()));
+    registerLazySingleton(() => CasinoApiUri(db: call()));
+    registerLazySingleton(
+      () => Id(
+        api: call(),
+        db: call(),
+      ),
+    );
     registerLazySingleton(() => IsDarkModeEnabled(db: call()));
     registerLazySingleton(
       () => Name(
@@ -119,13 +126,8 @@ extension _GetItExtensions on GetIt {
         id: call(),
       ),
     );
-    registerLazySingleton(
-      () => Id(
-        api: call(),
-        db: call(),
-      ),
-    );
-    registerLazySingleton(() => CasinoApiUri(db: call()));
+    registerLazySingleton(() => PrimaryColor(db: call()));
+    registerLazySingleton(() => SelectedThemeType(db: call()));
     registerLazySingleton(
       () => TokenCount(
         api: call(),
@@ -154,6 +156,7 @@ extension _GetItExtensions on GetIt {
         logger: call(),
         primaryColor: call(),
         isDarkModeEnabled: call(),
+        selectedThemeType: call(),
       ),
     );
   }

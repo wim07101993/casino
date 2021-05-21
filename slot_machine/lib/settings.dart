@@ -35,6 +35,7 @@ class Settings extends StatelessWidget {
         ThemeSettingsForm(
           primaryColor: state.primaryColor,
           isDarkModeEnabled: state.isDarkModeEnabled,
+          themeType: state.selectedThemeType,
         ),
       ],
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:slot_machine/base_widgets/top_safe_area.dart';
 
+import 'base_widgets/top_safe_area.dart';
 import 'game.dart';
 import 'name.dart';
 import 'settings_button.dart';

@@ -33,7 +33,7 @@ class _TokenCountState extends State<TokenCount> {
         }
         return StreamBuilder<int>(
           initialData: snapshot.data,
-          stream: tokenCount.changes(),
+          stream: tokenCount.changes,
           builder: (context, snapshot) => _text(snapshot.data ?? 0),
         );
       },

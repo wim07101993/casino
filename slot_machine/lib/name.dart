@@ -33,7 +33,7 @@ class _NameState extends State<Name> {
         }
         return StreamBuilder<String>(
           initialData: snapshot.data,
-          stream: name.changes(),
+          stream: name.changes,
           builder: (context, snapshot) => Text(
             snapshot.data ?? "",
             textAlign: TextAlign.center,
