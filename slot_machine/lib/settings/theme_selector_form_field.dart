@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:slot_machine/domain/themes/number.dart';
 
 import '../domain/controller.dart';
 import '../domain/local_db/theme_box.dart';
+import '../domain/themes/classic_theme.dart';
+import '../domain/themes/emoji_theme.dart';
+import '../domain/themes/number_theme.dart';
 
 class ThemeSelectorFormField extends StatelessWidget {
   const ThemeSelectorFormField({
@@ -16,7 +18,6 @@ class ThemeSelectorFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return ValueListenableBuilder<ThemeType>(
       valueListenable: controller,
       builder: (context, value, _) {
@@ -25,23 +26,26 @@ class ThemeSelectorFormField extends StatelessWidget {
             onTap: () => controller.value = const ThemeType.numbers(),
             child: ThemeTypeBox(
               isSelected: value == const ThemeType.numbers(),
-              child: const FittedBox(child: Number(value: 7)),
+              child: const FittedBox(child: Number(value: NumberValue.seven())),
             ),
           ),
           const SizedBox(width: 8),
           GestureDetector(
-            onTap: () => controller.value = const ThemeType.numbers(),
+            onTap: () => controller.value = const ThemeType.classic(),
             child: ThemeTypeBox(
-              isSelected: value == const ThemeType.numbers(),
-              child: const Center(child: Text('classic')),
+              isSelected: value == const ThemeType.classic(),
+              child: const ClassicSymbol(value: ClassicSymbolValue.cherry()),
             ),
           ),
           const SizedBox(width: 8),
           GestureDetector(
-            onTap: () => controller.value = const ThemeType.numbers(),
+            onTap: () => controller.value = const ThemeType.emoji(),
             child: ThemeTypeBox(
-              isSelected: value == const ThemeType.numbers(),
-              child: const Center(child: Text('emoji')),
+              isSelected: value == const ThemeType.emoji(),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Emoji(value: EmojiValue.poop()),
+              ),
             ),
           ),
         ]);

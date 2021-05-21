@@ -19,6 +19,14 @@ class _$ThemeTypeTearOff {
   _Numbers numbers() {
     return const _Numbers();
   }
+
+  _Classic classic() {
+    return const _Classic();
+  }
+
+  _Emoji emoji() {
+    return const _Emoji();
+  }
 }
 
 /// @nodoc
@@ -29,22 +37,30 @@ mixin _$ThemeType {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() numbers,
+    required TResult Function() classic,
+    required TResult Function() emoji,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? numbers,
+    TResult Function()? classic,
+    TResult Function()? emoji,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Numbers value) numbers,
+    required TResult Function(_Classic value) classic,
+    required TResult Function(_Emoji value) emoji,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Numbers value)? numbers,
+    TResult Function(_Classic value)? classic,
+    TResult Function(_Emoji value)? emoji,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -103,6 +119,8 @@ class _$_Numbers implements _Numbers {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() numbers,
+    required TResult Function() classic,
+    required TResult Function() emoji,
   }) {
     return numbers();
   }
@@ -111,6 +129,8 @@ class _$_Numbers implements _Numbers {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? numbers,
+    TResult Function()? classic,
+    TResult Function()? emoji,
     required TResult orElse(),
   }) {
     if (numbers != null) {
@@ -123,6 +143,8 @@ class _$_Numbers implements _Numbers {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Numbers value) numbers,
+    required TResult Function(_Classic value) classic,
+    required TResult Function(_Emoji value) emoji,
   }) {
     return numbers(this);
   }
@@ -131,6 +153,8 @@ class _$_Numbers implements _Numbers {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Numbers value)? numbers,
+    TResult Function(_Classic value)? classic,
+    TResult Function(_Emoji value)? emoji,
     required TResult orElse(),
   }) {
     if (numbers != null) {
@@ -142,4 +166,178 @@ class _$_Numbers implements _Numbers {
 
 abstract class _Numbers implements ThemeType {
   const factory _Numbers() = _$_Numbers;
+}
+
+/// @nodoc
+abstract class _$ClassicCopyWith<$Res> {
+  factory _$ClassicCopyWith(_Classic value, $Res Function(_Classic) then) =
+      __$ClassicCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$ClassicCopyWithImpl<$Res> extends _$ThemeTypeCopyWithImpl<$Res>
+    implements _$ClassicCopyWith<$Res> {
+  __$ClassicCopyWithImpl(_Classic _value, $Res Function(_Classic) _then)
+      : super(_value, (v) => _then(v as _Classic));
+
+  @override
+  _Classic get _value => super._value as _Classic;
+}
+
+/// @nodoc
+
+class _$_Classic implements _Classic {
+  const _$_Classic();
+
+  @override
+  String toString() {
+    return 'ThemeType.classic()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _Classic);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() numbers,
+    required TResult Function() classic,
+    required TResult Function() emoji,
+  }) {
+    return classic();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? numbers,
+    TResult Function()? classic,
+    TResult Function()? emoji,
+    required TResult orElse(),
+  }) {
+    if (classic != null) {
+      return classic();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Numbers value) numbers,
+    required TResult Function(_Classic value) classic,
+    required TResult Function(_Emoji value) emoji,
+  }) {
+    return classic(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Numbers value)? numbers,
+    TResult Function(_Classic value)? classic,
+    TResult Function(_Emoji value)? emoji,
+    required TResult orElse(),
+  }) {
+    if (classic != null) {
+      return classic(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Classic implements ThemeType {
+  const factory _Classic() = _$_Classic;
+}
+
+/// @nodoc
+abstract class _$EmojiCopyWith<$Res> {
+  factory _$EmojiCopyWith(_Emoji value, $Res Function(_Emoji) then) =
+      __$EmojiCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$EmojiCopyWithImpl<$Res> extends _$ThemeTypeCopyWithImpl<$Res>
+    implements _$EmojiCopyWith<$Res> {
+  __$EmojiCopyWithImpl(_Emoji _value, $Res Function(_Emoji) _then)
+      : super(_value, (v) => _then(v as _Emoji));
+
+  @override
+  _Emoji get _value => super._value as _Emoji;
+}
+
+/// @nodoc
+
+class _$_Emoji implements _Emoji {
+  const _$_Emoji();
+
+  @override
+  String toString() {
+    return 'ThemeType.emoji()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _Emoji);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() numbers,
+    required TResult Function() classic,
+    required TResult Function() emoji,
+  }) {
+    return emoji();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? numbers,
+    TResult Function()? classic,
+    TResult Function()? emoji,
+    required TResult orElse(),
+  }) {
+    if (emoji != null) {
+      return emoji();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Numbers value) numbers,
+    required TResult Function(_Classic value) classic,
+    required TResult Function(_Emoji value) emoji,
+  }) {
+    return emoji(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Numbers value)? numbers,
+    TResult Function(_Classic value)? classic,
+    TResult Function(_Emoji value)? emoji,
+    required TResult orElse(),
+  }) {
+    if (emoji != null) {
+      return emoji(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Emoji implements ThemeType {
+  const factory _Emoji() = _$_Emoji;
 }

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'local_db/theme_box.dart';
 import 'themes/app_theme_data.dart';
+import 'themes/classic_theme.dart';
+import 'themes/emoji_theme.dart';
 import 'themes/number_theme.dart';
 
 class AppTheme {
@@ -44,6 +46,8 @@ class AppTheme {
     final type = await _db.themeType();
     return type.when<AppThemeData>(
       numbers: () => NumberTheme(baseTheme: baseTheme),
+      classic: () => ClassicTheme(baseTheme: baseTheme),
+      emoji: () => EmojiTheme(baseTheme: baseTheme),
     );
   }
 }

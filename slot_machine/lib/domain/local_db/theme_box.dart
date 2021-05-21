@@ -10,6 +10,8 @@ part 'theme_box.freezed.dart';
 @freezed
 class ThemeType with _$ThemeType {
   const factory ThemeType.numbers() = _Numbers;
+  const factory ThemeType.classic() = _Classic;
+  const factory ThemeType.emoji() = _Emoji;
 }
 
 class ThemeBox {
@@ -51,12 +53,18 @@ class ThemeBox {
     tinToTout: (s) {
       switch (s) {
         case 'numbers':
-        default:
           return const ThemeType.numbers();
+        case 'emoji':
+          return const ThemeType.emoji();
+        case 'classics':
+        default:
+          return const ThemeType.classic();
       }
     },
     toutToTin: (t) => t.when(
       numbers: () => 'numbers',
+      classic: () => 'classic',
+      emoji: () => 'emoji',
     ),
   );
 

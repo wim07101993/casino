@@ -10,7 +10,7 @@ class ConvertingBoxEntry<TIn, TOut> implements BoxEntry<TOut> {
     required TOut defaultValue,
     required this.toutToTin,
     required this.tinToTout,
-    int saveDelay = 1000,
+    int saveDelay = 0,
   }) : _baseEntry = BoxEntry(
           box: box,
           key: key,

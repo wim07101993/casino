@@ -90,6 +90,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       state.apiUrl.text = await casinoApiUri().then((e) => e.toString());
       state.primaryColor.value = await primaryColor();
       state.isDarkModeEnabled.value = await isDarkModeEnabled();
+      state.selectedThemeType.value = await selectedThemeType();
     } catch (e, stackTrace) {
       logger.e('Error on load', e, stackTrace);
       yield state.copyWith(error: e);
