@@ -5,11 +5,13 @@ import 'casino_api.dart';
 class SlotMachineChanges {
   SlotMachineChanges({
     required this.casinoApi,
+    required this.interval,
   }) {
     _listenToApi();
   }
 
   final CasinoApi casinoApi;
+  final int interval;
   final StreamController<List<SlotMachine>> _streamController =
       StreamController.broadcast();
 
@@ -27,13 +29,10 @@ class SlotMachineChanges {
   }
 
   Future<void> _listenToApi() async {
-    final newList = await casinoApi.listSlotMachines();
     // ignore: literal_only_boolean_expressions
     while (true) {
       try {
-        // final newList = await casinoApi
-        //     .listSlotMachines()
-        //     .then((items) => items.map(converter.convert).toList());
+        final newList = await casinoApi.listSlotMachines();
 
         if (_slotMachines == null ||
             newList.length != _slotMachines!.length ||
@@ -44,7 +43,7 @@ class SlotMachineChanges {
       } catch (e, stackTrace) {
         _streamController.addError(e, stackTrace);
       }
-      await Future.delayed(const Duration(milliseconds: 1000));
+      await Future.delayed(Duration(milliseconds: interval));
     }
   }
 }

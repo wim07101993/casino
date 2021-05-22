@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' show Random;
 
 import 'package:bloc/bloc.dart';
 import 'package:casino_shared/casino_shared.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
+import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -99,6 +101,23 @@ class AppLoadingBloc extends Bloc<AppLoadingEvent, AppLoadingState> {
 }
 
 extension _GetItExtensions on GetIt {
+  void registerCasinoShared() {
+    di.registerLazySingleton(() => Client());
+    di.registerLazySingleton(
+      () => CasinoApi(http: di(), config: di(), logger: di()),
+    );
+    di.registerLazySingleton(
+        () => Logger(printer: PrettyPrinter(methodCount: 6)));
+    di.registerLazySingleton(() => NameGenerator(random: di()));
+    di.registerLazySingleton(() => Random());
+    di.registerLazySingleton(
+      () => SlotMachineChanges(
+        casinoApi: di(),
+        interval: 5000,
+      ),
+    );
+  }
+
   Future<void> registerDb() async {
     Hive.init(await getApplicationDocumentsDirectory().then((e) => e.path));
     di.registerSingleton<HiveInterface>(Hive);
