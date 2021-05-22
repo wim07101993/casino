@@ -93,9 +93,6 @@ class _SlotMachineControlsState extends State<SlotMachineControls> {
         child: TextField(
           controller: tokenCountController,
           textAlign: TextAlign.center,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-          ),
         ),
       ),
     );

@@ -76,7 +76,7 @@ class CasinoApi {
     required this.http,
     required this.config,
     required this.logger,
-    this.debug = false,
+    this.debug = true,
   });
 
   final Client http;
@@ -88,6 +88,7 @@ class CasinoApi {
     return config.url.addPathSegments(['casino']);
   }
 
+  /// POST: casino/slot-machines
   Future<String> addSlotMachine(String name) async {
     logger.v('add slot machine: $name');
     final response = await http.post(
@@ -98,6 +99,7 @@ class CasinoApi {
     return response.body;
   }
 
+  /// GET: casino/slot-machines
   Future<List<SlotMachine>> listSlotMachines() async {
     // commented out to keep log clear
     // logger.v('list slot-machines');
@@ -113,50 +115,55 @@ class CasinoApi {
         .toList();
   }
 
+  /// GET: casino/slot-machines/by-name/{name}
   Future<SlotMachine> getSlotMachineByName(String name) async {
     logger.v('get slot-machine by name: $name');
-    final response = await http.get(url.addPathSegments(
-      ['slot-machines', 'by-name', name],
-    ));
+    final response = await http.get(
+      url.addPathSegments(['slot-machines', 'by-name', name]),
+    );
     await validateResponse(response);
     final json = jsonDecode(response.body) as Map<String, dynamic>;
     return _convertDTOTOSlotMachine(SlotMachineDTO.fromJson(json));
   }
 
+  /// GET: casino/slot-machines/{id}/tokens
   Future<int> getTokens(String id) async {
     logger.v('get tokens: $id');
-    final response = await http.get(url.addPathSegments(
-      ['slot-machines', id, 'tokens'],
-    ));
+    final response = await http.get(
+      url.addPathSegments(['slot-machines', id, 'tokens']),
+    );
     await validateResponse(response);
     return int.parse(response.body);
   }
 
+  /// PUT: casino/slot-machines/{id}/tokens
   Future<void> setTokens(String id, int count) async {
     assert(count >= 0);
     logger.v('set tokens: $id $count');
-    final response = await http.put(url.replace(
-      pathSegments: [...url.pathSegments, 'slot-machines', id, 'tokens'],
-      queryParameters: {'count': count.toString()},
-    ));
+    final response = await http.put(
+      url.addPathSegments(['slot-machines', id, 'tokens']),
+      body: jsonEncode(count),
+    );
     await validateResponse(response);
   }
 
+  /// PUT: casino/slot-machines/{id}/name
   Future<void> setName(String id, String name) async {
     assert(name.isNotEmpty);
     logger.v('set name: $id $name');
-    final response = await http.put(url.replace(
-      pathSegments: [...url.pathSegments, 'slot-machines', id, 'name'],
-      queryParameters: {'name': name},
-    ));
+    final response = await http.put(
+      url.addPathSegments(['slot-machines', id, 'name']),
+      body: jsonEncode(name),
+    );
     await validateResponse(response);
   }
 
+  /// DELETE: casino/slot-machines/{id}
   Future<void> removeSlotMachine(String id) async {
     logger.v('remove slot-machine: $id');
-    final response = await http.delete(url.addPathSegments(
-      ['slot-machines', id],
-    ));
+    final response = await http.delete(
+      url.addPathSegments(['slot-machines', id]),
+    );
     await validateResponse(response);
   }
 
