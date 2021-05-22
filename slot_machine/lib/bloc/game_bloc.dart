@@ -87,8 +87,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           state.symbolControllers.map((e) => e.value).toSet().length;
       switch (distinctCount) {
         case 1:
-          // TODO show jackpot
-          await _tokenCount.set(newTokenCount + 7);
+          await _tokenCount.set(newTokenCount + 77);
           break;
         case 2:
           await _tokenCount.set(newTokenCount + 2);

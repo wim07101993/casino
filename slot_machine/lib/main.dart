@@ -9,9 +9,7 @@ import 'home_screen.dart';
 final GetIt di = GetIt.instance;
 
 Future<void> main() async {
-  // always call this method if the main method is async
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(const AppLoader());
 }
 
