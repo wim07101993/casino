@@ -36,9 +36,7 @@ func main() {
 	}
 
 	r := mux.NewRouter()
-
-	ctrl := NewController(db, logClient)
-	ctrl.RegisterOn(r)
+	RegisterRoutes(r)
 
 	logger := logClient.Logger("main")
 	logger.StandardLogger(logging.Info).Println("Listening on :" + port)

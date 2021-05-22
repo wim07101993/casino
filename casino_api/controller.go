@@ -4,6 +4,7 @@ import (
 	"cloud.google.com/go/logging"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"golang.org/x/tools/go/ssa/interp/testdata/src/errors"
 	"log"
 	"net/http"
 	"strconv"
@@ -11,157 +12,220 @@ import (
 
 const idParam = "id"
 const nameParam = "name"
-const countParam = "count"
 
-type Controller struct {
-	db CasinoDb
-	lc *logging.Client
+func RegisterRoutes(r *mux.Router) {
+	r.HandleFunc("/db/slot-machines", AddSlotMachineHandler{}.Handle).Methods("POST")
+	r.HandleFunc("/db/slot-machines", ListSlotMachines).Methods("GET")
+	r.HandleFunc("/db/slot-machines/by-name/{"+nameParam+"}", GetByName).Methods("GET")
+	r.HandleFunc("/db/slot-machines/{"+idParam+"}/tokens", GetTokenCount).Methods("GET")
+	r.HandleFunc("/db/slot-machines/{"+idParam+"}/tokens", SetTokenCountHandler{}.Handle).Methods("PUT")
+	r.HandleFunc("/db/slot-machines/{"+idParam+"}/name", SetNameHandler{}.Handler).Methods("PUT")
+	r.HandleFunc("/db/slot-machines/{"+idParam+"}", RemoveSlotMachine).Methods("DELETE")
 }
 
-func NewController(db CasinoDb, lc *logging.Client) *Controller {
-	return &Controller{
-		db: db,
-		lc: lc,
-	}
-}
-
-func (c *Controller) RegisterOn(r *mux.Router) {
-	r.HandleFunc("/db/slot-machines", c.AddSlotMachine).Methods("POST")
-	r.HandleFunc("/db/slot-machines", c.ListSlotMachines).Methods("GET")
-	r.HandleFunc("/db/slot-machines/by-name/{"+nameParam+"}", c.GetByName).Methods("GET")
-	r.HandleFunc("/db/slot-machines/{"+idParam+"}/tokens", c.GetTokenCount).Methods("GET")
-	r.HandleFunc("/db/slot-machines/{"+idParam+"}/tokens", c.SetTokenCount).Methods("PUT")
-	r.HandleFunc("/db/slot-machines/{"+idParam+"}/name", c.SetName).Methods("PUT")
-	r.HandleFunc("/db/slot-machines/{"+idParam+"}", c.RemoveSlotMachine).Methods("DELETE")
-}
-
-func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request) {
-	m := &SlotMachine{}
-	err := json.NewDecoder(r.Body).Decode(m)
-	if c.writeBadRequestError(w, err, "invalid json") {
+func ListSlotMachines(w http.ResponseWriter, r *http.Request) {
+	controllerLog(logging.Info).Println("Request: get all slot-machines")
+	ms, err := db.ListSlotMachines(r.Context())
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	if m.Name == "" {
-		_, _ = w.Write([]byte("Please provide a name."))
+	bs, err := json.Marshal(ms)
+	if err != nil {
+		controllerLog(logging.Error).Println("ListSlotMachines: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	_, _ = w.Write(bs)
+}
+
+func GetByName(w http.ResponseWriter, r *http.Request) {
+	controllerLog(logging.Info).Println("Request: add slot-machine")
+	name := mux.Vars(r)[nameParam]
+	if name == "" {
 		w.WriteHeader(http.StatusBadRequest)
+		_, _ = w.Write([]byte("please provide the name of the slot-machine to get"))
+	}
+
+	m, err := db.GetByName(r.Context(), name)
+	if err != nil {
+		errMessage := err.Error()
+		if errMessage == NotFoundError {
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = w.Write([]byte("slot-machine was not found"))
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte(err.Error()))
+		}
 		return
 	}
-	if m.Tokens < 0 {
-		_, _ = w.Write([]byte("Please provide a token count greater or equal to 0."))
+
+	bs, err := json.Marshal(m)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		_, _ = w.Write([]byte(err.Error()))
+		return
+	}
+	_, _ = w.Write(bs)
+}
+
+func GetTokenCount(w http.ResponseWriter, r *http.Request) {
+	controllerLog(logging.Info).Println("Request: get token count")
+	id := mux.Vars(r)[idParam]
+	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)
+		_, _ = w.Write([]byte("please provide the id of the slot-machine to get the token count of"))
+	}
+
+	amount, err := db.GetTokenCount(r.Context(), id)
+	if err != nil {
+		errMessage := err.Error()
+		if errMessage == NotFoundError {
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = w.Write([]byte("slot-machine was not found"))
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte(err.Error()))
+		}
 		return
 	}
-	c.logger(logging.Info).Printf("Request: add slot-machine with name: %s", m.Name)
-	id, err := c.db.AddSlotMachine(r.Context(), m)
-	if c.writeError(w, err) {
+
+	_, _ = w.Write([]byte(strconv.Itoa(amount)))
+}
+
+func RemoveSlotMachine(w http.ResponseWriter, r *http.Request) {
+	controllerLog(logging.Info).Println("Request: delete slot-machine")
+	id := mux.Vars(r)[idParam]
+	if id == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		_, _ = w.Write([]byte("please provide the id of the slot-machine to get the token count of"))
+	}
+
+	err := db.DeleteSlotMachine(r.Context(), id)
+	if err != nil {
+		errMessage := err.Error()
+		if errMessage == NotFoundError {
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = w.Write([]byte("slot-machine was not found"))
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte(err.Error()))
+		}
 		return
 	}
+}
+
+func controllerLog(s logging.Severity) *log.Logger {
+	return logClient.Logger("controller").StandardLogger(s)
+}
+
+type AddSlotMachineHandler struct{}
+
+func (h AddSlotMachineHandler) Handle(w http.ResponseWriter, r *http.Request) {
+	controllerLog(logging.Info).Println("Request: add slot-machine")
+	m, err := h.getAndValidateInput(r)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_, _ = w.Write([]byte(err.Error()))
+		return
+	}
+
+	id, err := db.AddSlotMachine(r.Context(), m)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	w.WriteHeader(http.StatusCreated)
 	_, _ = w.Write([]byte(id))
 }
 
-func (c *Controller) ListSlotMachines(w http.ResponseWriter, r *http.Request) {
-	c.logger(logging.Info).Println("Request: get all slot-machines")
-	ms, err := c.db.ListSlotMachines(r.Context())
-	if c.writeError(w, err) {
-		return
+func (_ AddSlotMachineHandler) getAndValidateInput(r *http.Request) (m *SlotMachine, err error) {
+	m = &SlotMachine{}
+	err = json.NewDecoder(r.Body).Decode(m)
+	if err != nil {
+		return nil, errors.New("invalid json: " + err.Error())
 	}
-	bs, err := json.Marshal(ms)
-	if c.writeError(w, err) {
-		return
+	if m.Name == "" {
+		return nil, errors.New("the name cannot be empty")
 	}
-	_, _ = w.Write(bs)
+	if m.Tokens < 0 {
+		return nil, errors.New("the token count must be a positive integer")
+	}
+	return m, nil
 }
 
-func (c *Controller) GetByName(w http.ResponseWriter, r *http.Request) {
-	name := mux.Vars(r)[nameParam]
-	c.logger(logging.Info).Printf("Request: get name of item with name %s", name)
-	m, err := c.db.GetByName(r.Context(), name)
-	if c.writeError(w, err) {
-		return
+type SetTokenCountHandler struct{}
+
+func (h SetTokenCountHandler) Handle(w http.ResponseWriter, r *http.Request) {
+	controllerLog(logging.Info).Println("Request: set token count")
+	id, amount, err := h.getAndValidateInput(r)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_, _ = w.Write([]byte(err.Error()))
 	}
-	bs, err := json.Marshal(m)
-	if c.writeError(w, err) {
-		return
+	err = db.SetTokenCount(r.Context(), id, amount)
+	if err != nil {
+		errMessage := err.Error()
+		if errMessage == NotFoundError {
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = w.Write([]byte("slot-machine was not found"))
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte(err.Error()))
+		}
 	}
-	_, _ = w.Write(bs)
 }
 
-func (c *Controller) GetTokenCount(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)[idParam]
-	c.logger(logging.Info).Printf("Request: get token count of %s", id)
-	amount, err := c.db.GetTokenCount(r.Context(), id)
-	if c.writeError(w, err) {
-		return
+func (_ SetTokenCountHandler) getAndValidateInput(r *http.Request) (id string, amount int, err error) {
+	id = mux.Vars(r)[idParam]
+	if id == "" {
+		return "", 0, errors.New("please provide an id")
 	}
-	_, _ = w.Write([]byte(strconv.Itoa(amount)))
-}
-
-func (c *Controller) SetTokenCount(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)[idParam]
-	amount, err := strconv.Atoi(r.URL.Query().Get(countParam))
-	if c.writeBadRequestError(w, err, "Please provide an amount to set the token count to.") {
-		return
+	err = json.NewDecoder(r.Body).Decode(&amount)
+	if err != nil {
+		return "", 0, errors.New("please provide a positive integer amount to set the token count to")
 	}
 	if amount < 0 {
-		_, _ = w.Write([]byte("Please provide an amount which is greater or equal to 0."))
-		w.WriteHeader(http.StatusBadRequest)
-		return
+		return "", 0, errors.New("the amount must be a positive number")
 	}
-	c.logger(logging.Info).Printf("Request: set token count of %s to %d", id, amount)
-	err = c.db.SetTokenCount(r.Context(), id, amount)
-	c.writeError(w, err)
+	return id, amount, nil
 }
 
-func (c *Controller) SetName(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)[idParam]
-	name := r.URL.Query().Get(nameParam)
+type SetNameHandler struct{}
+
+func (h SetNameHandler) Handler(w http.ResponseWriter, r *http.Request) {
+	controllerLog(logging.Info).Printf("Request: set name")
+	id, name, err := h.getAndValidateInput(r)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_, _ = w.Write([]byte(err.Error()))
+		return
+	}
+	err = db.SetName(r.Context(), id, name)
+	if err != nil {
+		errMessage := err.Error()
+		if errMessage == NotFoundError {
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = w.Write([]byte("slot-machine was not found"))
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte(err.Error()))
+		}
+	}
+}
+
+func (_ SetNameHandler) getAndValidateInput(r *http.Request) (id string, name string, err error) {
+	id = mux.Vars(r)[idParam]
+	if id == "" {
+		return "", "", errors.New("please provide the id of the slot-machine to set the name of")
+	}
+	err = json.NewDecoder(r.Body).Decode(&name)
+	if err != nil {
+		return "", "", errors.New("please provide a name.")
+	}
 	if name == "" {
-		_, _ = w.Write([]byte("Please provide a name to set."))
-		w.WriteHeader(http.StatusBadRequest)
-		return
+		return "", "", errors.New("the name cannot be empty")
 	}
-	c.logger(logging.Info).Printf("Request: set name of %s to %s", id, name)
-	err := c.db.SetName(r.Context(), id, name)
-	c.writeError(w, err)
-}
-
-func (c *Controller) RemoveSlotMachine(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)[idParam]
-	c.logger(logging.Info).Printf("Request: delete slot-machine with id %s", id)
-	err := c.db.DeleteSlotMachine(r.Context(), id)
-	c.writeError(w, err)
-}
-
-func (c *Controller) writeError(w http.ResponseWriter, err error) bool {
-	if err == nil {
-		return false
-	}
-	message := err.Error()
-	c.logger(logging.Error).Println(message)
-	switch err.(type) {
-	case NameNotFound, IdNotFoundError:
-		w.WriteHeader(http.StatusNotFound)
-	default:
-		w.WriteHeader(http.StatusInternalServerError)
-	}
-	if message != "" {
-		_, _ = w.Write([]byte(message))
-	}
-	return true
-}
-
-func (c *Controller) writeBadRequestError(w http.ResponseWriter, err error, message string) bool {
-	if err == nil {
-		return false
-	}
-	w.WriteHeader(http.StatusBadRequest)
-	if message != "" {
-		_, _ = w.Write([]byte(message))
-	}
-	return true
-}
-
-func (c *Controller) logger(s logging.Severity) *log.Logger {
-	return c.lc.Logger("controller").StandardLogger(s)
+	return id, name, nil
 }

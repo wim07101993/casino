@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"github.com/google/uuid"
 	"sort"
 	"sync"
@@ -57,7 +58,7 @@ func (db *MemoryDb) GetByName(_ context.Context, name string) (*SlotMachine, err
 			return &*m, nil
 		}
 	}
-	return nil, NameNotFound{"SlotMachine", name}
+	return nil, errors.New(NotFoundError)
 }
 
 func (db *MemoryDb) GetTokenCount(_ context.Context, id string) (int, error) {
@@ -66,7 +67,7 @@ func (db *MemoryDb) GetTokenCount(_ context.Context, id string) (int, error) {
 	if m, ok := db.slotMachines[id]; ok {
 		return m.Tokens, nil
 	}
-	return 0, IdNotFoundError{"SlotMachine", id}
+	return 0, errors.New(NotFoundError)
 }
 
 func (db *MemoryDb) SetTokenCount(_ context.Context, id string, count int) error {
@@ -79,7 +80,7 @@ func (db *MemoryDb) SetTokenCount(_ context.Context, id string, count int) error
 		}
 		return nil
 	}
-	return IdNotFoundError{"SlotMachine", id}
+	return errors.New(NotFoundError)
 }
 
 func (db *MemoryDb) SetName(_ context.Context, id string, name string) error {
@@ -92,7 +93,7 @@ func (db *MemoryDb) SetName(_ context.Context, id string, name string) error {
 		}
 		return nil
 	}
-	return IdNotFoundError{"SlotMachine", id}
+	return errors.New(NotFoundError)
 }
 
 func (db *MemoryDb) DeleteSlotMachine(_ context.Context, id string) error {

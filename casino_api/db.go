@@ -2,8 +2,9 @@ package main
 
 import (
 	"context"
-	"fmt"
 )
+
+const NotFoundError = "item was not found"
 
 type CasinoDb interface {
 	AddSlotMachine(ctx context.Context, slotMachine *SlotMachine) (id string, err error)
@@ -14,22 +15,4 @@ type CasinoDb interface {
 	SetName(ctx context.Context, id string, name string) error
 	DeleteSlotMachine(ctx context.Context, id string) error
 	ListenToSlotMachineChanges(f func(machine *SlotMachine)) (cancel func())
-}
-
-type IdNotFoundError struct {
-	Type string
-	ID   string
-}
-
-func (e IdNotFoundError) Error() string {
-	return fmt.Sprintf("%s with id %s was not found", e.Type, e.ID)
-}
-
-type NameNotFound struct {
-	Type string
-	Name string
-}
-
-func (e NameNotFound) Error() string {
-	return fmt.Sprintf("%s with name %s was not found", e.Type, e.Name)
 }
