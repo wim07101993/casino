@@ -123,7 +123,7 @@ class Number extends StatelessWidget {
         value.toString(),
         style: GoogleFonts.goblinOneTextTheme()
             .headline1!
-            .copyWith(color: theme.primaryColor),
+            .copyWith(color: getColor(theme.primaryColor)),
       ),
     );
   }
