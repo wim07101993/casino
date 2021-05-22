@@ -73,16 +73,22 @@ class ThemeTypeBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: ShapeDecoration(
-        shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(4)),
-          side: BorderSide(color: isSelected ? theme.accentColor : Colors.grey),
+    return Material(
+      elevation: 2,
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
+            side: BorderSide(
+              color: isSelected ? theme.accentColor : Colors.grey,
+              width: 4,
+            ),
+          ),
         ),
+        child: child,
       ),
-      child: child,
     );
   }
 }

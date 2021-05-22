@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:math' show Random;
 
+import 'package:Slot_machine/domain/secondary_color.dart';
 import 'package:bloc/bloc.dart';
 import 'package:casino_shared/casino_shared.dart';
 import 'package:flutter/material.dart';
@@ -113,7 +114,9 @@ extension _GetItExtensions on GetIt {
     di.registerLazySingleton(
       () => SlotMachineChanges(
         casinoApi: di(),
-        interval: 5000,
+        // interval: 5000,
+        // TODO
+        interval: 500000,
       ),
     );
   }
@@ -146,6 +149,7 @@ extension _GetItExtensions on GetIt {
       ),
     );
     registerLazySingleton(() => PrimaryColor(db: call()));
+    registerLazySingleton(() => SecondaryColor(db: call()));
     registerLazySingleton(() => SelectedThemeType(db: call()));
     registerLazySingleton(
       () => TokenCount(
@@ -174,6 +178,7 @@ extension _GetItExtensions on GetIt {
         name: call(),
         logger: call(),
         primaryColor: call(),
+        secondaryColor: call(),
         isDarkModeEnabled: call(),
         selectedThemeType: call(),
       ),

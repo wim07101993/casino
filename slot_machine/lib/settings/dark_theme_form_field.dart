@@ -12,10 +12,11 @@ class DarkThemeFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text('Enable dark mode'),
+        Text('Dark mode', style: theme.textTheme.subtitle1),
         SwitchFormField(controller: controller),
       ],
     );

@@ -257,6 +257,7 @@ class _$SettingsStateTearOff {
       required TextEditingController name,
       required TextEditingController symbolCount,
       required ColorPickerController primaryColor,
+      required ColorPickerController secondaryColor,
       required SwitchController isDarkModeEnabled,
       required ThemeSelectorController selectedThemeType,
       bool hasSaved = false,
@@ -266,6 +267,7 @@ class _$SettingsStateTearOff {
       name: name,
       symbolCount: symbolCount,
       primaryColor: primaryColor,
+      secondaryColor: secondaryColor,
       isDarkModeEnabled: isDarkModeEnabled,
       selectedThemeType: selectedThemeType,
       hasSaved: hasSaved,
@@ -283,6 +285,8 @@ mixin _$SettingsState {
   TextEditingController get name => throw _privateConstructorUsedError;
   TextEditingController get symbolCount => throw _privateConstructorUsedError;
   ColorPickerController get primaryColor => throw _privateConstructorUsedError;
+  ColorPickerController get secondaryColor =>
+      throw _privateConstructorUsedError;
   SwitchController get isDarkModeEnabled => throw _privateConstructorUsedError;
   ThemeSelectorController get selectedThemeType =>
       throw _privateConstructorUsedError;
@@ -304,6 +308,7 @@ abstract class $SettingsStateCopyWith<$Res> {
       TextEditingController name,
       TextEditingController symbolCount,
       ColorPickerController primaryColor,
+      ColorPickerController secondaryColor,
       SwitchController isDarkModeEnabled,
       ThemeSelectorController selectedThemeType,
       bool hasSaved,
@@ -325,6 +330,7 @@ class _$SettingsStateCopyWithImpl<$Res>
     Object? name = freezed,
     Object? symbolCount = freezed,
     Object? primaryColor = freezed,
+    Object? secondaryColor = freezed,
     Object? isDarkModeEnabled = freezed,
     Object? selectedThemeType = freezed,
     Object? hasSaved = freezed,
@@ -346,6 +352,10 @@ class _$SettingsStateCopyWithImpl<$Res>
       primaryColor: primaryColor == freezed
           ? _value.primaryColor
           : primaryColor // ignore: cast_nullable_to_non_nullable
+              as ColorPickerController,
+      secondaryColor: secondaryColor == freezed
+          ? _value.secondaryColor
+          : secondaryColor // ignore: cast_nullable_to_non_nullable
               as ColorPickerController,
       isDarkModeEnabled: isDarkModeEnabled == freezed
           ? _value.isDarkModeEnabled
@@ -376,6 +386,7 @@ abstract class _$SettingsStateCopyWith<$Res>
       TextEditingController name,
       TextEditingController symbolCount,
       ColorPickerController primaryColor,
+      ColorPickerController secondaryColor,
       SwitchController isDarkModeEnabled,
       ThemeSelectorController selectedThemeType,
       bool hasSaved,
@@ -399,6 +410,7 @@ class __$SettingsStateCopyWithImpl<$Res>
     Object? name = freezed,
     Object? symbolCount = freezed,
     Object? primaryColor = freezed,
+    Object? secondaryColor = freezed,
     Object? isDarkModeEnabled = freezed,
     Object? selectedThemeType = freezed,
     Object? hasSaved = freezed,
@@ -420,6 +432,10 @@ class __$SettingsStateCopyWithImpl<$Res>
       primaryColor: primaryColor == freezed
           ? _value.primaryColor
           : primaryColor // ignore: cast_nullable_to_non_nullable
+              as ColorPickerController,
+      secondaryColor: secondaryColor == freezed
+          ? _value.secondaryColor
+          : secondaryColor // ignore: cast_nullable_to_non_nullable
               as ColorPickerController,
       isDarkModeEnabled: isDarkModeEnabled == freezed
           ? _value.isDarkModeEnabled
@@ -446,6 +462,7 @@ class _$_SettingsState implements _SettingsState {
       required this.name,
       required this.symbolCount,
       required this.primaryColor,
+      required this.secondaryColor,
       required this.isDarkModeEnabled,
       required this.selectedThemeType,
       this.hasSaved = false,
@@ -460,6 +477,8 @@ class _$_SettingsState implements _SettingsState {
   @override
   final ColorPickerController primaryColor;
   @override
+  final ColorPickerController secondaryColor;
+  @override
   final SwitchController isDarkModeEnabled;
   @override
   final ThemeSelectorController selectedThemeType;
@@ -471,7 +490,7 @@ class _$_SettingsState implements _SettingsState {
 
   @override
   String toString() {
-    return 'SettingsState(apiUrl: $apiUrl, name: $name, symbolCount: $symbolCount, primaryColor: $primaryColor, isDarkModeEnabled: $isDarkModeEnabled, selectedThemeType: $selectedThemeType, hasSaved: $hasSaved, error: $error)';
+    return 'SettingsState(apiUrl: $apiUrl, name: $name, symbolCount: $symbolCount, primaryColor: $primaryColor, secondaryColor: $secondaryColor, isDarkModeEnabled: $isDarkModeEnabled, selectedThemeType: $selectedThemeType, hasSaved: $hasSaved, error: $error)';
   }
 
   @override
@@ -488,6 +507,9 @@ class _$_SettingsState implements _SettingsState {
             (identical(other.primaryColor, primaryColor) ||
                 const DeepCollectionEquality()
                     .equals(other.primaryColor, primaryColor)) &&
+            (identical(other.secondaryColor, secondaryColor) ||
+                const DeepCollectionEquality()
+                    .equals(other.secondaryColor, secondaryColor)) &&
             (identical(other.isDarkModeEnabled, isDarkModeEnabled) ||
                 const DeepCollectionEquality()
                     .equals(other.isDarkModeEnabled, isDarkModeEnabled)) &&
@@ -508,6 +530,7 @@ class _$_SettingsState implements _SettingsState {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(symbolCount) ^
       const DeepCollectionEquality().hash(primaryColor) ^
+      const DeepCollectionEquality().hash(secondaryColor) ^
       const DeepCollectionEquality().hash(isDarkModeEnabled) ^
       const DeepCollectionEquality().hash(selectedThemeType) ^
       const DeepCollectionEquality().hash(hasSaved) ^
@@ -525,6 +548,7 @@ abstract class _SettingsState implements SettingsState {
       required TextEditingController name,
       required TextEditingController symbolCount,
       required ColorPickerController primaryColor,
+      required ColorPickerController secondaryColor,
       required SwitchController isDarkModeEnabled,
       required ThemeSelectorController selectedThemeType,
       bool hasSaved,
@@ -538,6 +562,9 @@ abstract class _SettingsState implements SettingsState {
   TextEditingController get symbolCount => throw _privateConstructorUsedError;
   @override
   ColorPickerController get primaryColor => throw _privateConstructorUsedError;
+  @override
+  ColorPickerController get secondaryColor =>
+      throw _privateConstructorUsedError;
   @override
   SwitchController get isDarkModeEnabled => throw _privateConstructorUsedError;
   @override

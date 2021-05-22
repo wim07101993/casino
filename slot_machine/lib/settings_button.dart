@@ -9,12 +9,18 @@ class SettingsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.settings),
-      onPressed: () => _showSettings(context),
+      onPressed: () {
+        if (MediaQuery.of(context).size.width < 800) {
+          _showSettingsPage(context);
+        } else {
+          _showSettingsDialog(context);
+        }
+      },
     );
   }
 
-  Future<void> _showSettings(BuildContext context) async {
-    await showDialog(
+  Future<void> _showSettingsDialog(BuildContext context) {
+    return showDialog(
       context: context,
       builder: (context) {
         return SimpleDialog(
@@ -32,5 +38,21 @@ class SettingsButton extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> _showSettingsPage(BuildContext context) {
+    return Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            const SliverAppBar(
+              title: Text('Settings'),
+              floating: true,
+            ),
+            SliverList(delegate: SliverChildListDelegate([const Settings()]))
+          ],
+        ),
+      );
+    }));
   }
 }

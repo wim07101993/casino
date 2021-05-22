@@ -10,10 +10,11 @@ class NameFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Name'),
+        Text('Name', style: theme.textTheme.subtitle1),
         TextFormField(
           controller: controller,
           validator: _validate,

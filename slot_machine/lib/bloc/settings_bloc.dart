@@ -1,3 +1,4 @@
+import 'package:Slot_machine/domain/secondary_color.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -29,6 +30,7 @@ class SettingsState with _$SettingsState {
     required TextEditingController name,
     required TextEditingController symbolCount,
     required ColorPickerController primaryColor,
+    required ColorPickerController secondaryColor,
     required SwitchController isDarkModeEnabled,
     required ThemeSelectorController selectedThemeType,
     @Default(false) bool hasSaved,
@@ -41,6 +43,7 @@ class SettingsState with _$SettingsState {
       name: TextEditingController(),
       symbolCount: TextEditingController(),
       primaryColor: ColorPickerController(),
+      secondaryColor: ColorPickerController(),
       isDarkModeEnabled: SwitchController(),
       selectedThemeType: ThemeSelectorController(),
     );
@@ -53,6 +56,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     required this.casinoApiUri,
     required this.logger,
     required this.primaryColor,
+    required this.secondaryColor,
     required this.isDarkModeEnabled,
     required this.selectedThemeType,
   }) : super(SettingsState.initial()) {
@@ -66,6 +70,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final CasinoApiUri casinoApiUri;
   final Logger logger;
   final PrimaryColor primaryColor;
+  final SecondaryColor secondaryColor;
   final IsDarkModeEnabled isDarkModeEnabled;
   final SelectedThemeType selectedThemeType;
 
@@ -89,6 +94,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       state.name.text = await name();
       state.apiUrl.text = await casinoApiUri().then((e) => e.toString());
       state.primaryColor.value = await primaryColor();
+      state.secondaryColor.value = await secondaryColor();
       state.isDarkModeEnabled.value = await isDarkModeEnabled();
       state.selectedThemeType.value = await selectedThemeType();
     } catch (e, stackTrace) {
