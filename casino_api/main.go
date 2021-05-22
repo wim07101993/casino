@@ -37,7 +37,8 @@ func main() {
 
 	r := mux.NewRouter()
 	ServeRest(r)
-	ServeWebSocket(r)
+	// not available for google app engine, only google app engine flex
+	//ServeWebSocket(r)
 
 	logger := logClient.Logger("main")
 	logger.StandardLogger(logging.Info).Println("Listening on :" + port)
