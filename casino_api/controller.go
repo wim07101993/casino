@@ -3,8 +3,8 @@ package main
 import (
 	"cloud.google.com/go/logging"
 	"encoding/json"
+	"errors"
 	"github.com/gorilla/mux"
-	"golang.org/x/tools/go/ssa/interp/testdata/src/errors"
 	"log"
 	"net/http"
 	"strconv"
@@ -13,7 +13,7 @@ import (
 const idParam = "id"
 const nameParam = "name"
 
-func RegisterRoutes(r *mux.Router) {
+func ServeRest(r *mux.Router) {
 	r.HandleFunc("/casino/slot-machines", AddSlotMachineHandler{}.Handle).Methods("POST")
 	r.HandleFunc("/casino/slot-machines", ListSlotMachines).Methods("GET")
 	r.HandleFunc("/casino/slot-machines/by-name/{"+nameParam+"}", GetByName).Methods("GET")

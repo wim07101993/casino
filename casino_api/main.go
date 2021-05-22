@@ -36,7 +36,8 @@ func main() {
 	}
 
 	r := mux.NewRouter()
-	RegisterRoutes(r)
+	ServeRest(r)
+	ServeWebSocket(r)
 
 	logger := logClient.Logger("main")
 	logger.StandardLogger(logging.Info).Println("Listening on :" + port)

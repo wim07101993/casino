@@ -6,6 +6,13 @@ import (
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
+	"time"
+)
+
+const (
+	writeWait  = 10 * time.Second
+	pongWait   = 60 * time.Second
+	pingPeriod = (pongWait * 9) / 10
 )
 
 var (
@@ -15,62 +22,66 @@ var (
 	}
 )
 
-type WebSocketController struct {
-	db CasinoDb
-	lc *logging.Client
+func ServeWebSocket(r *mux.Router) {
+	r.HandleFunc("/db/slot-machines/changes", Changes)
 }
 
-func NewWebSocketController(db CasinoDb, lc *logging.Client) *WebSocketController {
-	upgrader.CheckOrigin = func(r *http.Request) bool {
-		return true
-	}
-	return &WebSocketController{
-		db: db,
-		lc: lc,
-	}
-}
-
-func (c *WebSocketController) RegisterOn(r *mux.Router) {
-	r.HandleFunc("/db/slot-machines/changes", func(w http.ResponseWriter, r *http.Request) {
-		c.logger(logging.Info).Println("request: listen to all changes")
-		c.changesOf(w, r, func(machine *SlotMachine) bool {
-			return true
-		})
-	})
-	r.HandleFunc("/db/slot-machines/{"+idParam+"}/changes", func(w http.ResponseWriter, r *http.Request) {
-		id := mux.Vars(r)[idParam]
-		c.logger(logging.Info).Printf("request: listen to changes of %s", id)
-		c.changesOf(w, r, func(machine *SlotMachine) bool {
-			return machine.ID == id
-		})
-	})
-}
-
-func (c *WebSocketController) changesOf(w http.ResponseWriter, r *http.Request, predicate func(*SlotMachine) bool) {
+func Changes(w http.ResponseWriter, r *http.Request) {
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		if _, ok := err.(websocket.HandshakeError); !ok {
-			c.logger(logging.Error).Println(err)
+			log.Println(err)
 		}
 		return
 	}
-	cancel := c.db.ListenToSlotMachineChanges(func(machine *SlotMachine) {
-		if predicate(machine) {
-			err := ws.WriteJSON(machine)
-			if err != nil {
-				c.logger(logging.Error).Println(err)
-			} else {
-				c.logger(logging.Info).Println("wrote changes")
-			}
-		}
-	})
-	ws.SetCloseHandler(func(code int, text string) error {
-		cancel()
-		c.logger(logging.Info).Println("closed socket")
-		return nil
-	})
+
+	go writer(ws)
+	reader(ws)
 }
 
-func (c *WebSocketController) logger(s logging.Severity) *log.Logger {
-	return c.lc.Logger("web-socket").StandardLogger(s)
+func writer(ws *websocket.Conn) {
+	pingTicker := time.NewTicker(pingPeriod)
+	cancel := db.ListenToSlotMachineChanges(func(m *SlotMachine) {
+		_ = ws.SetWriteDeadline(time.Now().Add(writeWait))
+		if err := ws.WriteJSON(m); err != nil {
+			webSocketLogger(logging.Error).Println(err)
+			return
+		}
+	})
+	defer func() {
+		cancel()
+		pingTicker.Stop()
+		_ = ws.Close()
+	}()
+	for {
+		select {
+		case <-pingTicker.C:
+			_ = ws.SetWriteDeadline(time.Now().Add(writeWait))
+			if err := ws.WriteMessage(websocket.PingMessage, []byte{}); err != nil {
+				return
+			}
+		}
+	}
+}
+
+func reader(ws *websocket.Conn) {
+	defer func() {
+		_ = ws.Close()
+	}()
+	ws.SetReadLimit(512)
+	_ = ws.SetReadDeadline(time.Now().Add(pongWait))
+	ws.SetPongHandler(func(string) error {
+		_ = ws.SetReadDeadline(time.Now().Add(pongWait))
+		return nil
+	})
+	for {
+		_, _, err := ws.ReadMessage()
+		if err != nil {
+			break
+		}
+	}
+}
+
+func webSocketLogger(s logging.Severity) *log.Logger {
+	return logClient.Logger("web-socket").StandardLogger(s)
 }
