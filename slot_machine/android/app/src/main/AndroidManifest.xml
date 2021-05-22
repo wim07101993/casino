@@ -2,7 +2,7 @@
     package="com.wimvanlaer.slot_machine">
    <application
         android:label="slot_machine"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
