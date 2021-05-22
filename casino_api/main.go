@@ -2,32 +2,45 @@ package main
 
 import (
 	_ "cloud.google.com/go/errorreporting"
+	"cloud.google.com/go/firestore"
 	"cloud.google.com/go/logging"
+	"context"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"os"
 )
 
-func main() {
-	i := Instantiator{}
+var projectID = os.Getenv("GOOGLE_CLOUD_PROJECT")
+var port = os.Getenv("PORT")
 
-	cl, err := i.Logger("casino_api", logging.Critical)
-	if err != nil {
-		log.Fatal(err)
+var logClient *logging.Client
+var firestoreClient *firestore.Client
+var db CasinoDb
+
+func main() {
+	if port == "" {
+		port = "8080"
 	}
-	il, err := i.Logger("casino_api", logging.Info)
-	if err != nil {
-		cl.Fatal(err)
+
+	var err error
+
+	if logClient, err = logging.NewClient(context.Background(), projectID); err != nil {
+		log.Fatalf("Could not instantiate log-client: %s", err)
+	}
+	if firestoreClient, err = firestore.NewClient(context.Background(), projectID); err != nil {
+		log.Fatalf("Could not instantiate firestore-client %s", err)
+	}
+	if db, err = NewFirestoreDb(firestoreClient, logClient); err != nil {
+		log.Fatalf("Could not instantiate db %s", err)
 	}
 
 	r := mux.NewRouter()
 
-	ctrl, err := i.Controller()
-	if err != nil {
-		cl.Fatal(err)
-	}
+	ctrl := NewController(db, logClient)
 	ctrl.RegisterOn(r)
-	env := i.Env()
-	il.Println("Listening on :" + env.port)
-	cl.Fatal(http.ListenAndServe(":"+env.port, r))
+
+	logger := logClient.Logger("main")
+	logger.StandardLogger(logging.Info).Println("Listening on :" + port)
+	logger.StandardLogger(logging.Critical).Print(http.ListenAndServe(":"+port, r))
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cloud.google.com/go/logging"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
@@ -13,27 +14,25 @@ const nameParam = "name"
 const countParam = "count"
 
 type Controller struct {
-	casino      *Casino
-	logger      *log.Logger
-	errorLogger *log.Logger
+	db CasinoDb
+	lc *logging.Client
 }
 
-func NewController(casino *Casino, logger *log.Logger, errorLogger *log.Logger) *Controller {
+func NewController(db CasinoDb, lc *logging.Client) *Controller {
 	return &Controller{
-		casino:      casino,
-		logger:      logger,
-		errorLogger: errorLogger,
+		db: db,
+		lc: lc,
 	}
 }
 
 func (c *Controller) RegisterOn(r *mux.Router) {
-	r.HandleFunc("/casino/slot-machines", c.AddSlotMachine).Methods("POST")
-	r.HandleFunc("/casino/slot-machines", c.ListSlotMachines).Methods("GET")
-	r.HandleFunc("/casino/slot-machines/by-name/{"+nameParam+"}", c.GetByName).Methods("GET")
-	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/tokens", c.GetTokenCount).Methods("GET")
-	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/tokens", c.SetTokenCount).Methods("PUT")
-	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/name", c.SetName).Methods("PUT")
-	r.HandleFunc("/casino/slot-machines/{"+idParam+"}", c.RemoveSlotMachine).Methods("DELETE")
+	r.HandleFunc("/db/slot-machines", c.AddSlotMachine).Methods("POST")
+	r.HandleFunc("/db/slot-machines", c.ListSlotMachines).Methods("GET")
+	r.HandleFunc("/db/slot-machines/by-name/{"+nameParam+"}", c.GetByName).Methods("GET")
+	r.HandleFunc("/db/slot-machines/{"+idParam+"}/tokens", c.GetTokenCount).Methods("GET")
+	r.HandleFunc("/db/slot-machines/{"+idParam+"}/tokens", c.SetTokenCount).Methods("PUT")
+	r.HandleFunc("/db/slot-machines/{"+idParam+"}/name", c.SetName).Methods("PUT")
+	r.HandleFunc("/db/slot-machines/{"+idParam+"}", c.RemoveSlotMachine).Methods("DELETE")
 }
 
 func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request) {
@@ -52,8 +51,8 @@ func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	c.logger.Printf("Request: add slot-machine with name: %s", m.Name)
-	id, err := c.casino.DB.AddSlotMachine(r.Context(), m)
+	c.logger(logging.Info).Printf("Request: add slot-machine with name: %s", m.Name)
+	id, err := c.db.AddSlotMachine(r.Context(), m)
 	if c.writeError(w, err) {
 		return
 	}
@@ -62,8 +61,8 @@ func (c *Controller) AddSlotMachine(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *Controller) ListSlotMachines(w http.ResponseWriter, r *http.Request) {
-	c.logger.Println("Request: get all slot-machines")
-	ms, err := c.casino.DB.ListSlotMachines(r.Context())
+	c.logger(logging.Info).Println("Request: get all slot-machines")
+	ms, err := c.db.ListSlotMachines(r.Context())
 	if c.writeError(w, err) {
 		return
 	}
@@ -76,8 +75,8 @@ func (c *Controller) ListSlotMachines(w http.ResponseWriter, r *http.Request) {
 
 func (c *Controller) GetByName(w http.ResponseWriter, r *http.Request) {
 	name := mux.Vars(r)[nameParam]
-	c.logger.Printf("Request: get name of item with name %s", name)
-	m, err := c.casino.DB.GetByName(r.Context(), name)
+	c.logger(logging.Info).Printf("Request: get name of item with name %s", name)
+	m, err := c.db.GetByName(r.Context(), name)
 	if c.writeError(w, err) {
 		return
 	}
@@ -90,8 +89,8 @@ func (c *Controller) GetByName(w http.ResponseWriter, r *http.Request) {
 
 func (c *Controller) GetTokenCount(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)[idParam]
-	c.logger.Printf("Request: get token count of %s", id)
-	amount, err := c.casino.DB.GetTokenCount(r.Context(), id)
+	c.logger(logging.Info).Printf("Request: get token count of %s", id)
+	amount, err := c.db.GetTokenCount(r.Context(), id)
 	if c.writeError(w, err) {
 		return
 	}
@@ -109,8 +108,8 @@ func (c *Controller) SetTokenCount(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	c.logger.Printf("Request: set token count of %s to %d", id, amount)
-	err = c.casino.DB.SetTokenCount(r.Context(), id, amount)
+	c.logger(logging.Info).Printf("Request: set token count of %s to %d", id, amount)
+	err = c.db.SetTokenCount(r.Context(), id, amount)
 	c.writeError(w, err)
 }
 
@@ -122,15 +121,15 @@ func (c *Controller) SetName(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	c.logger.Printf("Request: set name of %s to %s", id, name)
-	err := c.casino.DB.SetName(r.Context(), id, name)
+	c.logger(logging.Info).Printf("Request: set name of %s to %s", id, name)
+	err := c.db.SetName(r.Context(), id, name)
 	c.writeError(w, err)
 }
 
 func (c *Controller) RemoveSlotMachine(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)[idParam]
-	c.logger.Printf("Request: delete slot-machine with id %s", id)
-	err := c.casino.DB.DeleteSlotMachine(r.Context(), id)
+	c.logger(logging.Info).Printf("Request: delete slot-machine with id %s", id)
+	err := c.db.DeleteSlotMachine(r.Context(), id)
 	c.writeError(w, err)
 }
 
@@ -139,7 +138,7 @@ func (c *Controller) writeError(w http.ResponseWriter, err error) bool {
 		return false
 	}
 	message := err.Error()
-	c.errorLogger.Println(message)
+	c.logger(logging.Error).Println(message)
 	switch err.(type) {
 	case NameNotFound, IdNotFoundError:
 		w.WriteHeader(http.StatusNotFound)
@@ -161,4 +160,8 @@ func (c *Controller) writeBadRequestError(w http.ResponseWriter, err error, mess
 		_, _ = w.Write([]byte(message))
 	}
 	return true
+}
+
+func (c *Controller) logger(s logging.Severity) *log.Logger {
+	return c.lc.Logger("controller").StandardLogger(s)
 }

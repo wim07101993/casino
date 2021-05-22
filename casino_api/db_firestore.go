@@ -2,6 +2,7 @@ package main
 
 import (
 	"cloud.google.com/go/firestore"
+	"cloud.google.com/go/logging"
 	"context"
 	"fmt"
 	"google.golang.org/api/iterator"
@@ -13,37 +14,35 @@ import (
 const slotMachineCollection = "slotMachines"
 
 type FirestoreDb struct {
-	client             *firestore.Client
-	errorLogger        *log.Logger
-	logger             *log.Logger
+	fc                 *firestore.Client
+	lc                 *logging.Client
 	isConnectionClosed bool
 	listeners          []*func(*SlotMachine)
 }
 
-func NewFirestoreDb(client *firestore.Client, errorLogger *log.Logger, logger *log.Logger) (*FirestoreDb, error) {
+func NewFirestoreDb(fc *firestore.Client, lc *logging.Client) (*FirestoreDb, error) {
 	ctx := context.Background()
 	// Verify that we can communicate and authenticate with the Firestore
-	err := client.RunTransaction(ctx, func(ctx context.Context, t *firestore.Transaction) error {
+	err := fc.RunTransaction(ctx, func(ctx context.Context, t *firestore.Transaction) error {
 		return nil
 	})
 	if err != nil {
 		return nil, err
 	}
 	return &FirestoreDb{
-		client:      client,
-		errorLogger: errorLogger,
-		logger:      logger,
-		listeners:   []*func(*SlotMachine){},
+		fc:        fc,
+		lc:        lc,
+		listeners: []*func(*SlotMachine){},
 	}, nil
 }
 
 func (db *FirestoreDb) Close() error {
 	db.isConnectionClosed = true
-	return db.client.Close()
+	return db.fc.Close()
 }
 
 func (db *FirestoreDb) AddSlotMachine(ctx context.Context, slotMachine *SlotMachine) (id string, err error) {
-	ref := db.client.Collection(slotMachineCollection).NewDoc()
+	ref := db.fc.Collection(slotMachineCollection).NewDoc()
 	slotMachine.ID = ref.ID
 	if _, err := ref.Create(ctx, slotMachine); err != nil {
 		return "", fmt.Errorf("AddSlotMachine: %v", err)
@@ -53,8 +52,8 @@ func (db *FirestoreDb) AddSlotMachine(ctx context.Context, slotMachine *SlotMach
 
 func (db *FirestoreDb) ListSlotMachines(ctx context.Context) ([]*SlotMachine, error) {
 	machines := make([]*SlotMachine, 0)
-	iter := db.client.Collection(slotMachineCollection).Documents(ctx)
-	err := db.EncodeDocuments(iter, func(machine *SlotMachine) bool{
+	iter := db.fc.Collection(slotMachineCollection).Documents(ctx)
+	err := db.EncodeDocuments(iter, func(machine *SlotMachine) bool {
 		machines = append(machines, machine)
 		return false
 	})
@@ -62,7 +61,7 @@ func (db *FirestoreDb) ListSlotMachines(ctx context.Context) ([]*SlotMachine, er
 }
 
 func (db *FirestoreDb) GetByName(ctx context.Context, name string) (*SlotMachine, error) {
-	iter := db.client.Collection(slotMachineCollection).Where("Name", "==", name).Documents(ctx)
+	iter := db.fc.Collection(slotMachineCollection).Where("Name", "==", name).Documents(ctx)
 	var m *SlotMachine
 	err := db.EncodeDocuments(iter, func(machine *SlotMachine) bool {
 		m = machine
@@ -77,7 +76,7 @@ func (db *FirestoreDb) GetByName(ctx context.Context, name string) (*SlotMachine
 }
 
 func (db *FirestoreDb) GetTokenCount(ctx context.Context, id string) (int, error) {
-	dr, err := db.client.Collection(slotMachineCollection).Doc(id).Get(ctx)
+	dr, err := db.fc.Collection(slotMachineCollection).Doc(id).Get(ctx)
 	if err != nil {
 		return 0, fmt.Errorf("SetTokenCount: %v", err)
 	}
@@ -90,7 +89,7 @@ func (db *FirestoreDb) GetTokenCount(ctx context.Context, id string) (int, error
 
 func (db *FirestoreDb) SetTokenCount(ctx context.Context, id string, amount int) error {
 	m := &SlotMachine{Tokens: amount}
-	_, err := db.client.Collection(slotMachineCollection).Doc(id).Set(ctx, m, firestore.Merge([]string{"Tokens"}))
+	_, err := db.fc.Collection(slotMachineCollection).Doc(id).Set(ctx, m, firestore.Merge([]string{"Tokens"}))
 	if err != nil {
 		return fmt.Errorf("SetTokenCount: %v", err)
 	}
@@ -99,7 +98,7 @@ func (db *FirestoreDb) SetTokenCount(ctx context.Context, id string, amount int)
 
 func (db *FirestoreDb) SetName(ctx context.Context, id string, name string) error {
 	m := &SlotMachine{Name: name}
-	_, err := db.client.Collection(slotMachineCollection).Doc(id).Set(ctx, m, firestore.Merge([]string{"Name"}))
+	_, err := db.fc.Collection(slotMachineCollection).Doc(id).Set(ctx, m, firestore.Merge([]string{"Name"}))
 	if err != nil {
 		return fmt.Errorf("SetName: %v", err)
 	}
@@ -107,26 +106,26 @@ func (db *FirestoreDb) SetName(ctx context.Context, id string, name string) erro
 }
 
 func (db *FirestoreDb) DeleteSlotMachine(ctx context.Context, id string) error {
-	_, err := db.client.Collection(slotMachineCollection).Doc(id).Delete(ctx)
+	_, err := db.fc.Collection(slotMachineCollection).Doc(id).Delete(ctx)
 	return err
 }
 
 func (db *FirestoreDb) listenToSlotMachineChanges() {
-	db.logger.Println("Listening to slot-machine changes")
+	db.logger(logging.Info).Println("Listening to slot-machine changes")
 	ctx := context.Background()
-	it := db.client.Collection(slotMachineCollection).Snapshots(ctx)
+	it := db.fc.Collection(slotMachineCollection).Snapshots(ctx)
 	for !db.isConnectionClosed {
 		snap, err := it.Next()
 		if status.Code(err) == codes.DeadlineExceeded {
-			db.logger.Println("Deadline exceeded")
+			db.logger(logging.Info).Println("Deadline exceeded")
 			return
 		}
 		if err != nil {
-			db.errorLogger.Printf("Snapshot.Next: %v", err)
+			db.logger(logging.Error).Printf("Snapshot.Next: %v", err)
 			return
 		}
 		if snap == nil {
-			db.logger.Println("snap is nil")
+			db.logger(logging.Info).Println("snap is nil")
 			continue
 		}
 		err = db.EncodeDocuments(snap.Documents, func(m *SlotMachine) bool {
@@ -136,7 +135,7 @@ func (db *FirestoreDb) listenToSlotMachineChanges() {
 			return false
 		})
 		if err != nil {
-			db.errorLogger.Printf("Error while listening to changes: %v", err)
+			db.logger(logging.Error).Printf("Error while listening to changes: %v", err)
 		}
 	}
 }
@@ -172,10 +171,14 @@ func (db *FirestoreDb) EncodeDocuments(i *firestore.DocumentIterator, f func(*Sl
 		m := &SlotMachine{}
 		err = doc.DataTo(m)
 		if err != nil {
-			db.errorLogger.Printf("Error while decoding document: %v", err)
+			db.logger(logging.Error).Printf("Error while decoding document: %v", err)
 		}
 		if f(m) {
 			return nil
 		}
 	}
+}
+
+func (db *FirestoreDb) logger(s logging.Severity) *log.Logger {
+	return db.lc.Logger("db").StandardLogger(s)
 }

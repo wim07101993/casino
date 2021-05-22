@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cloud.google.com/go/logging"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
 	"log"
@@ -15,32 +16,30 @@ var (
 )
 
 type WebSocketController struct {
-	errorLogger *log.Logger
-	logger      *log.Logger
-	casino      *Casino
+	db CasinoDb
+	lc *logging.Client
 }
 
-func NewWebSocketController(casino *Casino, errorLogger *log.Logger, logger *log.Logger) *WebSocketController {
+func NewWebSocketController(db CasinoDb, lc *logging.Client) *WebSocketController {
 	upgrader.CheckOrigin = func(r *http.Request) bool {
 		return true
 	}
 	return &WebSocketController{
-		errorLogger: errorLogger,
-		casino:      casino,
-		logger:      logger,
+		db: db,
+		lc: lc,
 	}
 }
 
 func (c *WebSocketController) RegisterOn(r *mux.Router) {
-	r.HandleFunc("/casino/slot-machines/changes", func(w http.ResponseWriter, r *http.Request) {
-		c.logger.Println("request: listen to all changes")
+	r.HandleFunc("/db/slot-machines/changes", func(w http.ResponseWriter, r *http.Request) {
+		c.logger(logging.Info).Println("request: listen to all changes")
 		c.changesOf(w, r, func(machine *SlotMachine) bool {
 			return true
 		})
 	})
-	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/changes", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/db/slot-machines/{"+idParam+"}/changes", func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)[idParam]
-		c.logger.Printf("request: listen to changes of %s", id)
+		c.logger(logging.Info).Printf("request: listen to changes of %s", id)
 		c.changesOf(w, r, func(machine *SlotMachine) bool {
 			return machine.ID == id
 		})
@@ -51,23 +50,27 @@ func (c *WebSocketController) changesOf(w http.ResponseWriter, r *http.Request, 
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		if _, ok := err.(websocket.HandshakeError); !ok {
-			c.errorLogger.Println(err)
+			c.logger(logging.Error).Println(err)
 		}
 		return
 	}
-	cancel := c.casino.DB.ListenToSlotMachineChanges(func(machine *SlotMachine) {
+	cancel := c.db.ListenToSlotMachineChanges(func(machine *SlotMachine) {
 		if predicate(machine) {
 			err := ws.WriteJSON(machine)
 			if err != nil {
-				c.errorLogger.Println(err)
+				c.logger(logging.Error).Println(err)
 			} else {
-				c.logger.Println("wrote changes")
+				c.logger(logging.Info).Println("wrote changes")
 			}
 		}
 	})
 	ws.SetCloseHandler(func(code int, text string) error {
 		cancel()
-		c.logger.Println("closed socket")
+		c.logger(logging.Info).Println("closed socket")
 		return nil
 	})
+}
+
+func (c *WebSocketController) logger(s logging.Severity) *log.Logger {
+	return c.lc.Logger("web-socket").StandardLogger(s)
 }
