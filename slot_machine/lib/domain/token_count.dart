@@ -39,6 +39,7 @@ class TokenCount implements GlobalListenableProperty<int> {
 
   @override
   Future<void> set(int value) {
+    _tokenCount = value;
     _valueChanges.add(value);
     return _id().then((id) => _api.setTokens(id, value));
   }

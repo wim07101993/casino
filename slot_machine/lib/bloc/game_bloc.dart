@@ -81,8 +81,20 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       _logger.i('Rolling');
       final newTokenCount = tokenCount - 1;
       await _tokenCount.set(newTokenCount);
-      for (final number in state.symbolControllers) {
-        number.roll();
+      final rollers = List.of(state.symbolControllers.map((c) => c.roll()));
+      await Future.wait(rollers);
+      final distinctCount =
+          state.symbolControllers.map((e) => e.value).toSet().length;
+      switch (distinctCount) {
+        case 1:
+          // TODO show jackpot
+          await _tokenCount.set(newTokenCount + 7);
+          break;
+        case 2:
+          await _tokenCount.set(newTokenCount + 2);
+          break;
+        case 3:
+          await _tokenCount.set(newTokenCount + 1);
       }
     } catch (e, stackTrace) {
       _logger.e('Error on roll', e, stackTrace);
