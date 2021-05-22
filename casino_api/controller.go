@@ -14,13 +14,13 @@ const idParam = "id"
 const nameParam = "name"
 
 func RegisterRoutes(r *mux.Router) {
-	r.HandleFunc("/db/slot-machines", AddSlotMachineHandler{}.Handle).Methods("POST")
-	r.HandleFunc("/db/slot-machines", ListSlotMachines).Methods("GET")
-	r.HandleFunc("/db/slot-machines/by-name/{"+nameParam+"}", GetByName).Methods("GET")
-	r.HandleFunc("/db/slot-machines/{"+idParam+"}/tokens", GetTokenCount).Methods("GET")
-	r.HandleFunc("/db/slot-machines/{"+idParam+"}/tokens", SetTokenCountHandler{}.Handle).Methods("PUT")
-	r.HandleFunc("/db/slot-machines/{"+idParam+"}/name", SetNameHandler{}.Handler).Methods("PUT")
-	r.HandleFunc("/db/slot-machines/{"+idParam+"}", RemoveSlotMachine).Methods("DELETE")
+	r.HandleFunc("/casino/slot-machines", AddSlotMachineHandler{}.Handle).Methods("POST")
+	r.HandleFunc("/casino/slot-machines", ListSlotMachines).Methods("GET")
+	r.HandleFunc("/casino/slot-machines/by-name/{"+nameParam+"}", GetByName).Methods("GET")
+	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/tokens", GetTokenCount).Methods("GET")
+	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/tokens", SetTokenCountHandler{}.Handle).Methods("PUT")
+	r.HandleFunc("/casino/slot-machines/{"+idParam+"}/name", SetNameHandler{}.Handler).Methods("PUT")
+	r.HandleFunc("/casino/slot-machines/{"+idParam+"}", RemoveSlotMachine).Methods("DELETE")
 }
 
 func ListSlotMachines(w http.ResponseWriter, r *http.Request) {
