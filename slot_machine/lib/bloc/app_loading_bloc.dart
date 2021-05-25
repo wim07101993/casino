@@ -108,21 +108,19 @@ extension _GetItExtensions on GetIt {
       () => CasinoApi(http: di(), config: di(), logger: di()),
     );
     di.registerLazySingleton(
-        () => Logger(printer: PrettyPrinter(methodCount: 6)));
+      () => Logger(printer: PrettyPrinter(methodCount: 6)),
+    );
     di.registerLazySingleton(() => NameGenerator(random: di()));
     di.registerLazySingleton(() => Random());
     di.registerLazySingleton(
-      () => SlotMachineChanges(
-        casinoApi: di(),
-        // interval: 5000,
-        // TODO
-        interval: 500000,
-      ),
+      () => SlotMachineChanges(casinoApi: di(), interval: 5000),
     );
   }
 
   Future<void> registerDb() async {
-    Hive.init(await getApplicationDocumentsDirectory().then((e) => e.path));
+    final path = await getApplicationDocumentsDirectory().then((e) => e.path);
+    log(path);
+    Hive.init(path);
     di.registerSingleton<HiveInterface>(Hive);
     di.registerLazySingleton(
       () => ApiSettingsBox(hive: di(), nameGenerator: di()),
@@ -133,12 +131,7 @@ extension _GetItExtensions on GetIt {
   Future<void> registerDomain() async {
     registerLazySingleton(() => AppTheme(db: call()));
     registerLazySingleton(() => CasinoApiUri(db: call()));
-    registerLazySingleton(
-      () => Id(
-        api: call(),
-        db: call(),
-      ),
-    );
+    registerLazySingleton(() => Id(api: call(), db: call()));
     registerLazySingleton(() => IsDarkModeEnabled(db: call()));
     registerLazySingleton(
       () => Name(
