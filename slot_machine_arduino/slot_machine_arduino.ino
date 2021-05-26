@@ -1,6 +1,6 @@
 #include "Keyboard.h"
 
-#define BUTTON_PIN 12
+#define BUTTON_PIN 5  
 
 uint8_t buttonState = 0;
 

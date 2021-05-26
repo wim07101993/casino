@@ -13,17 +13,17 @@ final GetIt di = GetIt.instance;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
-    setWindowTitle('Slot-machine');
-    setWindowMinSize(const Size(800, 600));
-  }
+  try {
+    if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+      setWindowTitle('Slot-machine');
+      setWindowMinSize(const Size(800, 600));
+    }
+  } catch (_) {}
   runApp(const AppLoader());
 }
 
 class AppLoader extends StatefulWidget {
-  const AppLoader({
-    Key? key,
-  }) : super(key: key);
+  const AppLoader({Key? key}) : super(key: key);
 
   @override
   _AppLoaderState createState() => _AppLoaderState();
@@ -51,6 +51,7 @@ class _AppLoaderState extends State<AppLoader> {
       builder: (context, state) {
         return MaterialApp(
           title: 'Slot-machine',
+          debugShowCheckedModeBanner: false,
           theme: state.appTheme?.themeData ?? ThemeData.light(),
           home: Material(
             child: BlocListener(
