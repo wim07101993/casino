@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'switch_form_field.dart';
 
-class DarkThemeFormField extends StatelessWidget {
-  const DarkThemeFormField({
-    Key? key,
-    required this.controller,
-  }) : super(key: key);
+class BoolFormField extends StatelessWidget {
+  const BoolFormField({Key? key, required this.controller, required this.label})
+      : super(key: key);
 
   final SwitchController controller;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class DarkThemeFormField extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('Dark mode', style: theme.textTheme.subtitle1),
+        Text(label, style: theme.textTheme.subtitle1),
         SwitchFormField(controller: controller),
       ],
     );

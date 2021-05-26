@@ -15,33 +15,39 @@ class Game extends StatelessWidget {
     return BlocBuilderListener<GameBloc, GameState>(
       create: (_) => di(),
       listener: _onStateChanged,
-      builder: (context, state) => RawKeyboardListener(
-        focusNode: FocusNode()..requestFocus(),
-        onKey: (e) => onKey(context, e),
-        child: GestureDetector(
-          onTap: () => onTap(context),
-          child: Container(
-            alignment: Alignment.center,
-            color: Colors.transparent,
-            child: state.symbolControllers.isEmpty
-                ? null
-                : FittedBox(child: _numbers(state)),
-          ),
-        ),
-      ),
+      builder: (context, state) {
+        return RawKeyboardListener(
+          focusNode: FocusNode()..requestFocus(),
+          onKey: (e) => onKey(context, e),
+          child: _numbers(state),
+        );
+      },
+    );
+  }
+
+  Widget _tappableNumbers(BuildContext context, GameState state) {
+    return GestureDetector(
+      onTap: () => onTap(context),
+      child: _numbers(state),
     );
   }
 
   Widget _numbers(GameState state) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        state.symbolControllers.length,
-        (i) => RollingSymbol(
-          controller: state.symbolControllers[i],
-          symbols: state.symbols,
-        ),
-      ),
+    return Container(
+      alignment: Alignment.center,
+      color: Colors.transparent,
+      child: state.symbolControllers.isEmpty
+          ? null
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                state.symbolControllers.length,
+                (i) => RollingSymbol(
+                  controller: state.symbolControllers[i],
+                  symbols: state.symbols,
+                ),
+              ),
+            ),
     );
   }
 

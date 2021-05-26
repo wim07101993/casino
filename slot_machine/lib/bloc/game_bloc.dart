@@ -51,7 +51,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   })  : _logger = logger,
         _tokenCount = tokenCount,
         super(GameState.initial(random: random)) {
-    theme().then((e) => emit(state.copyWith(error: null, symbols: e.symbols)));
+    theme().then((e) {
+      emit(state.copyWith(error: null, symbols: e.symbols));
+    });
     theme.changes.forEach((e) {
       emit(state.copyWith(error: null, symbols: e.symbols));
     });

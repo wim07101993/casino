@@ -1,17 +1,17 @@
 import 'package:casino_shared/casino_shared.dart';
 
-import 'local_db/api_settings_box.dart';
+import 'local_db/app_settings_box.dart';
 
 class Id {
   Id({
     required CasinoApi api,
-    required ApiSettingsBox db,
-  })   : _api = api,
+    required AppSettingsBox db,
+  })  : _api = api,
         _db = db;
 
   String? _id;
 
-  final ApiSettingsBox _db;
+  final AppSettingsBox _db;
   final CasinoApi _api;
 
   Future<String> call() => _id != null ? Future.value(_id) : _fetchId();

@@ -15,7 +15,8 @@ import '../domain/app_theme.dart';
 import '../domain/casino_api_uri.dart';
 import '../domain/id.dart';
 import '../domain/is_dark_mode_enabled.dart';
-import '../domain/local_db/api_settings_box.dart';
+import '../domain/is_mouse_enabled.dart';
+import '../domain/local_db/app_settings_box.dart';
 import '../domain/local_db/theme_box.dart';
 import '../domain/name.dart';
 import '../domain/primary_color.dart';
@@ -123,7 +124,7 @@ extension _GetItExtensions on GetIt {
     Hive.init(path);
     di.registerSingleton<HiveInterface>(Hive);
     di.registerLazySingleton(
-      () => ApiSettingsBox(hive: di(), nameGenerator: di()),
+      () => AppSettingsBox(hive: di(), nameGenerator: di()),
     );
     di.registerLazySingleton(() => ThemeBox(hive: di()));
   }
@@ -133,6 +134,7 @@ extension _GetItExtensions on GetIt {
     registerLazySingleton(() => CasinoApiUri(db: call()));
     registerLazySingleton(() => Id(api: call(), db: call()));
     registerLazySingleton(() => IsDarkModeEnabled(db: call()));
+    registerLazySingleton(() => IsMouseEnabled(db: call()));
     registerLazySingleton(
       () => Name(
         api: call(),

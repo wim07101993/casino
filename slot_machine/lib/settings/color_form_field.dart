@@ -7,11 +7,11 @@ import '../domain/controller.dart';
 class ColorFormField extends StatelessWidget {
   const ColorFormField({
     Key? key,
-    this.label,
     required this.controller,
+    required this.label,
   }) : super(key: key);
 
-  final Widget? label;
+  final String label;
   final CircleColorPickerController controller;
 
   @override
@@ -19,16 +19,11 @@ class ColorFormField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label != null) label!,
+        Text(label, style: Theme.of(context).textTheme.subtitle1),
         const SizedBox(height: 16),
-        // ValueListenableBuilder<Color>(
-        // valueListenable: controller,
-        // builder: (context, value, _) => CircleColorPicker(
         CircleColorPicker(
           controller: controller,
           onChanged: (c) => controller.color = c.withAlpha(0xFF),
-          // enableAlpha: false,
-          // ),
         ),
       ],
     );

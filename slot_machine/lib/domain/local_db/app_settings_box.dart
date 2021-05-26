@@ -4,8 +4,8 @@ import 'package:hive/hive.dart' hide BoxEvent;
 import 'box_entry.dart';
 import 'converting_box_entry.dart';
 
-class ApiSettingsBox {
-  ApiSettingsBox({
+class AppSettingsBox {
+  AppSettingsBox({
     required HiveInterface hive,
     required NameGenerator nameGenerator,
   })  : _nameGenerator = nameGenerator,
@@ -29,5 +29,11 @@ class ApiSettingsBox {
     box: _box,
     key: 'name',
     defaultValue: _nameGenerator(),
+  );
+
+  late final BoxEntry<bool> isMouseEnabled = BoxEntry(
+    box: _box,
+    key: 'is-mouse-enabled',
+    defaultValue: false,
   );
 }

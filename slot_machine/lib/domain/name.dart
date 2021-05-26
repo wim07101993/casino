@@ -2,14 +2,14 @@ import 'package:casino_shared/casino_shared.dart';
 
 import 'global_listenable_property.dart';
 import 'id.dart';
-import 'local_db/api_settings_box.dart';
+import 'local_db/app_settings_box.dart';
 
 class Name implements GlobalListenableProperty<String> {
   Name({
     required Id id,
     required CasinoApi api,
     required SlotMachineChanges slotMachineChanges,
-    required ApiSettingsBox db,
+    required AppSettingsBox db,
   })  : _api = api,
         _db = db,
         _id = id,
@@ -20,7 +20,7 @@ class Name implements GlobalListenableProperty<String> {
   }
 
   final Id _id;
-  final ApiSettingsBox _db;
+  final AppSettingsBox _db;
   final CasinoApi _api;
   final SlotMachineChanges _slotMachineChanges;
 
