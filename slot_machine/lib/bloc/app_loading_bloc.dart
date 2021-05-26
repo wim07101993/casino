@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:math' show Random;
 
-import 'package:Slot_machine/domain/secondary_color.dart';
 import 'package:bloc/bloc.dart';
 import 'package:casino_shared/casino_shared.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +19,7 @@ import '../domain/local_db/api_settings_box.dart';
 import '../domain/local_db/theme_box.dart';
 import '../domain/name.dart';
 import '../domain/primary_color.dart';
+import '../domain/secondary_color.dart';
 import '../domain/selected_theme_type.dart';
 import '../domain/themes/app_theme_data.dart';
 import '../domain/token_count.dart';

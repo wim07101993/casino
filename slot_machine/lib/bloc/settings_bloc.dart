@@ -1,7 +1,7 @@
-import 'package:Slot_machine/domain/secondary_color.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
 
@@ -9,8 +9,8 @@ import '../domain/casino_api_uri.dart';
 import '../domain/is_dark_mode_enabled.dart';
 import '../domain/name.dart';
 import '../domain/primary_color.dart';
+import '../domain/secondary_color.dart';
 import '../domain/selected_theme_type.dart';
-import '../settings/color_form_field.dart';
 import '../settings/switch_form_field.dart';
 import '../settings/theme_selector_form_field.dart';
 
@@ -29,8 +29,8 @@ class SettingsState with _$SettingsState {
     required TextEditingController apiUrl,
     required TextEditingController name,
     required TextEditingController symbolCount,
-    required ColorPickerController primaryColor,
-    required ColorPickerController secondaryColor,
+    required CircleColorPickerController primaryColor,
+    required CircleColorPickerController secondaryColor,
     required SwitchController isDarkModeEnabled,
     required ThemeSelectorController selectedThemeType,
     @Default(false) bool hasSaved,
@@ -42,8 +42,8 @@ class SettingsState with _$SettingsState {
       apiUrl: TextEditingController(),
       name: TextEditingController(),
       symbolCount: TextEditingController(),
-      primaryColor: ColorPickerController(),
-      secondaryColor: ColorPickerController(),
+      primaryColor: CircleColorPickerController(),
+      secondaryColor: CircleColorPickerController(),
       isDarkModeEnabled: SwitchController(),
       selectedThemeType: ThemeSelectorController(),
     );
@@ -93,8 +93,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     try {
       state.name.text = await name();
       state.apiUrl.text = await casinoApiUri().then((e) => e.toString());
-      state.primaryColor.value = await primaryColor();
-      state.secondaryColor.value = await secondaryColor();
+      state.primaryColor.color = await primaryColor();
+      state.secondaryColor.color = await secondaryColor();
       state.isDarkModeEnabled.value = await isDarkModeEnabled();
       state.selectedThemeType.value = await selectedThemeType();
     } catch (e, stackTrace) {
@@ -131,7 +131,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _onPrimaryColorChanged() async {
-    final newColor = state.primaryColor.value;
+    final newColor = state.primaryColor.color;
     try {
       if (newColor != await primaryColor()) {
         await primaryColor.set(newColor);

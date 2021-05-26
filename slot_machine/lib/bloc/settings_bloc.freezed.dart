@@ -256,8 +256,8 @@ class _$SettingsStateTearOff {
       {required TextEditingController apiUrl,
       required TextEditingController name,
       required TextEditingController symbolCount,
-      required ColorPickerController primaryColor,
-      required ColorPickerController secondaryColor,
+      required CircleColorPickerController primaryColor,
+      required CircleColorPickerController secondaryColor,
       required SwitchController isDarkModeEnabled,
       required ThemeSelectorController selectedThemeType,
       bool hasSaved = false,
@@ -284,8 +284,9 @@ mixin _$SettingsState {
   TextEditingController get apiUrl => throw _privateConstructorUsedError;
   TextEditingController get name => throw _privateConstructorUsedError;
   TextEditingController get symbolCount => throw _privateConstructorUsedError;
-  ColorPickerController get primaryColor => throw _privateConstructorUsedError;
-  ColorPickerController get secondaryColor =>
+  CircleColorPickerController get primaryColor =>
+      throw _privateConstructorUsedError;
+  CircleColorPickerController get secondaryColor =>
       throw _privateConstructorUsedError;
   SwitchController get isDarkModeEnabled => throw _privateConstructorUsedError;
   ThemeSelectorController get selectedThemeType =>
@@ -307,8 +308,8 @@ abstract class $SettingsStateCopyWith<$Res> {
       {TextEditingController apiUrl,
       TextEditingController name,
       TextEditingController symbolCount,
-      ColorPickerController primaryColor,
-      ColorPickerController secondaryColor,
+      CircleColorPickerController primaryColor,
+      CircleColorPickerController secondaryColor,
       SwitchController isDarkModeEnabled,
       ThemeSelectorController selectedThemeType,
       bool hasSaved,
@@ -352,11 +353,11 @@ class _$SettingsStateCopyWithImpl<$Res>
       primaryColor: primaryColor == freezed
           ? _value.primaryColor
           : primaryColor // ignore: cast_nullable_to_non_nullable
-              as ColorPickerController,
+              as CircleColorPickerController,
       secondaryColor: secondaryColor == freezed
           ? _value.secondaryColor
           : secondaryColor // ignore: cast_nullable_to_non_nullable
-              as ColorPickerController,
+              as CircleColorPickerController,
       isDarkModeEnabled: isDarkModeEnabled == freezed
           ? _value.isDarkModeEnabled
           : isDarkModeEnabled // ignore: cast_nullable_to_non_nullable
@@ -385,8 +386,8 @@ abstract class _$SettingsStateCopyWith<$Res>
       {TextEditingController apiUrl,
       TextEditingController name,
       TextEditingController symbolCount,
-      ColorPickerController primaryColor,
-      ColorPickerController secondaryColor,
+      CircleColorPickerController primaryColor,
+      CircleColorPickerController secondaryColor,
       SwitchController isDarkModeEnabled,
       ThemeSelectorController selectedThemeType,
       bool hasSaved,
@@ -432,11 +433,11 @@ class __$SettingsStateCopyWithImpl<$Res>
       primaryColor: primaryColor == freezed
           ? _value.primaryColor
           : primaryColor // ignore: cast_nullable_to_non_nullable
-              as ColorPickerController,
+              as CircleColorPickerController,
       secondaryColor: secondaryColor == freezed
           ? _value.secondaryColor
           : secondaryColor // ignore: cast_nullable_to_non_nullable
-              as ColorPickerController,
+              as CircleColorPickerController,
       isDarkModeEnabled: isDarkModeEnabled == freezed
           ? _value.isDarkModeEnabled
           : isDarkModeEnabled // ignore: cast_nullable_to_non_nullable
@@ -475,9 +476,9 @@ class _$_SettingsState implements _SettingsState {
   @override
   final TextEditingController symbolCount;
   @override
-  final ColorPickerController primaryColor;
+  final CircleColorPickerController primaryColor;
   @override
-  final ColorPickerController secondaryColor;
+  final CircleColorPickerController secondaryColor;
   @override
   final SwitchController isDarkModeEnabled;
   @override
@@ -547,8 +548,8 @@ abstract class _SettingsState implements SettingsState {
       {required TextEditingController apiUrl,
       required TextEditingController name,
       required TextEditingController symbolCount,
-      required ColorPickerController primaryColor,
-      required ColorPickerController secondaryColor,
+      required CircleColorPickerController primaryColor,
+      required CircleColorPickerController secondaryColor,
       required SwitchController isDarkModeEnabled,
       required ThemeSelectorController selectedThemeType,
       bool hasSaved,
@@ -561,9 +562,10 @@ abstract class _SettingsState implements SettingsState {
   @override
   TextEditingController get symbolCount => throw _privateConstructorUsedError;
   @override
-  ColorPickerController get primaryColor => throw _privateConstructorUsedError;
+  CircleColorPickerController get primaryColor =>
+      throw _privateConstructorUsedError;
   @override
-  ColorPickerController get secondaryColor =>
+  CircleColorPickerController get secondaryColor =>
       throw _privateConstructorUsedError;
   @override
   SwitchController get isDarkModeEnabled => throw _privateConstructorUsedError;

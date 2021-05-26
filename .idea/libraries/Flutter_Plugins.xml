@@ -3,7 +3,8 @@
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.0.0" />
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.1" />
-      <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.1" />
+      <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2" />
+      <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/git/flutter-desktop-embedding-e48abe7c3e9ebfe0b81622167c5201d4e783bb81/plugins/window_size" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

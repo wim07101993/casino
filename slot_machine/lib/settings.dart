@@ -23,18 +23,17 @@ class Settings extends StatelessWidget {
   }
 
   Widget _builder(BuildContext context, SettingsState state) {
-    final theme = Theme.of(context);
     return Column(children: [
-      ApplicationSettingsForm(
-        apiUrl: state.apiUrl,
-        name: state.name,
-      ),
-      const SizedBox(height: 16),
       ThemeSettingsForm(
         primaryColor: state.primaryColor,
         secondaryColor: state.secondaryColor,
         isDarkModeEnabled: state.isDarkModeEnabled,
         themeType: state.selectedThemeType,
+      ),
+      const SizedBox(height: 16),
+      ApplicationSettingsForm(
+        apiUrl: state.apiUrl,
+        name: state.name,
       ),
     ]);
   }

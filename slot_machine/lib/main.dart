@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:casino_shared/casino_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:window_size/window_size.dart';
 
 import 'bloc/app_loading_bloc.dart';
 import 'home_screen.dart';
@@ -10,6 +13,10 @@ final GetIt di = GetIt.instance;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+    setWindowTitle('Slot-machine');
+    setWindowMinSize(const Size(800, 600));
+  }
   runApp(const AppLoader());
 }
 

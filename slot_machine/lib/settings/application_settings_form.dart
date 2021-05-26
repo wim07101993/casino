@@ -35,9 +35,9 @@ class _ApplicationSettingsFormState extends State<ApplicationSettingsForm> {
             children: [
               Text('Application Settings', style: theme.textTheme.headline6),
               const SizedBox(height: 16),
-              ApiUriFormField(controller: widget.apiUrl),
-              const SizedBox(height: 16),
               NameFormField(controller: widget.name),
+              const SizedBox(height: 16),
+              ApiUriFormField(controller: widget.apiUrl),
               const SizedBox(height: 24),
               Container(
                 alignment: Alignment.centerRight,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 
 import 'color_form_field.dart';
 import 'dark_theme_form_field.dart';
@@ -14,14 +15,16 @@ class ThemeSettingsForm extends StatelessWidget {
     required this.themeType,
   }) : super(key: key);
 
-  final ColorPickerController primaryColor;
-  final ColorPickerController secondaryColor;
+  final CircleColorPickerController primaryColor;
+  final CircleColorPickerController secondaryColor;
   final SwitchController isDarkModeEnabled;
   final ThemeSelectorController themeType;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // return LayoutBuilder(builder: (context, constraints) {
+    //   print(constraints.maxWidth);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -31,16 +34,19 @@ class ThemeSettingsForm extends StatelessWidget {
         const SizedBox(height: 16),
         DarkThemeFormField(controller: isDarkModeEnabled),
         const SizedBox(height: 16),
-        ColorFormField(
-          controller: primaryColor,
-          label: Text('Primary color', style: theme.textTheme.subtitle1),
-        ),
-        const SizedBox(height: 16),
-        ColorFormField(
-          controller: secondaryColor,
-          label: Text('Secondary color', style: theme.textTheme.subtitle1),
-        ),
+        Wrap(children: [
+          ColorFormField(
+            controller: primaryColor,
+            label: Text('Primary color', style: theme.textTheme.subtitle1),
+          ),
+          const SizedBox(height: 16),
+          ColorFormField(
+            controller: secondaryColor,
+            label: Text('Secondary color', style: theme.textTheme.subtitle1),
+          ),
+        ]),
       ],
     );
+    // });
   }
 }

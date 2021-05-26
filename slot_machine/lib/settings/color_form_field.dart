@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 
 import '../domain/controller.dart';
 
@@ -12,7 +12,7 @@ class ColorFormField extends StatelessWidget {
   }) : super(key: key);
 
   final Widget? label;
-  final ColorPickerController controller;
+  final CircleColorPickerController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +21,14 @@ class ColorFormField extends StatelessWidget {
       children: [
         if (label != null) label!,
         const SizedBox(height: 16),
-        ValueListenableBuilder<Color>(
-          valueListenable: controller,
-          builder: (context, value, _) => ColorPicker(
-            pickerColor: value,
-            onColorChanged: (c) => controller.value = c.withAlpha(0xFF),
-            enableAlpha: false,
-          ),
+        // ValueListenableBuilder<Color>(
+        // valueListenable: controller,
+        // builder: (context, value, _) => CircleColorPicker(
+        CircleColorPicker(
+          controller: controller,
+          onChanged: (c) => controller.color = c.withAlpha(0xFF),
+          // enableAlpha: false,
+          // ),
         ),
       ],
     );
