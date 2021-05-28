@@ -10,7 +10,6 @@ class ClassicTheme extends AppThemeData {
   ClassicTheme({ThemeData? baseTheme})
       : super(
           name: 'classic',
-          backgroundImage: null,
           themeData: getThemeData(baseTheme ?? ThemeData.light()),
           symbols: const [
             ClassicSymbol(value: ClassicSymbolValue.cherry()),

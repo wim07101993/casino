@@ -4,22 +4,25 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'app_theme_data.dart';
 
-part 'number_theme.freezed.dart';
+part 'programming_theme.freezed.dart';
 
-class NumberTheme extends AppThemeData {
-  NumberTheme({ThemeData? baseTheme})
+class ProgrammingTheme extends AppThemeData {
+  ProgrammingTheme({ThemeData? baseTheme})
       : super(
           name: 'numbers',
-          background: null,
+          background: const Image(
+            image: AssetImage('assets/programming/background.png'),
+            fit: BoxFit.fill,
+          ),
           themeData: getThemeData(baseTheme ?? ThemeData.light()),
           symbols: const [
-            Number(value: NumberValue.one()),
-            Number(value: NumberValue.two()),
-            Number(value: NumberValue.three()),
-            Number(value: NumberValue.four()),
-            Number(value: NumberValue.five()),
-            Number(value: NumberValue.six()),
-            Number(value: NumberValue.seven()),
+            ProgrammingSymbol(value: ProgrammingSymbolValue.ifStatement()),
+            ProgrammingSymbol(value: ProgrammingSymbolValue.braces()),
+            ProgrammingSymbol(value: ProgrammingSymbolValue.html()),
+            ProgrammingSymbol(value: ProgrammingSymbolValue.cPlusPlus()),
+            ProgrammingSymbol(value: ProgrammingSymbolValue.quotes()),
+            ProgrammingSymbol(value: ProgrammingSymbolValue.dollarSign()),
+            ProgrammingSymbol(value: ProgrammingSymbolValue.ampersand()),
           ],
         );
 
@@ -71,69 +74,62 @@ class NumberTheme extends AppThemeData {
 }
 
 @freezed
-class NumberValue with _$NumberValue {
-  const NumberValue._();
-  const factory NumberValue.one() = _One;
-  const factory NumberValue.two() = _Two;
-  const factory NumberValue.three() = _Three;
-  const factory NumberValue.four() = _Four;
-  const factory NumberValue.five() = _Five;
-  const factory NumberValue.six() = _Six;
-  const factory NumberValue.seven() = _Seven;
+class ProgrammingSymbolValue with _$ProgrammingSymbolValue {
+  const ProgrammingSymbolValue._();
+  const factory ProgrammingSymbolValue.ifStatement() = _IfStatement;
+  const factory ProgrammingSymbolValue.braces() = _Braces;
+  const factory ProgrammingSymbolValue.html() = _Html;
+  const factory ProgrammingSymbolValue.cPlusPlus() = _CPlusPlus;
+  const factory ProgrammingSymbolValue.quotes() = _Quotes;
+  const factory ProgrammingSymbolValue.dollarSign() = _DollarSign;
+  const factory ProgrammingSymbolValue.ampersand() = _Ampersand;
 
   int get toInt {
     return when(
-      one: () => 1,
-      two: () => 2,
-      three: () => 3,
-      four: () => 4,
-      five: () => 5,
-      six: () => 6,
-      seven: () => 7,
+      ifStatement: () => 1,
+      braces: () => 2,
+      html: () => 3,
+      cPlusPlus: () => 4,
+      quotes: () => 5,
+      dollarSign: () => 6,
+      ampersand: () => 7,
     );
   }
 
   @override
   String toString() {
     return when(
-      one: () => '1',
-      two: () => '2',
-      three: () => '3',
-      four: () => '4',
-      five: () => '5',
-      six: () => '6',
-      seven: () => '7',
+      ifStatement: () => 'if',
+      braces: () => '{}',
+      html: () => '</>',
+      cPlusPlus: () => 'c++',
+      quotes: () => '"',
+      dollarSign: () => '\$',
+      ampersand: () => '&',
     );
   }
 }
 
-class Number extends StatelessWidget {
-  const Number({
+class ProgrammingSymbol extends StatelessWidget {
+  const ProgrammingSymbol({
     Key? key,
     required this.value,
   }) : super(key: key);
 
-  final NumberValue value;
+  final ProgrammingSymbolValue value;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return FittedBox(
-      child: Text(
-        value.toString(),
-        style: GoogleFonts.goblinOneTextTheme()
-            .headline1!
-            .copyWith(color: getColor(theme.primaryColor)),
+    return Opacity(
+      opacity: 0.4,
+      child: FittedBox(
+        child: Text(
+          value.toString(),
+          style: GoogleFonts.vt323TextTheme()
+              .headline1!
+              .copyWith(color: const Color(0xFF00FF00)),
+        ),
       ),
     );
-  }
-
-  Color getColor(Color baseColor) {
-    final baseHsl = HSLColor.fromColor(baseColor);
-    var hue = baseHsl.hue + 360 / 7 * value.toInt;
-    if (hue > 360) {
-      hue -= 360;
-    }
-    return baseHsl.withHue(hue).toColor();
   }
 }

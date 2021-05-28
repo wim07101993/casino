@@ -7,11 +7,17 @@ import 'settings_button.dart';
 import 'token_count.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({
+    Key? key,
+    this.background,
+  }) : super(key: key);
+
+  final Widget? background;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(

@@ -4,12 +4,14 @@ abstract class AppThemeData {
   const AppThemeData({
     required this.name,
     required this.symbols,
-    required this.backgroundImage,
     required this.themeData,
+    this.background,
+    this.overlay,
   });
 
   final String name;
   final List<Widget> symbols;
-  final ImageProvider? backgroundImage;
+  final Widget? background;
+  final Widget? overlay;
   final ThemeData themeData;
 }

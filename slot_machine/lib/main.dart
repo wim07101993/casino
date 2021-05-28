@@ -49,6 +49,8 @@ class _AppLoaderState extends State<AppLoader> {
     return BlocBuilder<AppLoadingBloc, AppLoadingState>(
       bloc: _appLoadingBloc,
       builder: (context, state) {
+        final background = state.appTheme?.background;
+        final overlay = state.appTheme?.overlay;
         return MaterialApp(
           title: 'Slot-machine',
           debugShowCheckedModeBanner: false,
@@ -57,12 +59,17 @@ class _AppLoaderState extends State<AppLoader> {
             child: BlocListener(
               bloc: _appLoadingBloc,
               listener: _onStateChange,
-              child: Stack(children: [
-                if (state.loadingStage == const LoadingStage.loaded())
-                  const HomeScreen()
-                else
-                  _loading(state),
-              ]),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  if (background != null) background,
+                  if (state.loadingStage == const LoadingStage.loaded())
+                    const HomeScreen()
+                  else
+                    _loading(state),
+                  if (overlay != null) overlay,
+                ],
+              ),
             ),
           ),
         );

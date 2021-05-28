@@ -12,6 +12,7 @@ class ThemeType with _$ThemeType {
   const factory ThemeType.numbers() = _Numbers;
   const factory ThemeType.classic() = _Classic;
   const factory ThemeType.emoji() = _Emoji;
+  const factory ThemeType.programming() = _Programming;
 }
 
 class ThemeBox {
@@ -56,6 +57,8 @@ class ThemeBox {
           return const ThemeType.numbers();
         case 'emoji':
           return const ThemeType.emoji();
+        case 'programming':
+          return const ThemeType.programming();
         case 'classics':
         default:
           return const ThemeType.classic();
@@ -65,6 +68,7 @@ class ThemeBox {
       numbers: () => 'numbers',
       classic: () => 'classic',
       emoji: () => 'emoji',
+      programming: () => 'programming',
     ),
   );
 

@@ -9,7 +9,7 @@ class EmojiTheme extends AppThemeData {
   EmojiTheme({ThemeData? baseTheme})
       : super(
           name: 'emoji',
-          backgroundImage: null,
+          background: null,
           themeData: getThemeData(baseTheme ?? ThemeData.light()),
           symbols: const [
             Emoji(value: EmojiValue.faceBlowingAKis()),

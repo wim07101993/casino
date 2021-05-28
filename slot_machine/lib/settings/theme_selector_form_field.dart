@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:slot_machine/domain/themes/programming_theme.dart';
 
 import '../domain/controller.dart';
 import '../domain/local_db/theme_box.dart';
@@ -45,6 +46,17 @@ class ThemeSelectorFormField extends StatelessWidget {
               child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Emoji(value: EmojiValue.poop()),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          GestureDetector(
+            onTap: () => controller.value = const ThemeType.programming(),
+            child: ThemeTypeBox(
+              isSelected: value == const ThemeType.programming(),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ProgrammingSymbol(value: ProgrammingSymbolValue.html()),
               ),
             ),
           ),

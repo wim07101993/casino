@@ -7,6 +7,7 @@ import 'themes/app_theme_data.dart';
 import 'themes/classic_theme.dart';
 import 'themes/emoji_theme.dart';
 import 'themes/number_theme.dart';
+import 'themes/programming_theme.dart';
 
 class AppTheme {
   AppTheme({
@@ -48,6 +49,7 @@ class AppTheme {
       numbers: () => NumberTheme(baseTheme: baseTheme),
       classic: () => ClassicTheme(baseTheme: baseTheme),
       emoji: () => EmojiTheme(baseTheme: baseTheme),
+      programming: () => ProgrammingTheme(baseTheme: baseTheme),
     );
   }
 }
