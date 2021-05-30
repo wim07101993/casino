@@ -4,7 +4,7 @@ import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 
 import '../domain/controller.dart';
 
-class ColorFormField extends StatelessWidget {
+class ColorFormField extends StatefulWidget {
   const ColorFormField({
     Key? key,
     required this.controller,
@@ -15,15 +15,22 @@ class ColorFormField extends StatelessWidget {
   final CircleColorPickerController controller;
 
   @override
+  _ColorFormFieldState createState() => _ColorFormFieldState();
+}
+
+class _ColorFormFieldState extends State<ColorFormField> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: Theme.of(context).textTheme.subtitle1),
+        Text(widget.label, style: Theme.of(context).textTheme.subtitle1),
         const SizedBox(height: 16),
         CircleColorPicker(
-          controller: controller,
-          onChanged: (c) => controller.color = c.withAlpha(0xFF),
+          controller: widget.controller,
+          onChanged: (c) {
+            setState(() => widget.controller.color = c.withAlpha(0xFF));
+          },
         ),
       ],
     );

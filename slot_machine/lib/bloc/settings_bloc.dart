@@ -61,6 +61,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     required this.selectedThemeType,
   }) : super(SettingsState.initial()) {
     state.primaryColor.addListener(_onPrimaryColorChanged);
+    state.secondaryColor.addListener(_onSecondaryColorChanged);
     state.isDarkModeEnabled.addListener(_onIsDarkModeEnabledChanged);
     state.selectedThemeType.addListener(_onSelectedThemeTypeChanged);
     add(const SettingsEvent.load());
@@ -135,6 +136,18 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     try {
       if (newColor != await primaryColor()) {
         await primaryColor.set(newColor);
+      }
+    } catch (e, stackTrace) {
+      logger.e('Error on save color $newColor', e, stackTrace);
+      emit(state.copyWith(error: e));
+    }
+  }
+
+  Future<void> _onSecondaryColorChanged() async {
+    final newColor = state.secondaryColor.color;
+    try {
+      if (newColor != await secondaryColor()) {
+        await secondaryColor.set(newColor);
       }
     } catch (e, stackTrace) {
       logger.e('Error on save color $newColor', e, stackTrace);
