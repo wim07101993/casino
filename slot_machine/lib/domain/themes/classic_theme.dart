@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +12,10 @@ class ClassicTheme extends AppThemeData {
   ClassicTheme({ThemeData? baseTheme})
       : super(
           name: 'classic',
+          background: const Image(
+            image: AssetImage('assets/classic/background.jpg'),
+            fit: BoxFit.cover,
+          ),
           themeData: getThemeData(baseTheme ?? ThemeData.light()),
           symbols: const [
             ClassicSymbol(value: ClassicSymbolValue.cherry()),
@@ -103,9 +109,22 @@ class ClassicSymbol extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      child: Image.asset(value.asset),
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              color: Colors.white10,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Image.asset(value.asset),
+        ),
+      ],
     );
   }
 }
