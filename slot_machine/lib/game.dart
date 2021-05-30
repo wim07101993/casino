@@ -18,17 +18,13 @@ class Game extends StatelessWidget {
       builder: (context, state) {
         return RawKeyboardListener(
           focusNode: FocusNode()..requestFocus(),
-          onKey: (e) => onKey(context, e),
-          child: _numbers(state),
+          onKey: (e) => onKey(context, state, e),
+          child: GestureDetector(
+            onTap: () => onTap(context),
+            child: _numbers(state),
+          ),
         );
       },
-    );
-  }
-
-  Widget _tappableNumbers(BuildContext context, GameState state) {
-    return GestureDetector(
-      onTap: () => onTap(context),
-      child: _numbers(state),
     );
   }
 
@@ -55,8 +51,13 @@ class Game extends StatelessWidget {
     BlocProvider.of<GameBloc>(context).add(const GameEvent.roll());
   }
 
-  void onKey(BuildContext context, RawKeyEvent value) {
-    if (value.character == ' ') {
+  void onKey(BuildContext context, GameState state, RawKeyEvent value) {
+    if (state.symbolControllers.any((e) => e.isRolling)) {
+      return;
+    }
+    if (value is RawKeyUpEvent &&
+        (value.logicalKey == LogicalKeyboardKey.space ||
+            value.logicalKey == LogicalKeyboardKey.enter)) {
       BlocProvider.of<GameBloc>(context).add(const GameEvent.roll());
     }
   }

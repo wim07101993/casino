@@ -233,6 +233,7 @@
         <entry key="flutter_bloc">
           <value>
             <list>
+              <option value="$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-7.0.1/lib" />
               <option value="$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-7.0.0/lib" />
             </list>
           </value>
@@ -314,6 +315,13 @@
           <value>
             <list>
               <option value="$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/hive-2.0.4/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="hive_flutter">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/hive_flutter-1.0.0/lib" />
             </list>
           </value>
         </entry>
@@ -753,6 +761,7 @@
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/file-6.1.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/fixnum-1.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-7.0.0/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-7.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_circle_color_picker-0.3.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_launcher_icons-0.9.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/freezed-0.14.1+2/lib" />
@@ -766,6 +775,7 @@
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/graphs-1.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/graphs-2.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/hive-2.0.4/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/hive_flutter-1.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/hive_generator-1.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.3/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../tools/flutter/.pub-cache/hosted/pub.dartlang.org/http_multi_server-3.0.1/lib" />

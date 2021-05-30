@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../domain/app_theme.dart';
 import '../domain/casino_api_uri.dart';
@@ -119,9 +119,7 @@ extension _GetItExtensions on GetIt {
   }
 
   Future<void> registerDb() async {
-    final path = await getApplicationDocumentsDirectory().then((e) => e.path);
-    log(path);
-    Hive.init(path);
+    Hive.initFlutter();
     di.registerSingleton<HiveInterface>(Hive);
     di.registerLazySingleton(
       () => AppSettingsBox(hive: di(), nameGenerator: di()),
