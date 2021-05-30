@@ -5,6 +5,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"cloud.google.com/go/logging"
 	"context"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -40,7 +41,9 @@ func main() {
 	// not available for google app engine, only google app engine flex
 	//ServeWebSocket(r)
 
+	ms := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
+
 	logger := logClient.Logger("main")
 	logger.StandardLogger(logging.Info).Println("Listening on :" + port)
-	logger.StandardLogger(logging.Critical).Print(http.ListenAndServe(":"+port, r))
+	logger.StandardLogger(logging.Critical).Print(http.ListenAndServe(":"+port, handlers.CORS(ms)(r)))
 }
