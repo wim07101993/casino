@@ -16,8 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$GameEventTearOff {
   const _$GameEventTearOff();
 
-  _GameEvent roll() {
-    return const _GameEvent();
+  _RollEvent roll() {
+    return const _RollEvent();
   }
 }
 
@@ -39,12 +39,12 @@ mixin _$GameEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_GameEvent value) roll,
+    required TResult Function(_RollEvent value) roll,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_GameEvent value)? roll,
+    TResult Function(_RollEvent value)? roll,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -66,26 +66,26 @@ class _$GameEventCopyWithImpl<$Res> implements $GameEventCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$GameEventCopyWith<$Res> {
-  factory _$GameEventCopyWith(
-          _GameEvent value, $Res Function(_GameEvent) then) =
-      __$GameEventCopyWithImpl<$Res>;
+abstract class _$RollEventCopyWith<$Res> {
+  factory _$RollEventCopyWith(
+          _RollEvent value, $Res Function(_RollEvent) then) =
+      __$RollEventCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$GameEventCopyWithImpl<$Res> extends _$GameEventCopyWithImpl<$Res>
-    implements _$GameEventCopyWith<$Res> {
-  __$GameEventCopyWithImpl(_GameEvent _value, $Res Function(_GameEvent) _then)
-      : super(_value, (v) => _then(v as _GameEvent));
+class __$RollEventCopyWithImpl<$Res> extends _$GameEventCopyWithImpl<$Res>
+    implements _$RollEventCopyWith<$Res> {
+  __$RollEventCopyWithImpl(_RollEvent _value, $Res Function(_RollEvent) _then)
+      : super(_value, (v) => _then(v as _RollEvent));
 
   @override
-  _GameEvent get _value => super._value as _GameEvent;
+  _RollEvent get _value => super._value as _RollEvent;
 }
 
 /// @nodoc
 
-class _$_GameEvent implements _GameEvent {
-  const _$_GameEvent();
+class _$_RollEvent implements _RollEvent {
+  const _$_RollEvent();
 
   @override
   String toString() {
@@ -94,7 +94,7 @@ class _$_GameEvent implements _GameEvent {
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _GameEvent);
+    return identical(this, other) || (other is _RollEvent);
   }
 
   @override
@@ -123,7 +123,7 @@ class _$_GameEvent implements _GameEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_GameEvent value) roll,
+    required TResult Function(_RollEvent value) roll,
   }) {
     return roll(this);
   }
@@ -131,7 +131,7 @@ class _$_GameEvent implements _GameEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_GameEvent value)? roll,
+    TResult Function(_RollEvent value)? roll,
     required TResult orElse(),
   }) {
     if (roll != null) {
@@ -141,8 +141,8 @@ class _$_GameEvent implements _GameEvent {
   }
 }
 
-abstract class _GameEvent implements GameEvent {
-  const factory _GameEvent() = _$_GameEvent;
+abstract class _RollEvent implements GameEvent {
+  const factory _RollEvent() = _$_RollEvent;
 }
 
 /// @nodoc

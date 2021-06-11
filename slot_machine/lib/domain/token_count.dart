@@ -28,10 +28,10 @@ class TokenCount implements GlobalListenableProperty<int> {
     }
     final id = await _id();
     final tokens = await _api.getTokens(id);
-    _slotMachineChanges
-        .of(id)
-        .map((e) => e.tokens)
-        .forEach((e) => _tokenCount = e);
+    _slotMachineChanges.of(id).map((e) => e.tokens).forEach((tokens) {
+      _tokenCount = tokens;
+      _valueChanges.add(tokens);
+    });
     _tokenCount = tokens;
     _valueChanges.add(tokens);
     return tokens;
@@ -47,6 +47,6 @@ class TokenCount implements GlobalListenableProperty<int> {
   @override
   Stream<int> get changes async* {
     await call();
-    yield* _valueChanges.stream;
+    yield* _valueChanges.stream.map((e) => e);
   }
 }

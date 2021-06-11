@@ -17,7 +17,7 @@ const numberOfSymbols = 4;
 
 @freezed
 class GameEvent with _$GameEvent {
-  const factory GameEvent.roll() = _GameEvent;
+  const factory GameEvent.roll() = _RollEvent;
 }
 
 @freezed
