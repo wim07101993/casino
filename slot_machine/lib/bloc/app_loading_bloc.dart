@@ -119,7 +119,7 @@ extension _GetItExtensions on GetIt {
   }
 
   Future<void> registerDb() async {
-    Hive.initFlutter();
+    await Hive.initFlutter();
     di.registerSingleton<HiveInterface>(Hive);
     di.registerLazySingleton(
       () => AppSettingsBox(hive: di(), nameGenerator: di()),
